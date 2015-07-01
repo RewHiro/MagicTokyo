@@ -42,3 +42,9 @@ EmptyObject、プレハブのPositionは必ずx:0、y:0、z:0にしてください。
 ## 注意点  
 **Unityのバーション**  
 5.1.0f3のバージョンで作業を行ってください
+
+
+## 参考サイト
+[iTween使い方](http://www40.atwiki.jp/spellbound/pages/1604.html)  
+[Unity開発で気を付ける事](http://warapuri.tumblr.com/post/28972633000/unity-50-tips)  
+[UnityとGitについて](http://tsubakit1.hateblo.jp/entry/20140613/1402670011)
