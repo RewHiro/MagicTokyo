@@ -10,19 +10,19 @@ public class TuboInDelete : MonoBehaviour
         if (other.name == "Lemon")
         {
             Debug.Log(" Lemon_in ");
-            Destroy(GameObject.Find("Lemon"));
+            Destroy(other);
         }
 
         if (other.name== "Apple")
         {
             Debug.Log(" Apple_in ");
-            Destroy(GameObject.Find("Apple"));
+            Destroy(other);
         }
 
         if (other.name == "Peach")
         {
             Debug.Log(" Peach_in ");
-            Destroy(GameObject.Find("Peach"));
+            Destroy(other);
         }
 
     }
