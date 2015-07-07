@@ -34,13 +34,9 @@ public class FruitCreater : MonoBehaviour {
 
     void Update()
     {
-        if (hand_controller_.IsAttack)
-        {
-            LemonCreate(5);
-        }
     }
 
-    void LemonCreate(int lemon_num)
+    public void LemonCreate(int lemon_num)
     {
         GameObject lemon_manager = GameObject.Find("LemonManager");
         for (int i = 0; i < lemon_num; ++i)
@@ -52,7 +48,7 @@ public class FruitCreater : MonoBehaviour {
         }
     }
 
-    void AppleCreate(int apple_num)
+    public void AppleCreate(int apple_num)
     {
         GameObject apple_manager = GameObject.Find("AppleManager");
         for (int i = 0; i < apple_num; ++i)
@@ -64,7 +60,7 @@ public class FruitCreater : MonoBehaviour {
         }
     }
 
-    void PeachCreate(int peach_num)
+    public void PeachCreate(int peach_num)
     {
         GameObject peach_manager = GameObject.Find("PeachManager");
         for (int i = 0; i < peach_num; ++i)

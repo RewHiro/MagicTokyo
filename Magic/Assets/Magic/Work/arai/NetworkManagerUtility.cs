@@ -22,6 +22,7 @@ public class NetworkManagerUtility : MonoBehaviour {
 
     public void StartClient()
     {
+        network_manager_.networkAddress = "192.168.2.100";
         network_manager_.StartClient();
         text_.GetComponent<Text>().enabled = true;
     }
