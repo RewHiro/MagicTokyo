@@ -2,40 +2,30 @@
 using System.Collections;
 using UnityEngine.Networking;
 
-public class PlayerDamage : NetworkBehaviour {
-
+[NetworkSettings(channel = 0, sendInterval = 0.001f)]
+public class PlayerDamage : NetworkBehaviour
+{
     [SyncVar]
     bool is_damage_ = false;
+    bool is_guard_ = false;
 
-    [SerializeField]
-    GameObject apple;
-
-	// Use this for initialization
-    void Start()
-    {
-
-    }
-	
-	// Update is called once per frame
     void Update()
     {
-        if (isLocalPlayer)
+        if (!isLocalPlayer) return;
+        if (is_damage_)
         {
-            CmdTellToServerDamage(FindObjectOfType<HandController>().IsAttack);
+            if (is_guard_) return;
+            FindObjectOfType<FruitCreater>().AppleCreate(5);
+            is_guard_ = true;
         }
         else
         {
-            if (is_damage_)
-            {
-                for (int i = 0; i < 5; ++i)
-                {
-                    Instantiate(apple);
-                }
-            }
+            is_guard_ = false;
         }
     }
-    [Command]
-    void CmdTellToServerDamage(bool is_damage)
+
+    [ClientRpc]
+    public void RpcTellClientDamage(bool is_damage)
     {
         is_damage_ = is_damage;
     }
