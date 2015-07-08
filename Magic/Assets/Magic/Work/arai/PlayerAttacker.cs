@@ -15,7 +15,8 @@ public class PlayerAttacker : NetworkBehaviour
     int lemon_num_ = 0;
     public int LemonNum { get { return lemon_num_; } }
 
-    bool is_gesture_ = false;
+    bool is_remote_damage_ = false;
+    bool is_guard_ = false;
 
     HandController hand_controller_ = null;
 
@@ -32,15 +33,28 @@ public class PlayerAttacker : NetworkBehaviour
         {
             CircleGesture gesture = new CircleGesture(gesture_list[0]);
             if (gesture.DurationSeconds < 1.0f) return;
-            if (is_gesture_) return;
-            is_gesture_ = true;
             CmdTellServerAttack(true);
             CmdTellServerFruitNum(1, 1);
         }
         else
         {
             CmdTellServerAttack(false);
-            is_gesture_ = false;
+        }
+    }
+
+    void AttackEffect()
+    {
+        if (is_remote_damage_)
+        {
+            if (is_guard_) return;
+            is_guard_ = true;
+            // 攻撃エフェクト
+            //　モモン生成
+            FindObjectOfType<FruitCreater>().PeachCreate(1);
+        }
+        else
+        {
+            is_guard_ = false;
         }
     }
 
@@ -48,6 +62,7 @@ public class PlayerAttacker : NetworkBehaviour
     {
         if (!isLocalPlayer) return;
         GestureUpdate();
+        AttackEffect();
     }
 
     [Command]
@@ -61,5 +76,11 @@ public class PlayerAttacker : NetworkBehaviour
     {
         apple_num_ = apple_num;
         lemon_num_ = lemon_num;
+    }
+
+    [ClientRpc]
+    public void RpcTellClientRemoteDamage(bool is_remote_damage)
+    {
+        is_remote_damage_ = is_remote_damage;
     }
 }
