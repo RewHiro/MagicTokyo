@@ -16,6 +16,7 @@ public class FruitCounter : NetworkBehaviour
     public int FruitNum { get { return fruit_count_; } }
 
     int remote_fruit_count_ = 0;
+    public int RemoteFruitNum { get { return remote_fruit_count_; } }
 
     void Start()
     {
