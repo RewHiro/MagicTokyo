@@ -13,6 +13,9 @@ public class FruitCounter : NetworkBehaviour
     Text text_;
 
     int fruit_count_ = 0;
+    public int FruitNum { get { return fruit_count_; } }
+
+    int remote_fruit_count_ = 0;
 
     // Use this for initialization
     void Start()
@@ -32,16 +35,21 @@ public class FruitCounter : NetworkBehaviour
         var count = apple_manager_.transform.childCount;
         count += lemon_manager_.transform.childCount;
         count += peach_manager_.transform.childCount;
-        //CmdTellToServerCount(count);
+        CmdTellToServerCount(count);
         fruit_count_ = count;
-        //Debug.Log(netId.Value + ":" + count.ToString());
-        text_.text = count.ToString();
+        text_.text = count.ToString() + " " + remote_fruit_count_.ToString();
     }
 
 
-    //[Command]
-    //void CmdTellToServerCount(int count)
-    //{
-    //    fruit_count_ = count;
-    //}
+    [Command]
+    void CmdTellToServerCount(int count)
+    {
+        fruit_count_ = count;
+    }
+
+    [ClientRpc]
+    public void RpcTellClientCount(int count)
+    {
+        remote_fruit_count_ = count;
+    }
 }

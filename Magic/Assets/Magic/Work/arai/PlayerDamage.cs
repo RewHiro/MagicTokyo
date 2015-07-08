@@ -9,13 +9,17 @@ public class PlayerDamage : NetworkBehaviour
     bool is_damage_ = false;
     bool is_guard_ = false;
 
+    int apple_num_ = 0;
+    int lemon_num_ = 0;
+
     void Update()
     {
         if (!isLocalPlayer) return;
         if (is_damage_)
         {
             if (is_guard_) return;
-            FindObjectOfType<FruitCreater>().AppleCreate(5);
+            FindObjectOfType<FruitCreater>().AppleCreate(apple_num_);
+            FindObjectOfType<FruitCreater>().LemonCreate(lemon_num_);
             is_guard_ = true;
         }
         else
@@ -28,5 +32,12 @@ public class PlayerDamage : NetworkBehaviour
     public void RpcTellClientDamage(bool is_damage)
     {
         is_damage_ = is_damage;
+    }
+
+    [ClientRpc]
+    public void RpcTellClientFruitNum(int apple_num,int lemon_num)
+    {
+        apple_num_ = apple_num;
+        lemon_num_ = lemon_num;
     }
 }
