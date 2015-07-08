@@ -10,19 +10,19 @@ public class TuboInDestroy : MonoBehaviour
         if (other.name == "re-mon")
         {
             Debug.Log(" Lemon Destroy ");
-            Destroy(other.gameObject);
+            Destroy(other.gameObject, 3);
         }
 
         if (other.name == "apumon")
         {
             Debug.Log(" Apple Destroy ");
-            Destroy(other.gameObject);
+            Destroy(other.gameObject, 3);
         }
 
         if (other.name == "momon")
         {
             Debug.Log(" Peach Destroy ");
-            Destroy(other.gameObject);
+            Destroy(other.gameObject, 3);
         }
 
     }

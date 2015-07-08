@@ -1,13 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Suck : MonoBehaviour
-{
-    [SerializeField, Range(0.0f, 1.0f), Tooltip("吸い取る力 (弱)<--->(強) ")]
-    float suck_pow_y = 0.5f;
+public class SuckAdd : MonoBehaviour {
 
-    [SerializeField, Range(100, 10000), Tooltip("質量 (軽)<--->(重) ")]
-    float rigid_mass = 100;
     [SerializeField, Range(0, 10), Tooltip("空気抵抗 (小)<--->(大) ")]
     float rigid_drag = 1;
 
@@ -25,17 +20,23 @@ public class Suck : MonoBehaviour
 
     public void OnTriggerStay(Collider other)
     {
-        var Rigid = other.gameObject.GetComponent<Rigidbody>();
+        var tubo_pos = GameObject.Find("tubo_kai").GetComponent<Transform>().position;
 
-        Rigid.mass += rigid_mass;
+        if (other.name == "re-mon" ||
+            other.name == "apumon" ||
+            other.name == "momon")
+        {
+            var kudamon_pos = other.gameObject.GetComponent<Transform>().position;
+
+            kudamon_pos =
+                Vector3.MoveTowards(transform.position, tubo_pos, 5.0f);
+        }
     }
 
     public void OnTriggerExit(Collider other)
     {
         var Rigid = other.gameObject.GetComponent<Rigidbody>();
 
-        Rigid.mass = 1;
         Rigid.drag = 0;
     }
-    
 }
