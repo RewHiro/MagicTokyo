@@ -20,10 +20,20 @@ public class PlayerAttacker : NetworkBehaviour
 
     HandController hand_controller_ = null;
 
+    [SerializeField, Range(0.0f, 10.0f), TooltipAttribute("回した時間")]
+    float TURN_SECOND = 1.0f;
+
     void Start()
     {
         if (!isLocalPlayer) return;
         hand_controller_ = FindObjectOfType<HandController>();
+    }
+
+    void Update()
+    {
+        if (!isLocalPlayer) return;
+        GestureUpdate();
+        AttackEffect();
     }
 
     void GestureUpdate()
@@ -32,7 +42,7 @@ public class PlayerAttacker : NetworkBehaviour
         if (gesture_list[0].IsValid)
         {
             CircleGesture gesture = new CircleGesture(gesture_list[0]);
-            if (gesture.DurationSeconds < 1.0f) return;
+            if (gesture.DurationSeconds < TURN_SECOND) return;
             CmdTellServerAttack(true);
             CmdTellServerFruitNum(1, 1);
         }
@@ -49,7 +59,6 @@ public class PlayerAttacker : NetworkBehaviour
             if (is_guard_) return;
             is_guard_ = true;
             // 攻撃エフェクト
-            //　モモン生成
             FindObjectOfType<FruitCreater>().PeachCreate(1);
         }
         else
@@ -58,15 +67,8 @@ public class PlayerAttacker : NetworkBehaviour
         }
     }
 
-    void Update()
-    {
-        if (!isLocalPlayer) return;
-        GestureUpdate();
-        AttackEffect();
-    }
-
     [Command]
-    void  CmdTellServerAttack(bool is_attack)
+    void CmdTellServerAttack(bool is_attack)
     {
         is_attack_ = is_attack;
     }

@@ -5,41 +5,63 @@ using UnityEngine.Networking;
 public class ServerManager : NetworkBehaviour
 {
 
-    bool is_player_find_ = false;
-
     GameObject local_player_ = null;
     GameObject remote_player_ = null;
 
-    // Use this for initialization
-    void Start()
-    {
+    [SerializeField, Range(1, 10), TooltipAttribute("レモネードが出すアプモンの倍率")]
+    int LOCAL_APPLE_MULTIPLE = 1;
 
-    }
+    [SerializeField, Range(1, 10), TooltipAttribute("レモネードが出すレーモンの倍率")]
+    int LOCAL_LEMON_MULTIPLE = 2;
 
-    // Update is called once per frame
+    [SerializeField, Range(1, 10), TooltipAttribute("アプルが出すアプモンの倍率")]
+    int REMOTE_APPLE_MULTIPLE = 2;
+
+    [SerializeField, Range(1, 10), TooltipAttribute("アプルが出すレーモンの倍率")]
+    int REMOTE_LEMON_MULTIPLE = 1;
+
+
     void Update()
     {
         if (!isServer) return;
         PlayerFind();
-        if (!is_player_find_) return;
-        local_player_.GetComponent<PlayerDamage>().RpcTellClientDamage(remote_player_.GetComponent<PlayerAttacker>().IsAttack);
-        remote_player_.GetComponent<PlayerDamage>().RpcTellClientDamage(local_player_.GetComponent<PlayerAttacker>().IsAttack);
+        if (local_player_ == null) return;
 
-        local_player_.GetComponent<PlayerDamage>().RpcTellClientFruitNum(remote_player_.GetComponent<PlayerAttacker>().AppleNum * 2, remote_player_.GetComponent<PlayerAttacker>().LemonNum);
-        remote_player_.GetComponent<PlayerDamage>().RpcTellClientFruitNum(local_player_.GetComponent<PlayerAttacker>().AppleNum, local_player_.GetComponent<PlayerAttacker>().LemonNum * 2);
+        var local_player_damage 
+            = local_player_.GetComponent<PlayerDamage>();
+        var remote_player_damage
+            = remote_player_.GetComponent<PlayerDamage>();
 
-        local_player_.GetComponent<FruitCounter>().RpcTellClientCount(remote_player_.GetComponent<FruitCounter>().FruitNum);
-        remote_player_.GetComponent<FruitCounter>().RpcTellClientCount(local_player_.GetComponent<FruitCounter>().FruitNum);
+        var local_player_attacker
+            = local_player_.GetComponent<PlayerAttacker>();
+        var remote_player_attacker
+            = remote_player_.GetComponent<PlayerAttacker>();
 
-        local_player_.GetComponent<PlayerAttacker>().RpcTellClientRemoteDamage(remote_player_.GetComponent<PlayerDamage>().IsDamage);
-        remote_player_.GetComponent<PlayerAttacker>().RpcTellClientRemoteDamage(local_player_.GetComponent<PlayerDamage>().IsDamage);
+        var local_player_fruit_counter
+            = local_player_.GetComponent<FruitCounter>();
+        var remote_player_fruit_counter
+            = remote_player_.GetComponent<FruitCounter>();
+
+        local_player_damage.RpcTellClientDamage(
+            remote_player_attacker.IsAttack,
+            remote_player_attacker.AppleNum * LOCAL_APPLE_MULTIPLE,
+            remote_player_attacker.LemonNum * LOCAL_LEMON_MULTIPLE);
+        remote_player_damage.RpcTellClientDamage(
+            local_player_attacker.IsAttack,
+            local_player_attacker.AppleNum * REMOTE_APPLE_MULTIPLE,
+            local_player_attacker.LemonNum * REMOTE_LEMON_MULTIPLE);
+
+        local_player_fruit_counter.RpcTellClientCount(remote_player_fruit_counter.FruitNum);
+        remote_player_fruit_counter.RpcTellClientCount(local_player_fruit_counter.FruitNum);
+
+        local_player_attacker.RpcTellClientRemoteDamage(remote_player_damage.IsDamage);
+        remote_player_attacker.RpcTellClientRemoteDamage(local_player_damage.IsDamage);
     }
 
     void PlayerFind()
     {
-        if (is_player_find_) return;
+        if (local_player_ != null) return;
         if (NetworkManager.singleton.numPlayers != 2) return;
-        is_player_find_ = true;
         local_player_ = GameObject.Find("Player1");
         remote_player_ = GameObject.Find("Player2");
     }

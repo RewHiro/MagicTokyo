@@ -8,6 +8,7 @@ public class PlayerDamage : NetworkBehaviour
     [SyncVar]
     bool is_damage_ = false;
     public bool IsDamage { get { return is_damage_; } }
+
     bool is_guard_ = false;
 
     int apple_num_ = 0;
@@ -30,14 +31,9 @@ public class PlayerDamage : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void RpcTellClientDamage(bool is_damage)
+    public void RpcTellClientDamage(bool is_damage, int apple_num, int lemon_num)
     {
         is_damage_ = is_damage;
-    }
-
-    [ClientRpc]
-    public void RpcTellClientFruitNum(int apple_num,int lemon_num)
-    {
         apple_num_ = apple_num;
         lemon_num_ = lemon_num;
     }
