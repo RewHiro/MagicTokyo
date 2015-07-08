@@ -10,6 +10,11 @@ public class PlayerAttacker : NetworkBehaviour
     bool is_attack_ = false;
     public bool IsAttack { get { return is_attack_; } }
 
+    int apple_num_ = 0;
+    public int AppleNum { get { return apple_num_; } }
+    int lemon_num_ = 0;
+    public int LemonNum { get { return lemon_num_; } }
+
     bool is_gesture_ = false;
 
     HandController hand_controller_ = null;
@@ -30,6 +35,7 @@ public class PlayerAttacker : NetworkBehaviour
             if (is_gesture_) return;
             is_gesture_ = true;
             CmdTellServerAttack(true);
+            CmdTellServerFruitNum(1, 1);
         }
         else
         {
@@ -48,5 +54,12 @@ public class PlayerAttacker : NetworkBehaviour
     void  CmdTellServerAttack(bool is_attack)
     {
         is_attack_ = is_attack;
+    }
+
+    [Command]
+    void CmdTellServerFruitNum(int apple_num,int lemon_num)
+    {
+        apple_num_ = apple_num;
+        lemon_num_ = lemon_num;
     }
 }
