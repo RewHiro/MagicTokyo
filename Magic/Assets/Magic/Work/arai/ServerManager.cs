@@ -26,10 +26,13 @@ public class ServerManager : NetworkBehaviour
         remote_player_.GetComponent<PlayerDamage>().RpcTellClientDamage(local_player_.GetComponent<PlayerAttacker>().IsAttack);
 
         local_player_.GetComponent<PlayerDamage>().RpcTellClientFruitNum(remote_player_.GetComponent<PlayerAttacker>().AppleNum * 2, remote_player_.GetComponent<PlayerAttacker>().LemonNum);
-        remote_player_.GetComponent<PlayerDamage>().RpcTellClientFruitNum(remote_player_.GetComponent<PlayerAttacker>().AppleNum, remote_player_.GetComponent<PlayerAttacker>().LemonNum * 2);
+        remote_player_.GetComponent<PlayerDamage>().RpcTellClientFruitNum(local_player_.GetComponent<PlayerAttacker>().AppleNum, local_player_.GetComponent<PlayerAttacker>().LemonNum * 2);
 
         local_player_.GetComponent<FruitCounter>().RpcTellClientCount(remote_player_.GetComponent<FruitCounter>().FruitNum);
         remote_player_.GetComponent<FruitCounter>().RpcTellClientCount(local_player_.GetComponent<FruitCounter>().FruitNum);
+
+        local_player_.GetComponent<PlayerAttacker>().RpcTellClientRemoteDamage(remote_player_.GetComponent<PlayerDamage>().IsDamage);
+        remote_player_.GetComponent<PlayerAttacker>().RpcTellClientRemoteDamage(local_player_.GetComponent<PlayerDamage>().IsDamage);
     }
 
     void PlayerFind()

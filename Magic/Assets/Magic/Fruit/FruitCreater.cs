@@ -12,6 +12,12 @@ public class FruitCreater : MonoBehaviour {
     [SerializeField, TooltipAttribute("モモンのprefabを入れてください")]
     GameObject peach = null;
 
+    [SerializeField, TooltipAttribute("じゃまモンのprefabを入れてください")]
+    GameObject egg_plant = null;
+
+    [SerializeField, TooltipAttribute("ドリアンボムのprefabを入れてください")]
+    GameObject dorian = null;
+
     [SerializeField,Range(0,200), TooltipAttribute("レーモンの出す数")]
     int LEMON_NUM = 100;
 
@@ -30,10 +36,6 @@ public class FruitCreater : MonoBehaviour {
         LemonCreate(LEMON_NUM);
         AppleCreate(APPLE_NUM);
         PeachCreate(PEACH_NUM);
-    }
-
-    void Update()
-    {
     }
 
     public void LemonCreate(int lemon_num)
@@ -69,6 +71,30 @@ public class FruitCreater : MonoBehaviour {
             GameObject game_object = Instantiate(peach);
             game_object.transform.SetParent(peach_manager.transform);
             game_object.name = peach.name;
+        }
+    }
+
+    public void EggPlantCreate(int egg_plant_num)
+    {
+        GameObject egg_plant_manager = GameObject.Find("EggPlantManager");
+        for (int i = 0; i < egg_plant_num; ++i)
+        {
+            if (egg_plant == null) continue;
+            GameObject game_object = Instantiate(egg_plant);
+            game_object.transform.SetParent(egg_plant_manager.transform);
+            game_object.name = egg_plant.name;
+        }
+    }
+
+    public void DorianCreate(int dorian_num)
+    {
+        GameObject dorian_manager = GameObject.Find("DorianManager");
+        for (int i = 0; i < dorian_num; ++i)
+        {
+            if (dorian == null) continue;
+            GameObject game_object = Instantiate(dorian);
+            game_object.transform.SetParent(dorian_manager.transform);
+            game_object.name = dorian.name;
         }
     }
 }

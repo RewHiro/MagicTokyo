@@ -7,6 +7,7 @@ public class PlayerDamage : NetworkBehaviour
 {
     [SyncVar]
     bool is_damage_ = false;
+    public bool IsDamage { get { return is_damage_; } }
     bool is_guard_ = false;
 
     int apple_num_ = 0;
