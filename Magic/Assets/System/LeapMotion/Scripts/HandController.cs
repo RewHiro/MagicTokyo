@@ -89,11 +89,6 @@ public class HandController : MonoBehaviour
     private long prev_graphics_id_ = 0;
     private long prev_physics_id_ = 0;
 
-    bool is_attack_ = false;
-    bool is_gesture_ = false;
-    public bool IsAttack { get { return is_attack_; } }
-    float turn_seconds_ = 0.0f;
-
     /** Draws the Leap Motion gizmo when in the Unity editor. */
     void OnDrawGizmos()
     {
@@ -128,11 +123,13 @@ public class HandController : MonoBehaviour
     void Start()
     {
         var gesture_config = GetComponent<LeapGestureConfig>();
-        leap_controller_.EnableGesture(Gesture.GestureType.TYPE_CIRCLE);
-        leap_controller_.Config.SetFloat("Gesture.Circle.MinArc", gesture_config.MinArc);
-        leap_controller_.Config.SetFloat("Gesture.Circle.MinRadius", gesture_config.MinRadius);
-        leap_controller_.Config.Save();
-        turn_seconds_ = gesture_config.TurnSeconds;
+        if (gesture_config != null)
+        {
+            leap_controller_.EnableGesture(Gesture.GestureType.TYPE_CIRCLE);
+            leap_controller_.Config.SetFloat("Gesture.Circle.MinArc", gesture_config.MinArc);
+            leap_controller_.Config.SetFloat("Gesture.Circle.MinRadius", gesture_config.MinRadius);
+            leap_controller_.Config.Save();
+        }
 
         // Initialize hand lookup tables.
         hand_graphics_ = new Dictionary<int, HandModel>();
@@ -368,7 +365,6 @@ public class HandController : MonoBehaviour
             UpdateHandModels(hand_graphics_, frame.Hands, leftGraphicsModel, rightGraphicsModel);
             prev_graphics_id_ = frame.Id;
         }
-        GestureUpdate();
     }
 
     /** Updates the physics objects */
@@ -385,6 +381,7 @@ public class HandController : MonoBehaviour
             UpdateToolModels(tools_, frame.Tools, toolModel);
             prev_physics_id_ = frame.Id;
         }
+
     }
 
     /** True, if the Leap Motion hardware is plugged in and this application is connected to the Leap Motion service. */
@@ -516,25 +513,6 @@ public class HandController : MonoBehaviour
         else
         {
             recorder_.NextFrame();
-        }
-    }
-
-    void GestureUpdate()
-    {
-        var gesture_list = leap_controller_.Frame().Gestures();
-        if (gesture_list[0].IsValid)
-        {
-            CircleGesture gesture = new CircleGesture(gesture_list[0]);
-            is_attack_ = false;
-            if (gesture.DurationSeconds < turn_seconds_) return;
-            if (is_gesture_) return;
-            is_attack_ = true;
-            is_gesture_ = true;
-        }
-        else
-        {
-            is_gesture_ = false;
-            is_attack_ = false;
         }
     }
 }
