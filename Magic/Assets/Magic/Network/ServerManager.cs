@@ -38,8 +38,11 @@ public class ServerManager : NetworkBehaviour
 
         if (local_player_ == null) return;
         ClientUpdate();
+
+        if (!local_player_.GetComponent<StartDeirector>().IsStart) return;
+        if (!remote_player_.GetComponent<StartDeirector>().IsStart) return;
+
         var delta_time = Time.deltaTime;
-        
         count_ += -delta_time;
         
         if (count_ > 0) return;
