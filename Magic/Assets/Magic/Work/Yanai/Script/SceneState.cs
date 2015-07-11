@@ -19,5 +19,12 @@ public class SceneState : MonoBehaviour {
 
   void Start() {}
 
-  void Update() {}
+  void Update() {
+    if (!Input.GetKeyDown(KeyCode.Space)) return;
+    state_ = TitleState.Start;
+  }
+
+  public bool isStart() {
+    return state_ == TitleState.Start ? true : false;
+  }
 }
