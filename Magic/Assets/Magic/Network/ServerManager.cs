@@ -7,6 +7,10 @@ public class ServerManager : NetworkBehaviour
 
     GameObject local_player_ = null;
     GameObject remote_player_ = null;
+    float count_ = 60;
+
+    [SerializeField,Range(1,120),TooltipAttribute("制限時間")]
+    int TIME_LIMIT_SECOND = 2;
 
     [SerializeField, Range(1, 10), TooltipAttribute("レモネードが出すアプモンの倍率")]
     int LOCAL_APPLE_MULTIPLE = 1;
@@ -21,13 +25,32 @@ public class ServerManager : NetworkBehaviour
     int REMOTE_LEMON_MULTIPLE = 1;
 
 
+    void Start()
+    {
+        if (!isServer) return;
+        count_ = TIME_LIMIT_SECOND;
+    }
+
     void Update()
     {
         if (!isServer) return;
         PlayerFind();
-        if (local_player_ == null) return;
 
-        var local_player_damage 
+        if (local_player_ == null) return;
+        ClientUpdate();
+        var delta_time = Time.deltaTime;
+        
+        count_ += -delta_time;
+        
+        if (count_ > 0) return;
+        count_ = TIME_LIMIT_SECOND;
+        NetworkManager.singleton.StopHost();
+        Application.LoadLevel("result");
+    }
+
+    void ClientUpdate()
+    {
+        var local_player_damage
             = local_player_.GetComponent<PlayerDamage>();
         var remote_player_damage
             = remote_player_.GetComponent<PlayerDamage>();
@@ -56,6 +79,9 @@ public class ServerManager : NetworkBehaviour
 
         local_player_attacker.RpcTellClientRemoteDamage(remote_player_damage.IsDamage);
         remote_player_attacker.RpcTellClientRemoteDamage(local_player_damage.IsDamage);
+
+        local_player_.GetComponent<TimeLimitter>().RpcTellClientLimitCount((int)count_);
+        remote_player_.GetComponent<TimeLimitter>().RpcTellClientLimitCount((int)count_);
     }
 
     void PlayerFind()
@@ -64,5 +90,7 @@ public class ServerManager : NetworkBehaviour
         if (NetworkManager.singleton.numPlayers != 2) return;
         local_player_ = GameObject.Find("Player1");
         remote_player_ = GameObject.Find("Player2");
+        local_player_.GetComponent<StartDeirector>().RpcTellClientReady(true);
+        remote_player_.GetComponent<StartDeirector>().RpcTellClientReady(true);
     }
 }
