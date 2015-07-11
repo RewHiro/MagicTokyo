@@ -13,6 +13,7 @@ public class MyNetworkManager : NetworkManager
     {
         NetworkManager.singleton.StartClient();
         is_start_ = true;
+        GameObject.Find("WaitText").GetComponent<Text>().enabled = true;
     }
 
     void Update()

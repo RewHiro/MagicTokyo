@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class StartDeirector : NetworkBehaviour
 {
@@ -28,7 +29,8 @@ public class StartDeirector : NetworkBehaviour
         if (!isLocalPlayer) return;
         if (!is_ready_) return;
         count_ += Time.deltaTime;
-        if (count_ < 30) return;
+        GameObject.Find("Text (2)").GetComponent<Text>().enabled = false;
+        if (count_ < 1) return;
         CmdTellServerStart(true);
     }
 }
