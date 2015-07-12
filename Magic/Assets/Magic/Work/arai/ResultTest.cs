@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ResultTest : MonoBehaviour
 {
-
+    float count_ = 0;
     // Use this for initialization
     void Start()
     {
@@ -17,5 +17,9 @@ public class ResultTest : MonoBehaviour
         {
             Application.LoadLevel("title");
         }
+
+        count_ +=Time.deltaTime;
+        if (count_ < 10) return;
+        Application.LoadLevel("title");
     }
 }
