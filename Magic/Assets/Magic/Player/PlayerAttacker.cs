@@ -12,6 +12,7 @@ public class PlayerAttacker : NetworkBehaviour
 
     int apple_num_ = 0;
     public int AppleNum { get { return apple_num_; } }
+
     int lemon_num_ = 0;
     public int LemonNum { get { return lemon_num_; } }
 
