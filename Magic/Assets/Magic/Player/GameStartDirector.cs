@@ -27,7 +27,8 @@ public class GameStartDirector : NetworkBehaviour {
         GameObject.Find("Text (3)").GetComponent<Text>().text = ReadyCount.ToString();
         
         if (count_ > 0) return;
-        
+
+        state_ = State.START;
         CmdTellServerStart();
         GameObject.Find("Text (3)").GetComponent<Text>().enabled = false;
     }
