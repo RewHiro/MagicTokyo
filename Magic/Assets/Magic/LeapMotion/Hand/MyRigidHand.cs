@@ -7,18 +7,18 @@ public class MyRigidHand : RiggedHand {
 
     public override void InitHand()
     {
-        var players = FindObjectsOfType<PlayerSetting>();
-        foreach (var player in players)
-        {
-            if (!player.isLocalPlayer) continue;
-            game_start_director = player.GetComponent<GameStartDirector>();
-        }
+        //var players = FindObjectsOfType<PlayerSetting>();
+        //foreach (var player in players)
+        //{
+        //    if (!player.isLocalPlayer) continue;
+        //    game_start_director = player.GetComponent<GameStartDirector>();
+        //}
         base.InitHand();
     }
 
     public override void UpdateHand()
     {
-        if (!game_start_director.IsStart) return;
+        //if (!game_start_director.IsStart) return;
         base.UpdateHand();
     }
 }
