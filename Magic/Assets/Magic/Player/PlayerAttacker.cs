@@ -17,6 +17,8 @@ public class PlayerAttacker : NetworkBehaviour
     public int LemonNum { get { return lemon_num_; } }
 
     bool is_remote_damage_ = false;
+    public bool IsRemoteDamage { get { return is_remote_damage_; } }
+
     bool is_guard_ = false;
 
     HandController hand_controller_ = null;
