@@ -5,27 +5,27 @@ using System.Collections;
 public class TuboInDestroy : MonoBehaviour
 {
     [SerializeField, Tooltip("鍋に入ってから消えるまでの時間(単位：秒)")]
-    float destroy_time = 3.0f;
+    float DESTROY_TIME = 3.0f;
 
     //それぞれのくだモンの鍋に入った(消した)数
-    int lemon_count = 0;
-    int apumon_count = 0;
-    int momon_count = 0;
+    int lemon_count_ = 0;
+    int apumon_count_ = 0;
+    int momon_count_ = 0;
 
     //くだモンの名前
-    const string lemon_name = "re-mon";
-    const string apumon_name = "apumon";
-    const string momon_name = "momon";
+    const string LEMON_NAME = "re-mon";
+    const string APUMON_NAME = "apumon";
+    const string MOMON_NAME = "momon";
 
     //-----------------------------------------------------------------
 
     //それぞれのくだモンの鍋に入った(消した)数のゲッター
-    public int getLemonCount() { return lemon_count; }
-    public int getApumonCount() { return apumon_count; }
-    public int getMomonCount() { return momon_count; }
-    public int getKudamonCount() {
-        var kudamonAdd = lemon_count + apumon_count + momon_count;
-        return kudamonAdd;
+    public int GetLemonCount() { return lemon_count_; }
+    public int GetApumonCount() { return apumon_count_; }
+    public int GetMomonCount() { return momon_count_; }
+    public int GetKudamonCount() {
+        var kudamon_add = lemon_count_ + apumon_count_ + momon_count_;
+        return kudamon_add;
     }
 
     //鍋の中のTrigger判定
@@ -33,25 +33,25 @@ public class TuboInDestroy : MonoBehaviour
     {
 
         //それぞれのくだモンを「消す処理」と「カウント処理」（と「入ったものを出力」するためのデバッグ）
-        if (other.name == lemon_name)
+        if (other.name == LEMON_NAME)
         {
-            Destroy(other.gameObject, destroy_time);
-            lemon_count++;
-            Debug.Log(" Lemon Destroy " + lemon_count);
+            Destroy(other.gameObject, DESTROY_TIME);
+            lemon_count_++;
+            //Debug.Log(" Lemon Destroy " + lemon_count);
         }
 
-        if (other.name == apumon_name)
+        if (other.name == APUMON_NAME)
         {
-            Destroy(other.gameObject, destroy_time);
-            apumon_count++;
-            Debug.Log(" Apple Destroy " + apumon_count);
+            Destroy(other.gameObject, DESTROY_TIME);
+            apumon_count_++;
+            //Debug.Log(" Apple Destroy " + apumon_count);
         }
 
-        if (other.name == momon_name)
+        if (other.name == MOMON_NAME)
         {
-            Destroy(other.gameObject, destroy_time);
-            momon_count++;
-            Debug.Log(" Peach Destroy " + momon_count);
+            Destroy(other.gameObject, DESTROY_TIME);
+            momon_count_++;
+            //Debug.Log(" Peach Destroy " + momon_count);
         }
 
     }

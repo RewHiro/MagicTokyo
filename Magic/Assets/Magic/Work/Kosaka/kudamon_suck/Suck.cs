@@ -5,18 +5,15 @@ using System.Collections;
 //RigidBodyのみを変えて吸い込みを演出var
 public class Suck : MonoBehaviour
 {
-    [SerializeField, Range(0.0f, 1.0f), Tooltip("吸い取る力 (弱)<--->(強) ")]
-    float suck_pow_y = 0.5f;
-
     [SerializeField, Range(100, 10000), Tooltip("変更する質量の大きさ (軽)<--->(重) ")]
-    float rigid_mass = 100;
+    float RIGID_MASS = 100;
     [SerializeField, Range(0, 2), Tooltip("変更する空気抵抗の大きさ (小)<--->(大) ")]
-    float rigid_drag = 1;
+    float RIGID_DRAG = 1;
 
     //くだモンの名前
-    const string lemon_name = "re-mon";
-    const string apumon_name = "apumon";
-    const string momon_name = "momon";
+    const string LEMON_NAME = "re-mon";
+    const string APUMON_NAME = "apumon";
+    const string MOMON_NAME = "momon";
 
     //-----------------------------------------------------------------
 
@@ -24,37 +21,39 @@ public class Suck : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         //otherのRigidBody取得
-        var Rigid = other.gameObject.GetComponent<Rigidbody>();
+        var rigid = other.gameObject.GetComponent<Rigidbody>();
 
         //空気抵抗を付けて動きを抑制
-        Rigid.drag = rigid_drag;
+        rigid.drag = RIGID_DRAG;
 
         //当たった時の出力デバッグ
-        if (other.name == lemon_name ||
-            other.name == apumon_name ||
-            other.name == momon_name)
-            Debug.Log(" Rigid Trriger Collision");
+        if (other.name == LEMON_NAME ||
+            other.name == APUMON_NAME ||
+            other.name == MOMON_NAME)
+        {
+            //Debug.Log(" Rigid Trriger Collision");
+        }
     }
 
     //吸い取り機能の最中
     void OnTriggerStay(Collider other)
     {
         //otherのRigidBody取得
-        var Rigid = other.gameObject.GetComponent<Rigidbody>();
+        var rigid = other.gameObject.GetComponent<Rigidbody>();
 
         //質量を増やして落とすことで鍋に入れ易くする
-        Rigid.mass += rigid_mass;
+        rigid.mass += RIGID_MASS;
     }
 
     //吸い取り機能の終了判定
     void OnTriggerExit(Collider other)
     {
         //otherのRigidBody取得
-        var Rigid = other.gameObject.GetComponent<Rigidbody>();
+        var rigid = other.gameObject.GetComponent<Rigidbody>();
 
         //動かしたRigidBodyの要素を元に戻す
-        Rigid.mass = 1;
-        Rigid.drag = 0;
+        rigid.mass = 1;
+        rigid.drag = 0;
     }
     
 }
