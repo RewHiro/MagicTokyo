@@ -12,24 +12,15 @@ using Leap;
 public class RigidHand : SkeletalHand
 {
 
-    GameStartDirector game_start_director = null;
-
     public float filtering = 0.5f;
 
     public override void InitHand()
     {
-        var players = FindObjectsOfType<PlayerSetting>();
-        foreach(var player in players)
-        {
-            if(!player.isLocalPlayer)continue;
-            game_start_director = player.GetComponent<GameStartDirector>();
-        }
         base.InitHand();
     }
 
     public override void UpdateHand()
     {
-        if (!game_start_director.IsStart) return;
 
         for (int f = 0; f < fingers.Length; ++f)
         {
