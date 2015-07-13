@@ -25,6 +25,7 @@ public class RigidHand : SkeletalHand
             game_start_director = player.GetComponent<GameStartDirector>();
         }
         base.InitHand();
+
     }
 
     public override void UpdateHand()
