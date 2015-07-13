@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c420341c7af09164fb2aae8d8dd14695
+timeCreated: 1436585221
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - apple_: {fileID: 182822, guid: 46dcf36b2217882499483e812e4c5d6d, type: 2}
+  - lemon_: {fileID: 148942, guid: 5add4f4a1e54c724292a3220625e7230, type: 2}
+  - peach_: {fileID: 184310, guid: 0bb759381b6d73542952ccd453e3d7a3, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

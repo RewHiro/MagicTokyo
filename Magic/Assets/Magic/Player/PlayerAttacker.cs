@@ -12,21 +12,30 @@ public class PlayerAttacker : NetworkBehaviour
 
     int apple_num_ = 0;
     public int AppleNum { get { return apple_num_; } }
+
     int lemon_num_ = 0;
     public int LemonNum { get { return lemon_num_; } }
 
     bool is_remote_damage_ = false;
+    public bool IsRemoteDamage { get { return is_remote_damage_; } }
+
     bool is_guard_ = false;
 
     HandController hand_controller_ = null;
+    SkeletalHand hand_ = null;
 
     [SerializeField, Range(0.0f, 10.0f), TooltipAttribute("回した時間")]
     float TURN_SECOND = 1.0f;
+
+    TuboInDestroy tubo_in_destory_ = null;
+
+    const int POT_LIMIT_NUM = 10;
 
     void Start()
     {
         if (!isLocalPlayer) return;
         hand_controller_ = FindObjectOfType<HandController>();
+        tubo_in_destory_ = FindObjectOfType<TuboInDestroy>();
     }
 
     void Update()
@@ -38,17 +47,35 @@ public class PlayerAttacker : NetworkBehaviour
 
     void GestureUpdate()
     {
-        var gesture_list = hand_controller_.GetFrame().Gestures();
+        var hands = FindObjectsOfType<SkeletalHand>();
+        if (null == hands) return;
+        foreach (var hand in hands)
+        {
+            if (!hand.GetLeapHand().IsRight) continue;
+            hand_ = hand;
+        }
+        if (null == hand_) return;
+        var gesture_list = hand_.GetController().GetFrame().Gestures();
+        
         if (gesture_list[0].IsValid)
         {
             CircleGesture gesture = new CircleGesture(gesture_list[0]);
             if (gesture.DurationSeconds < TURN_SECOND) return;
             CmdTellServerAttack(true);
-            CmdTellServerFruitNum(1, 1);
+            is_attack_ = true;
+            var apple_num = tubo_in_destory_.GetApumonCount();
+            var lemon_num = tubo_in_destory_.GetLemonCount();
+            CmdTellServerFruitNum(
+                apple_num, 
+                lemon_num);
+            apple_num_ = apple_num;
+            lemon_num_ = lemon_num;
         }
         else
         {
             CmdTellServerAttack(false);
+            is_attack_ = false;
+
         }
     }
 
@@ -59,7 +86,10 @@ public class PlayerAttacker : NetworkBehaviour
             if (is_guard_) return;
             is_guard_ = true;
             // 攻撃エフェクト
-            FindObjectOfType<FruitCreater>().PeachCreate(1);
+            if (POT_LIMIT_NUM == tubo_in_destory_.GetKudamonCount())
+            {
+                FindObjectOfType<FruitCreater>().PeachCreate(1);
+            }
         }
         else
         {
