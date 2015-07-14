@@ -3,30 +3,44 @@ using System.Collections;
 
 public class MagicScaleChange : MonoBehaviour
 {
-    float kudamon_scale_max;
-    float kudamon_scale_min;
+    float kudamon_scale_max_;
+    float kudamon_scale_min_;
+    float small_time_;
+    float big_time_;
 
     void Awake()
     {
-        kudamon_scale_max = 1.0f;
-        kudamon_scale_min = 0.5f;
+        small_time_ = 1.0f;
+        big_time_ = 1.0f;
+
+        kudamon_scale_max_ = 1.0f;
+        kudamon_scale_min_ = 0.5f;
     }
 
-    public void Update()
+    public void ScaleChange(bool ismagic_,float kudamon_scale_min_,float scale_change_time_)
     {
 
-    }
-
-    public void ScaleChange(bool ismagic,float kudamon_scale_min)
-    {
-
-        if (ismagic == true)
+        if (ismagic_ == true)
         {
-            transform.localScale = new Vector3(kudamon_scale_min, kudamon_scale_min, kudamon_scale_min);
+            small_time_ = scale_change_time_;
+
+            iTween.ScaleTo(gameObject, iTween.Hash(
+                "x", kudamon_scale_min_,
+                "y", kudamon_scale_min_,
+                "z", kudamon_scale_min_,
+                "time", small_time_,
+                "easetype", iTween.EaseType.easeOutQuad));
         }
-        if (ismagic == false)
+        if (ismagic_ == false)
         {
-            transform.localScale = new Vector3(kudamon_scale_max, kudamon_scale_max, kudamon_scale_max);
+            big_time_ = scale_change_time_;
+            iTween.ScaleTo(gameObject, iTween.Hash(
+                "x", kudamon_scale_max_,
+                "y", kudamon_scale_max_,
+                "z", kudamon_scale_max_,
+                "time", big_time_,
+                "easetype", iTween.EaseType.easeOutQuad));
+            //easeOutBounce
         }
     }
 }
