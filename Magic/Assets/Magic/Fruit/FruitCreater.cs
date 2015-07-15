@@ -12,6 +12,12 @@ public class FruitCreater : MonoBehaviour {
     [SerializeField, TooltipAttribute("モモンのprefabを入れてください")]
     GameObject peach = null;
 
+    [SerializeField, TooltipAttribute("じゃまモンのprefabを入れてください")]
+    GameObject egg_plant = null;
+
+    [SerializeField, TooltipAttribute("ドリアンボムのprefabを入れてください")]
+    GameObject dorian = null;
+
     [SerializeField,Range(0,200), TooltipAttribute("レーモンの出す数")]
     int LEMON_NUM = 100;
 
@@ -30,10 +36,6 @@ public class FruitCreater : MonoBehaviour {
         LemonCreate(LEMON_NUM);
         AppleCreate(APPLE_NUM);
         PeachCreate(PEACH_NUM);
-    }
-
-    void Update()
-    {
     }
 
     public void LemonCreate(int lemon_num)
