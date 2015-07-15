@@ -20,18 +20,18 @@ public class Suck : MonoBehaviour
     //吸い取り機能の開始判定
     void OnTriggerEnter(Collider other)
     {
-        //otherのRigidBody取得
-        var rigid = other.gameObject.GetComponent<Rigidbody>();
-
-        //空気抵抗を付けて動きを抑制
-        rigid.drag = RIGID_DRAG;
-
         //当たった時の出力デバッグ
         if (other.name == LEMON_NAME ||
             other.name == APUMON_NAME ||
             other.name == MOMON_NAME)
         {
-            //Debug.Log(" Rigid Trriger Collision");
+            //otherのRigidBody取得
+            var rigid = other.gameObject.GetComponent<Rigidbody>();
+
+            //空気抵抗を付けて動きを抑制
+            rigid.drag = RIGID_DRAG;
+
+            Debug.Log(" Rigid Trriger Collision");
         }
     }
 

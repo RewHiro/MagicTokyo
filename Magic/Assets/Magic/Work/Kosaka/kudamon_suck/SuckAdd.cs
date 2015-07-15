@@ -3,66 +3,79 @@ using System.Collections;
 
 
 //RigidBodyと計算で吸い込みを演出var
-public class SuckAdd : MonoBehaviour {
-
-    [SerializeField, Range(0, 2), Tooltip("変更する空気抵抗の大きさ (小)<--->(大) ")]
-    float RIGID_DRAG = 1;
-
-    //移動できるかどうか？
-    bool is_move_ = false;
+public class SuckAdd : MonoBehaviour
+{
 
     //くだモンの名前
     const string LEMON_NAME = "re-mon";
     const string APUMON_NAME = "apumon";
     const string MOMON_NAME = "momon";
-    const string POD_NAME = "tubo_kai";
 
+    //渦の原点
+    Vector3 gravity_center_pos_;
+    //吸い込まれるもの
+    //pos
+    Vector3 kudamon_pos_;
+    //rigid
+    Rigidbody kudmaon_rigid_;
+
+    //吸い込む計算を始める瞬間の取得
+    bool is_cyclone_ = false;
+
+    [SerializeField, Range(50, 300), Tooltip("吸い込む力 (弱) <---> (強) ")]
+    int suck_power_ = 100;
     //-----------------------------------------------------------------
+
+
+    public void Awake()
+    {
+        gravity_center_pos_ = transform.position;
+    }
 
     //吸い取り機能の開始判定
     void OnTriggerEnter(Collider other)
     {
-        //otherのRigidBody取得
-        var rigid = other.gameObject.GetComponent<Rigidbody>();
-
-        //空気抵抗を付けて動きを抑制
-        rigid.drag = RIGID_DRAG;
-
-        //当たった時の出力デバッグ
-        if (other.name == LEMON_NAME ||
-            other.name == APUMON_NAME ||
-            other.name == MOMON_NAME)
-            Debug.Log(" Rigid Trriger Collision");
-    }
-
-    //吸い取り機能の最中
-    void OnTriggerStay(Collider other)
-    {
-        //鍋の位置(座標)を取得
-        var tubo_pos = GameObject.Find(POD_NAME).GetComponent<Transform>().position;
-
-        //Triggerの中にあるものの判定(くだモンのみに判定)
         if (other.name == LEMON_NAME ||
             other.name == APUMON_NAME ||
             other.name == MOMON_NAME)
         {
-            //くだモンの位置(座標)を取得
-            var kudamon_pos = other.gameObject.GetComponent<Transform>().position;
+            //otherのposition取得
+            kudamon_pos_ = other.transform.position;
 
-            //くだモンの位置を計算で移動
-            kudamon_pos =
-                Vector3.MoveTowards(transform.position, tubo_pos, 5.0f);
+            //otherのRigidBody取得
+            kudmaon_rigid_ = other.gameObject.GetComponent<Rigidbody>();
+
+            kudmaon_rigid_.drag = 2;
+            kudmaon_rigid_.mass = 10;
+
+            is_cyclone_ = true;
+        }
+    }
+
+    //吸い取り機能の最中
+    public void FixedUpdate()
+    {
+        if (is_cyclone_)
+        {
+            kudmaon_rigid_.AddRelativeForce(0.0f, 0.1f, 0.0f);
+            kudmaon_rigid_.AddForce(transform.forward * 5);
+            kudmaon_rigid_.AddForce(new Vector3(0, -5, 0));
+
+            var vectors_ = gravity_center_pos_ - kudamon_pos_;
+            vectors_.Normalize();
+            kudmaon_rigid_.AddForce(vectors_ * suck_power_);
+
+            if (kudamon_pos_ == gravity_center_pos_)
+            {
+                is_cyclone_ = false;
+            }
         }
     }
 
     //吸い取り機能の終了判定
     void OnTriggerExit(Collider other)
     {
-        //otherのRigidBody取得
-        var rigid = other.gameObject.GetComponent<Rigidbody>();
-
-        //動かしたRigidBodyの要素を元に戻す
-        rigid.drag = 0;
+        is_cyclone_ = false;
     }
 }
 
