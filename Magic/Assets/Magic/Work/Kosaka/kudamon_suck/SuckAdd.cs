@@ -1,6 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
+
+
+//吸い込まれるもの
+//pos / rigid / 吸い込む計算を始める瞬間の取得
+struct Kudamon
+{
+    public Vector3 pos_;
+    public Rigidbody rigid_;
+    public bool is_cyclone_;
+}
 
 //RigidBodyと計算で吸い込みを演出var
 public class SuckAdd : MonoBehaviour
@@ -13,17 +24,14 @@ public class SuckAdd : MonoBehaviour
 
     //渦の原点
     Vector3 gravity_center_pos_;
-    //吸い込まれるもの
-    //pos
-    Vector3 kudamon_pos_;
-    //rigid
-    Rigidbody kudmaon_rigid_;
 
-    //吸い込む計算を始める瞬間の取得
-    bool is_cyclone_ = false;
+    //くだモン
+    List<Kudamon> kudamons = new List<Kudamon>();
 
     [SerializeField, Range(50, 300), Tooltip("吸い込む力 (弱) <---> (強) ")]
     int suck_power_ = 100;
+    [SerializeField, Range(50, 300), Tooltip("下に吸い込む力 (弱) <---> (強) ")]
+    int down_force_ = 100;
     //-----------------------------------------------------------------
 
 
@@ -39,43 +47,62 @@ public class SuckAdd : MonoBehaviour
             other.name == APUMON_NAME ||
             other.name == MOMON_NAME)
         {
-            //otherのposition取得
-            kudamon_pos_ = other.transform.position;
+            var kudamons_init = new Kudamon { };
+            kudamons_init.pos_ = other.transform.position;
+            kudamons_init.rigid_ = other.gameObject.GetComponent<Rigidbody>();
+            kudamons_init.is_cyclone_ = false;
+            kudamons.Add(kudamons_init);
 
-            //otherのRigidBody取得
-            kudmaon_rigid_ = other.gameObject.GetComponent<Rigidbody>();
+            for (var i = 0; i < kudamons.Count; ++i)
+            {
+                kudamons[i].rigid_.drag = 2;
+                kudamons[i].rigid_.mass = 10;
 
-            kudmaon_rigid_.drag = 2;
-            kudmaon_rigid_.mass = 10;
-
-            is_cyclone_ = true;
+                Kudamon tmpDate = kudamons[i];
+                tmpDate.is_cyclone_ = true;
+                kudamons[i] = tmpDate;
+            }
         }
     }
 
     //吸い取り機能の最中
     public void FixedUpdate()
     {
-        if (is_cyclone_)
+        for (var i = 0; i < kudamons.Count; ++i)
         {
-            kudmaon_rigid_.AddRelativeForce(0.0f, 0.1f, 0.0f);
-            kudmaon_rigid_.AddForce(transform.forward * 5);
-            kudmaon_rigid_.AddForce(new Vector3(0, -5, 0));
-
-            var vectors_ = gravity_center_pos_ - kudamon_pos_;
-            vectors_.Normalize();
-            kudmaon_rigid_.AddForce(vectors_ * suck_power_);
-
-            if (kudamon_pos_ == gravity_center_pos_)
+            if (kudamons[i].is_cyclone_)
             {
-                is_cyclone_ = false;
+                kudamons[i].rigid_.AddRelativeForce(0.0f, 0.1f, 0.0f);
+                kudamons[i].rigid_.AddForce(transform.forward * 5);
+                kudamons[i].rigid_.AddForce(new Vector3(0, -down_force_, 0));
+
+                var vectors_ = gravity_center_pos_ - kudamons[i].pos_;
+                vectors_.Normalize();
+                kudamons[i].rigid_.AddForce(vectors_ * suck_power_);
+
+                if (kudamons[i].pos_ == gravity_center_pos_)
+                {
+                    Kudamon tmpDate = kudamons[i];
+                    tmpDate.is_cyclone_ = false;
+                    kudamons[i] = tmpDate;
+
+                    kudamons.Remove(kudamons[i]);
+                }
             }
-        }
+        }        
     }
 
     //吸い取り機能の終了判定
     void OnTriggerExit(Collider other)
     {
-        is_cyclone_ = false;
+        for (var i = 0; i < kudamons.Count; ++i)
+        {
+            Kudamon tmpDate = kudamons[i];
+            tmpDate.is_cyclone_ = false;
+            kudamons[i] = tmpDate;
+
+            kudamons.Remove(kudamons[i]);
+        }
     }
 }
 
