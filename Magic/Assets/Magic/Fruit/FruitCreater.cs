@@ -73,28 +73,4 @@ public class FruitCreater : MonoBehaviour {
             game_object.name = peach.name;
         }
     }
-
-    public void EggPlantCreate(int egg_plant_num)
-    {
-        GameObject egg_plant_manager = GameObject.Find("EggPlantManager");
-        for (int i = 0; i < egg_plant_num; ++i)
-        {
-            if (egg_plant == null) continue;
-            GameObject game_object = Instantiate(egg_plant);
-            game_object.transform.SetParent(egg_plant_manager.transform);
-            game_object.name = egg_plant.name;
-        }
-    }
-
-    public void DorianCreate(int dorian_num)
-    {
-        GameObject dorian_manager = GameObject.Find("DorianManager");
-        for (int i = 0; i < dorian_num; ++i)
-        {
-            if (dorian == null) continue;
-            GameObject game_object = Instantiate(dorian);
-            game_object.transform.SetParent(dorian_manager.transform);
-            game_object.name = dorian.name;
-        }
-    }
 }
