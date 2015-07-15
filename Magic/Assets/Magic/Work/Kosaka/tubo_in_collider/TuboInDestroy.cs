@@ -12,6 +12,12 @@ public class TuboInDestroy : MonoBehaviour
     int apumon_count_ = 0;
     int momon_count_ = 0;
 
+    //カウントリセットのためのbool
+    bool is_reset_ = false;
+    //カウントリセットの時間（間隔）
+    int reset_time_ = 0;
+    const int RESET_TIME_LIMIT = 1;
+
     //くだモンの名前
     const string LEMON_NAME = "re-mon";
     const string APUMON_NAME = "apumon";
@@ -20,12 +26,37 @@ public class TuboInDestroy : MonoBehaviour
     //-----------------------------------------------------------------
 
     //それぞれのくだモンの鍋に入った(消した)数のゲッター
-    public int GetLemonCount() { return lemon_count_; }
-    public int GetApumonCount() { return apumon_count_; }
-    public int GetMomonCount() { return momon_count_; }
-    public int GetKudamonCount() {
-        var kudamon_add = lemon_count_ + apumon_count_ + momon_count_;
-        return kudamon_add;
+    public int GetLemonCount { get { return lemon_count_; } }
+    public int GetApumonCount { get { return apumon_count_; } }
+    public int GetMomonCount { get { return momon_count_; } }
+    public int GetKudamonCount
+    {
+        get { return lemon_count_ + apumon_count_ + momon_count_; }
+    }
+
+    void Update()
+    {
+        var players = FindObjectsOfType<PlayerSetting>();
+        foreach (var player in players)
+        {
+            if (player.isLocalPlayer)
+            {
+                var is_player_attack = GetComponent<PlayerAttacker>();
+                if (is_player_attack.IsAttack) { is_reset_ = true; }
+            }
+        }
+
+        if (is_reset_)
+        {
+            reset_time_++;
+            if (reset_time_ == RESET_TIME_LIMIT)
+            {
+                lemon_count_ = 0;
+                apumon_count_ = 0;
+                momon_count_ = 0;
+                is_reset_ = false;
+            }
+        }
     }
 
     //鍋の中のTrigger判定
