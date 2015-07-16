@@ -1,31 +1,36 @@
 ﻿
 using UnityEngine;
-using System.Collections;
 
 
 public class TransformController : MonoBehaviour {
 
   [SerializeField]
-  float scale_ = 0.5f;
+  float SCALE = 0.5f;
 
   [SerializeField]
-  float back_speed_ = 1.0f;
+  float BACK_SPEED = 1.0f;
 
-  Vector3 neutral_ = Vector3.zero;
-  public Vector3 Neutral { get { return neutral_; } }
+  Vector3 NEUTRAL = Vector3.zero;
+  public Vector3 Neutral { get { return NEUTRAL; } }
 
 
   void Start() {
     transform.rotation = Camera.main.transform.rotation;
-    transform.localScale = Vector3.one * scale_;
+    transform.localScale = Vector3.one * SCALE;
 
-    neutral_ = transform.position;
+    NEUTRAL = transform.position;
   }
 
-  void Update() {
-    if (Vector3.Equals(transform.position, neutral_)) { return; }
+  void FixedUpdate() {
+    if (Vector3.Equals(transform.position, NEUTRAL)) { return; }
 
-    var dif = (transform.position - Neutral) * back_speed_;
+    if (transform.position.y < Neutral.y) { FixHeight(); }
+    var dif = (transform.position - Neutral) * BACK_SPEED;
     transform.position = transform.position - dif * Time.deltaTime;
+  }
+
+  void FixHeight() {
+    var v = new Vector3(0, Neutral.y - transform.position.y, 0);
+    transform.position += v;
   }
 }
