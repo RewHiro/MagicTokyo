@@ -12,7 +12,7 @@ public class Item : MonoBehaviour {
   }
 
   [SerializeField]
-  float slide_speed_;
+  float SLIDE_SPEED = 0.1f;
 
   State state_;
   SceneState title_;
@@ -48,7 +48,7 @@ public class Item : MonoBehaviour {
   }
 
   void Slide() {
-    gameObject.transform.Translate(slide_speed_, 0.0f, 0.0f);
+    gameObject.transform.Translate(SLIDE_SPEED, 0.0f, 0.0f);
     if (gameObject.transform.position.x > 0) {
       state_ = State.Rotate;
     }
