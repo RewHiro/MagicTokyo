@@ -63,8 +63,8 @@ public class PlayerAttacker : NetworkBehaviour
             if (gesture.DurationSeconds < TURN_SECOND) return;
             CmdTellServerAttack(true);
             is_attack_ = true;
-            var apple_num = tubo_in_destory_.GetApumonCount();
-            var lemon_num = tubo_in_destory_.GetLemonCount();
+            var apple_num = tubo_in_destory_.GetApumonCount;
+            var lemon_num = tubo_in_destory_.GetLemonCount;
             CmdTellServerFruitNum(
                 apple_num, 
                 lemon_num);
@@ -86,7 +86,7 @@ public class PlayerAttacker : NetworkBehaviour
             if (is_guard_) return;
             is_guard_ = true;
             // 攻撃エフェクト
-            if (POT_LIMIT_NUM == tubo_in_destory_.GetKudamonCount())
+            if (POT_LIMIT_NUM == tubo_in_destory_.GetKudamonCount)
             {
                 FindObjectOfType<FruitCreater>().PeachCreate(1);
             }
