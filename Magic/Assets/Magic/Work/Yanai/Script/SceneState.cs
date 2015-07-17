@@ -11,7 +11,9 @@ enum TitleState {
 
 public class SceneState : MonoBehaviour {
 
-  private TitleState state_;
+  TitleState state_;
+  Controller controller = new Controller();
+  GestureList gestures;
 
   [SerializeField]
   int VALID_MAX = 60;
@@ -28,6 +30,7 @@ public class SceneState : MonoBehaviour {
 
   void Awake() {
     state_ = TitleState.Set;
+    controller.EnableGesture(Gesture.GestureType.TYPE_SWIPE);
   }
 
   void Start() {}
@@ -35,9 +38,29 @@ public class SceneState : MonoBehaviour {
   void Update() {
 
     // デモプレイに移行
+    if (canShiftDemoPlay()) {
+      state_ = TitleState.DemoPlay;
+    }
+    
+    // ゲーム本編に移行
     if (canShiftStart()) {
       state_ = TitleState.Start;
     }
+  }
+
+  bool canShiftDemoPlay() {
+    if (!isRecognizedHand()) return false;
+
+    Frame frame = controller.Frame();
+    gestures = frame.Gestures();
+    var finger_count = frame.Fingers.Count;
+
+    for (int i = 0; i < finger_count; ++i) {
+      if (gestures[i].Type == Gesture.GestureType.TYPE_SWIPE) {
+        return true;
+      } 
+    }
+    return false;
   }
 
   bool canShiftStart() {
