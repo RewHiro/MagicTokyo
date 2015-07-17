@@ -20,8 +20,8 @@ public class Item : MonoBehaviour {
   bool is_pop_;
 
   void Awake() {
-    state_ = State.Slide;
-    table = new Hashtable();
+    state_  = State.Slide;
+    table   = new Hashtable();
     is_pop_ = false;
   }
 
