@@ -13,10 +13,10 @@ public class SpriteManager : MonoBehaviour {
   [SerializeField, Range(1, 5), TooltipAttribute("画像切り替えの速度（1:早い, 5:遅い）")]
   int ROULETTE_SPEED = 2;
   int roulette_reel_ = 0;
-  public int MagicSlot { get { return roulette_reel_; } }
 
   [SerializeField, TooltipAttribute("スロットに使う魔法アイコンの一覧")]
   Sprite[] ICON = null;
+  public int IconSize { get { return ICON.Length; } }
 
   public bool SlotTrigger { get; private set; }
 
@@ -29,17 +29,13 @@ public class SpriteManager : MonoBehaviour {
   }
 
   void Update() {
-    /*// Debug Command.
+    // Debug Command
     if (Input.GetKeyDown(KeyCode.A)) {
-      Debug.Log("slot trigger on.");
       SlotTrigger = true;
     }
-
     if (Input.GetKeyDown(KeyCode.S)) {
-      Debug.Log("magic action execute.");
       MagicAction();
     }
-    */
 
     if (blink_timer_ > 0) { SlotBlink(); }
     if (!SlotTrigger) { return; }
@@ -49,7 +45,14 @@ public class SpriteManager : MonoBehaviour {
 
     if (roulette_counter_ > ROULETTE_TIME * 60.0f) {
       roulette_counter_ = 0;
-      roulette_reel_ = Random.Range(0, ICON.Length - 1);
+
+      var magic = FindObjectOfType<PlayerMagicManager>();
+      roulette_reel_ = magic.MagicType;
+
+      // Debug Output
+      Debug.Log("magic type = " + magic.MagicType);
+      //roulette_reel_ = Random.Range(0, ICON.Length - 1);
+
       blink_timer_ = 60;
       SlotTrigger = false;
     }

@@ -1,18 +1,18 @@
 ﻿
 using UnityEngine;
-using System.Collections;
+using UnityEngine.UI;
 
 
 public class TimeViewer : MonoBehaviour {
 
   TimeLimitter TIME = null;
-  string time_str_ = null;
+  Text canvas_ = null;
 
   void Start() {
     TIME = FindObjectOfType<TimeLimitter>();
   }
 
   void Update() {
-    time_str_ = TIME.LimitCount.ToString();
+    canvas_.text = TIME.LimitCount.ToString();
   }
 }
