@@ -2,9 +2,10 @@
 using System.Collections;
 using Leap;
 
-public class HandMagic : MonoBehaviour {
+public class HandMagic : MonoBehaviour
+{
 
-    float[] a ;
+    float[] hand_grab_angle_;
 
     Vector3 handCenter_;
 
@@ -12,56 +13,60 @@ public class HandMagic : MonoBehaviour {
 
     SkeletalHand[] skeletal_hand_;
 
-	void Start () 
+    [SerializeField]
+    GameObject hand_pos_;
+
+    void Start()
     {
         hand_manager = GameObject.Find("HandManager");
-	}
-	
-	void Update () 
+        hand_grab_angle_ = new float[2];
+    }
+
+    void Update()
     {
 
-        var hand_left_ = GameObject.Find("CleanRobotLeftHand(Clone)");
-        var hand_right_ = GameObject.Find("CleanRobotRightHand(Clone)");
-        //var rigid_hand_ = GameObject.Find("RigidHand(Clone)");
-        hand_right_.transform.SetParent(hand_manager.transform);
-        hand_left_.transform.SetParent(hand_manager.transform);
-        //rigid_hand_.transform.SetParent(hand_manager.transform);
+        var left_hand_light = GameObject.Find("HandManager/CleanRobotLeftHand(Clone)/" + hand_pos_.name);
+        var left_hand_ = GameObject.Find("CleanRobotLeftHand(Clone)");
+        left_hand_.transform.SetParent(hand_manager.transform);
+
+        var right_hand_light = GameObject.Find("HandManager/CleanRobotRightHand(Clone)/" + hand_pos_.name);
+        var right_hand_ = GameObject.Find("CleanRobotRightHand(Clone)");
+        right_hand_.transform.SetParent(hand_manager.transform);
+
 
         skeletal_hand_ = GetComponentsInChildren<SkeletalHand>();
-
-       // var hands = FindObjectsOfType<SkeletalHand>();
-        if ((null == skeletal_hand_[0])&&(null == skeletal_hand_[1])) return;
-//        foreach (var hand in skeletal_hand_)
         for (int i = 0; i < skeletal_hand_.Length; ++i)
         {
-            a[i] =skeletal_hand_[i].GetLeapHand().GrabStrength;
-            //handCenter_ = new Vector3(hand.GetLeapHand().PalmPosition.x, hand.GetLeapHand().PalmPosition.y, hand.GetLeapHand().PalmPosition.z);
+            hand_grab_angle_[i] = skeletal_hand_[i].GetLeapHand().GrabStrength;
 
-            //var hand_left_ = GameObject.Find("CleanRobotLeftHand(Clone)").GetComponent<SkeletalHand>();
-            //var hand_right_ = GameObject.Find("CleanRobotRightHand(Clone)").GetComponent<SkeletalHand>();
-            //        Debug.Log(a);
         }
-        Behaviour halo_left_ = (Behaviour)hand_left_.GetComponent("Halo");
-        //            halo_left_.transform.position = hand_left_.transform.position;
+        Behaviour halo_left_ = (Behaviour)left_hand_light.GetComponent("Halo");
 
-        Behaviour halo_right_ = (Behaviour)hand_right_.GetComponent("Halo");
-
+        Behaviour halo_right_ = (Behaviour)right_hand_light.GetComponent("Halo");
 
 
-        if (a[0] >= 0.5 || a[1] >= 0.5)
+        if (hand_grab_angle_[0] >= 0.5 )
         {
             halo_left_.enabled = true;
-            halo_right_.enabled = true;
-            Debug.Log(a);
-
+           
         }
         else
         {
             halo_left_.enabled = false;
-            halo_right_.enabled = false;
+           
         }
 
+        if( hand_grab_angle_[1] >= 0.5)
+        {   
+            halo_right_.enabled = true;
+            Debug.Log(hand_grab_angle_);
 
-      
-	}
+        }
+        else
+        {
+            halo_right_.enabled = false;
+        }
+        
+
+    }
 }
