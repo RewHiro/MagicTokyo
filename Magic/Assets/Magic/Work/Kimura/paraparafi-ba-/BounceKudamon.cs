@@ -24,6 +24,12 @@ public class BounceKudamon : MonoBehaviour
     float elapsed_time_;
 
     ChangeBounce[] changebounce;
+
+    //小坂改変
+    bool start_ = false;
+    public void Starter() { start_ = true; }
+    //小坂改変終了
+
     void Awake()
     {
         moment_decision_ = GameObject.Find("MomentDecision");
@@ -47,7 +53,9 @@ public class BounceKudamon : MonoBehaviour
 
             case IsMagic.UNUSED_MAGIC:
                 {
-                    if (Input.GetKey(KeyCode.A))
+                    //小坂改変
+                    if (start_)
+                    //小坂改変終了
                     {
                         is_magic_ = IsMagic.MAGIC_START;
                         moment_decision_.GetComponent<SphereCollider>().enabled = true;
@@ -61,9 +69,9 @@ public class BounceKudamon : MonoBehaviour
                     elapsed_time_ -= Time.deltaTime;
                     for (int i = 0; i < changebounce.Length; ++i)
                     {
-                        changebounce[i].Bounce(true,BOUNCE_POWER);
+                        changebounce[i].Bounce(true, BOUNCE_POWER);
                     }
-                    
+
                     if (elapsed_time_ <= 0)
                     {
                         is_magic_ = IsMagic.MAGIC_END;
@@ -79,6 +87,11 @@ public class BounceKudamon : MonoBehaviour
                     }
                     is_magic_ = IsMagic.UNUSED_MAGIC;
                     elapsed_time_ = EVENT_TIME;
+
+                    //小坂改変
+                    start_ = false;
+                    //小坂改変終了
+
                 }
                 break;
         }
