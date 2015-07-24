@@ -19,6 +19,8 @@ public class SmallFruit : MonoBehaviour
 
     MagicScaleChange[] magic_scale_change_;
 
+    //var current_number = GetComponentsInChildren<MagicScaleChange>();
+
     [SerializeField, Range(0.1f, 1.0f), TooltipAttribute("くだモンのどれだけ小さくなるかを入れてください")]
     float SCALE_MIN = 0.5f;
 
@@ -52,7 +54,7 @@ public class SmallFruit : MonoBehaviour
 
     void SmallChangeMagic()
     {
-        var current_number = GetComponentsInChildren<MagicScaleChange>();
+        
 
         switch (ismagic_)
         {
@@ -70,8 +72,11 @@ public class SmallFruit : MonoBehaviour
 
             case IsMagic.MAGIC_START:
                 {
+                    magic_scale_change_ = GetComponentsInChildren<MagicScaleChange>();
+
+
                     elapsed_time_ -= Time.deltaTime;
-                    for (int i = 0; i < current_number.Length; ++i)
+                    for (int i = 0; i < magic_scale_change_.Length; ++i)
                     {
 
                         magic_scale_change_[i].ScaleChange(true, SCALE_MIN, SCALE_CHANGE_TIME);
@@ -86,7 +91,10 @@ public class SmallFruit : MonoBehaviour
 
             case IsMagic.MAGIC_END:
                 {
-                    for (int i = 0; i < current_number.Length; ++i)
+                    magic_scale_change_ = GetComponentsInChildren<MagicScaleChange>();
+
+
+                    for (int i = 0; i < magic_scale_change_.Length; ++i)
                     {
 
                         magic_scale_change_[i].ScaleChange(false, SCALE_MIN, SCALE_CHANGE_TIME);
