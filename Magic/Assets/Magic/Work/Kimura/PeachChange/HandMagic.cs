@@ -9,29 +9,33 @@ public class HandMagic : MonoBehaviour
 
     Vector3 handCenter_;
 
-    GameObject hand_manager;
+    GameObject hand_manager_;
 
     SkeletalHand[] skeletal_hand_;
+
+    Light light_left_;
+    Light light_right_;
 
     [SerializeField]
     GameObject hand_pos_;
 
     void Start()
     {
-        hand_manager = GameObject.Find("HandManager");
+        hand_manager_ = GameObject.Find("HandManager");
         hand_grab_angle_ = new float[2];
+    
     }
 
     void Update()
     {
-
+        //if (null == hand) return;
         var left_hand_light = GameObject.Find("HandManager/CleanRobotLeftHand(Clone)/" + hand_pos_.name);
         var left_hand_ = GameObject.Find("CleanRobotLeftHand(Clone)");
-        left_hand_.transform.SetParent(hand_manager.transform);
+        left_hand_.transform.SetParent(hand_manager_.transform);
 
         var right_hand_light = GameObject.Find("HandManager/CleanRobotRightHand(Clone)/" + hand_pos_.name);
         var right_hand_ = GameObject.Find("CleanRobotRightHand(Clone)");
-        right_hand_.transform.SetParent(hand_manager.transform);
+        right_hand_.transform.SetParent(hand_manager_.transform);
 
 
         skeletal_hand_ = GetComponentsInChildren<SkeletalHand>();
@@ -40,33 +44,34 @@ public class HandMagic : MonoBehaviour
             hand_grab_angle_[i] = skeletal_hand_[i].GetLeapHand().GrabStrength;
 
         }
-        Behaviour halo_left_ = (Behaviour)left_hand_light.GetComponent("Halo");
 
-        Behaviour halo_right_ = (Behaviour)right_hand_light.GetComponent("Halo");
+        light_left_ = left_hand_light.GetComponent<Light>();
+
+        light_right_ = right_hand_light.GetComponent<Light>();
 
 
-        if (hand_grab_angle_[0] >= 0.5 )
+
+        if (hand_grab_angle_[0] >= 0.5)
         {
-            halo_left_.enabled = true;
-           
-        }
-        else
-        {
-            halo_left_.enabled = false;
-           
-        }
-
-        if( hand_grab_angle_[1] >= 0.5)
-        {   
-            halo_right_.enabled = true;
-            Debug.Log(hand_grab_angle_);
+            light_left_.enabled = true;
 
         }
         else
         {
-            halo_right_.enabled = false;
+            light_left_.enabled = false;
+
         }
-        
+
+        if (hand_grab_angle_[1] >= 0.5)
+        {
+            light_right_.enabled = true;
+
+        }
+        else
+        {
+            light_right_.enabled = false;
+        }
+
 
     }
 }
