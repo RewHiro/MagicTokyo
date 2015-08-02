@@ -5,6 +5,9 @@ public class MyRigidHand : RiggedHand {
 
     GameStartDirector game_start_director = null;
 
+    [SerializeField]
+    bool Debug = false;
+
     void Awake()
     {
         foreach (var player in FindObjectsOfType<PlayerSetting>())
@@ -16,13 +19,27 @@ public class MyRigidHand : RiggedHand {
 
     public override void InitHand()
     {
-        //if (!game_start_director.IsStart) return;
+        if (!Debug)
+        {
+            if (Application.loadedLevelName == "gamemain")
+            {
+                if (!game_start_director.IsStart) return;
+            }
+        }
+
         base.InitHand();
     }
 
     public override void UpdateHand()
     {
-        //if (!game_start_director.IsStart) return;
+        if (!Debug)
+        {
+            if (Application.loadedLevelName == "gamemain")
+            {
+                if (!game_start_director.IsStart) return;
+            }
+        }
+
         base.UpdateHand();
     }
 }

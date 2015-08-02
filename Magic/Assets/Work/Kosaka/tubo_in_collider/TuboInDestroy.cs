@@ -97,6 +97,7 @@ public class TuboInDestroy : MonoBehaviour
         else if (other.name == JAMAMON_NAME)
         {
             Destroy(other.gameObject, DESTROY_TIME);
+            JamamonFlyOut();
         }
         else if (other.name == DORIANBOM_NAME)
         {
@@ -126,5 +127,27 @@ public class TuboInDestroy : MonoBehaviour
     public void ResetDorian()
     {
         is_in_dorian_ = false;
+    }
+
+    void JamamonFlyOut()
+    {
+        var kudamon_manager = GameObject.Find("FruitManager")
+            .GetComponent<FruitCreater>();
+
+        for (var apple_num = 0; apple_num < apumon_count_; apple_num++)
+        {
+            var apple = kudamon_manager.AppleCreate();
+            apple.transform.position = transform.position + new Vector3(0.0f, 2.0f, 0.0f);
+            apple.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-10.0f, 10.0f), 30.0f, Random.Range(-10.0f, 10.0f));
+        }
+
+        for (var lemon_num = 0; lemon_num < lemon_count_; lemon_num++)
+        {
+            var lemon = kudamon_manager.LemonCreate();
+            lemon.transform.position = transform.position + new Vector3(0.0f, 2.0f, 0.0f);
+            lemon.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-10.0f, 10.0f), 30.0f, Random.Range(-10.0f, 10.0f));
+        }
+        lemon_count_ = 0;
+        apumon_count_ = 0;
     }
 }
