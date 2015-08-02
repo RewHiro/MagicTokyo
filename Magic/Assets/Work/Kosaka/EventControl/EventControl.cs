@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
-public class EventControl : MonoBehaviour
+public class EventControl : NetworkBehaviour
 {
     //時間
     int time_;
@@ -13,14 +14,66 @@ public class EventControl : MonoBehaviour
     int time_balance_ = 20;
 
     //選ばれたイベント
-    enum EventName
+    public enum EventName
     {
         DURIAN_BOMB,        //ドリアンボム
         KUDAMON_BOUND,      //跳ねるくだモン
         KUDAMON_RUSH,       //鍋MAX
         EVENT_MAX,
     }
-    EventName select_event_ = EventName.DURIAN_BOMB;
+    EventName select_event_ = EventName.EVENT_MAX;
+    public EventName SelectEvent
+    {
+        get { return select_event_; }
+    }
+
+    public void RpcSetSelectEventRemote(EventName value) {
+        if (select_event_ != value)
+        {
+            select_event_ = value;
+            Debug.Log(select_event_);
+            switch (select_event_)
+            {
+                case EventName.DURIAN_BOMB:
+                    FindObjectOfType<FruitCreater>().DorianCreate();
+                    break;
+
+                case EventName.KUDAMON_BOUND:
+                    FindObjectOfType<BounceKudamon>().Starter();
+                    break;
+
+                case EventName.KUDAMON_RUSH:
+                    GetComponent<RushEventer>().StartEvent();
+                    break;
+            }
+        }
+    }
+
+    [ClientRpc]
+    public void RpcSetSelectEventLocal(EventName value)
+    {   
+        //Debug.Log(select_event_);
+        //Debug.Log(value);
+        if (select_event_ != value)
+        {
+            select_event_ = value;
+            Debug.Log(select_event_);
+            switch (select_event_)
+            {
+                case EventName.DURIAN_BOMB:
+                    FindObjectOfType<FruitCreater>().DorianCreate();
+                    break;
+
+                case EventName.KUDAMON_BOUND:
+                    FindObjectOfType<BounceKudamon>().Starter();
+                    break;
+
+                case EventName.KUDAMON_RUSH:
+                    GetComponent<RushEventer>().StartEvent();
+                    break;
+            }
+        }
+    }
 
     [SerializeField, Tooltip("ドリアンボムの個数")]
     int durian_bomb_num_ = 1;
@@ -34,6 +87,12 @@ public class EventControl : MonoBehaviour
 
     void Update()
     {
+        
+    }
+
+    public void RandEvent()
+    {
+        //if (!isLocalPlayer) return;
         FindComponent();
         if (time_limitter_ == null) return;
 
@@ -44,21 +103,6 @@ public class EventControl : MonoBehaviour
         if (time % time_balance_ == 0)
         {
             select_event_ = (EventName)Random.Range(0, (int)EventName.EVENT_MAX);
-
-            switch (select_event_)
-            {
-                case EventName.DURIAN_BOMB:
-                    FindObjectOfType<FruitCreater>().DorianCreate(durian_bomb_num_);
-                    break;
-
-                case EventName.KUDAMON_BOUND:
-                    FindObjectOfType<BounceKudamon>().Starter();
-                    break;
-
-                case EventName.KUDAMON_RUSH:
-                    GetComponent<RushEventer>().StartEvent();
-                    break;
-            }
             time_ = time;
         }
     }
