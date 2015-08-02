@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-using UnityEditor;
-using UnityEditor.Sprites;
+//using UnityEditor;
+//using UnityEditor.Sprites;
 public class LogoSpriteGenerator : MonoBehaviour {
 
     [SerializeField]

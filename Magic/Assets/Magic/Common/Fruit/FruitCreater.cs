@@ -27,6 +27,9 @@ public class FruitCreater : MonoBehaviour {
     [SerializeField, Range(0,200),TooltipAttribute("モモンの出す数")]
     int PEACH_NUM = 100;
 
+    [SerializeField, Range(0, 200), TooltipAttribute("ジャマモンの出す数")]
+    int JAMAMON_NUM = 100;
+
     HandController hand_controller_ = null;
 
     void Awake()
@@ -36,6 +39,7 @@ public class FruitCreater : MonoBehaviour {
         LemonCreate(LEMON_NUM);
         AppleCreate(APPLE_NUM);
         PeachCreate(PEACH_NUM);
+        EggPlantCreate(JAMAMON_NUM);
     }
 
     public void LemonCreate(int lemon_num)
@@ -97,4 +101,55 @@ public class FruitCreater : MonoBehaviour {
             game_object.name = dorian.name;
         }
     }
+
+    public GameObject LemonCreate()
+    {
+        GameObject lemon_manager = GameObject.Find("LemonManager");
+        if (lemon == null) return null;
+        GameObject game_object = Instantiate(lemon);
+        game_object.transform.SetParent(lemon_manager.transform);
+        game_object.name = lemon.name;
+        return game_object;
+    }
+
+    public GameObject AppleCreate()
+    {
+        GameObject apple_manager = GameObject.Find("AppleManager");
+        if (apple == null) return null;
+        GameObject game_object = Instantiate(apple);
+        game_object.transform.SetParent(apple_manager.transform);
+        game_object.name = apple.name;
+        return game_object;
+    }
+
+    public GameObject PeachCreate()
+    {
+        GameObject peach_manager = GameObject.Find("PeachManager");
+        if (peach == null) return null;
+        GameObject game_object = Instantiate(peach);
+        game_object.transform.SetParent(peach_manager.transform);
+        game_object.name = peach.name;
+        return game_object;
+    }
+
+    public GameObject EggPlantCreate()
+    {
+        GameObject egg_plant_manager = GameObject.Find("EggPlantManager");
+        if (egg_plant == null) return null;
+        GameObject game_object = Instantiate(egg_plant);
+        game_object.transform.SetParent(egg_plant_manager.transform);
+        game_object.name = egg_plant.name;
+        return game_object;
+    }
+
+    public GameObject DorianCreate()
+    {
+        GameObject dorian_manager = GameObject.Find("DorianManager");
+        if (dorian == null) return null;
+        GameObject game_object = Instantiate(dorian);
+        game_object.transform.SetParent(dorian_manager.transform);
+        game_object.name = dorian.name;
+        return game_object;
+    }
+
 }
