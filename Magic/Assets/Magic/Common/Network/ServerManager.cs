@@ -141,7 +141,7 @@ public class ServerManager : NetworkBehaviour
         remote_player_dorian_boom_attacker.RpcTellClientRemoteDamage(
             local_player_dorian_boom_damage.IsDamage);
 
-        remote_player_event.RpcSetSelectEvent(local_player_event.SelectEvent);
+        remote_player_event.RpcSetSelectEvent(local_player_event.SelectEvent, !local_player_event.IsCreateDurianBoom);
     }
 
     void PlayerFind()

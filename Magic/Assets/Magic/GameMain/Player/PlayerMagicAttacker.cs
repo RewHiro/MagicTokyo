@@ -49,11 +49,13 @@ public class PlayerMagicAttacker : NetworkBehaviour
     {
         if (!isLocalPlayer) return;
         var magic_type = player_magic_manager_.MagicType;
-        if (magic_type == -1) return;
-        foreach (var hand in hand_controller_.GetFrame().Hands)
+
+        foreach (var hand in FindObjectsOfType<SkeletalHand>())
         {
-            var strength = hand.GrabStrength;
-            
+            var strength = hand.GetLeapHand().GrabStrength;
+            hand.GetComponentInChildren<Light>().intensity = strength * 8.0f;
+            if (magic_type == -1) continue;
+
             if (1.0f <= strength)
             {
                 magic_action_list_[magic_type]();
