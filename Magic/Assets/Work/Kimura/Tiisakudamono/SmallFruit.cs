@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
 
-
-public class SmallFruit : MonoBehaviour
+public class SmallFruit : NetworkBehaviour
 {
+
+    bool is_attack_ = false;
+    public bool IsAttack { get { return is_attack_; } }
 
     enum IsMagic
     {
@@ -48,15 +51,20 @@ public class SmallFruit : MonoBehaviour
 
     SmokeEffectDestroy[] smoke_effect_destroy_;
 
-    void Awake()
+    GameObject fruit_manager_;
+
+    void Start()
     {
-        
+        if (!isLocalPlayer) return;
+
+        fruit_manager_ = FindObjectOfType<FruitCreater>().gameObject;
+
         effect_time_ = 2.0f;
         elapsed_time_ = MAGIC_TIME;
         ismagic_ = IsMagic.UNUSED_MAGIC;
         start_create_max_ = 100;
         hand_controller_ = GameObject.Find("LeapHandController").GetComponent<HandController>();
-        magic_scale_change_ = GetComponentsInChildren<MagicScaleChange>();
+        magic_scale_change_ = fruit_manager_.GetComponentsInChildren<MagicScaleChange>();
         if (SCALE_CHANGE_TIME >= MAGIC_TIME)
         {
             SCALE_CHANGE_TIME = MAGIC_TIME / 2;
@@ -65,7 +73,8 @@ public class SmallFruit : MonoBehaviour
 
     void Update()
     {
-            SmallChangeMagic();
+        if (!isLocalPlayer) return;
+        SmallChangeMagic();
      
     }
 
@@ -97,6 +106,13 @@ public class SmallFruit : MonoBehaviour
 
             case IsMagic.EffECT_START:
                 {
+                    if (effect_time_ >= 2.0f)
+                    {
+                        GameObject particle_manager_ = GameObject.Find("Ike3ParticleManager");
+                        explosion_effecct = Instantiate(explosion_effect_particle_);
+                        explosion_effecct.transform.SetParent(particle_manager_.transform);
+                        explosion_effecct.name = explosion_effect_particle_.name;
+                    }
                    Vector3 fall = explosion_effecct.transform.position;
                     if (fall.y >= 4.5f)
                     {
@@ -108,7 +124,7 @@ public class SmallFruit : MonoBehaviour
                     if (effect_time_ <= 0)
                     {
                         
-                        magic_scale_change_ = GetComponentsInChildren<MagicScaleChange>();
+                        magic_scale_change_ = fruit_manager_.GetComponentsInChildren<MagicScaleChange>();
                         for (int i = 0; i < magic_scale_change_.Length; ++i)
                         {
 
@@ -143,7 +159,7 @@ public class SmallFruit : MonoBehaviour
 
             case IsMagic.MAGIC_END:
                 {
-                    magic_scale_change_ = GetComponentsInChildren<MagicScaleChange>();
+                    magic_scale_change_ = fruit_manager_.GetComponentsInChildren<MagicScaleChange>();
 
                     for (int i = 0; i < magic_scale_change_.Length; ++i)
                     {
@@ -163,9 +179,28 @@ public class SmallFruit : MonoBehaviour
         }
     }
 
-    public void SmallFruitStart()
+    [Command]
+    void CmdTellServerAttack()
+    {
+        is_attack_ = true;
+    }
+
+    [ClientRpc]
+    public void RpcTellClientSmallFruitStart()
     {
         ismagic_ = IsMagic.EffECT_START;
+    }
+
+    [ClientRpc]
+    public void RpcTellClientStopAttack()
+    {
+        is_attack_ = false;
+    }
+
+    public void SmallFruitStart()
+    {
+        CmdTellServerAttack();
+        is_attack_ = true;
     }
 
 }
