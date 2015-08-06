@@ -11,7 +11,7 @@ public class EventControl : NetworkBehaviour
     GameStartDirector game_start_director_ = null;
 
     [SerializeField, Range(0, 20), Tooltip("イベントの間隔 (短) <---> (長)")]
-    int time_balance_ = 20;
+    int TIME_BALANCE = 20;
 
     //選ばれたイベント
     public enum EventName
@@ -30,20 +30,26 @@ public class EventControl : NetworkBehaviour
         get { return select_event_; }
     }
 
+    bool is_create_durian_boom_ = false;
+
+    public bool IsCreateDurianBoom
+    {
+        get { return is_create_durian_boom_; }
+    }
+
     [ClientRpc]
-    public void RpcSetSelectEvent(EventName value)
+    public void RpcSetSelectEvent(EventName value, bool is_durian_boom)
     {
         select_event_ = value;
+        is_create_durian_boom_ = is_durian_boom;
     }
 
     [Command]
-    void CmdTellServerSelectEvent(EventName value)
+    void CmdTellServerSelectEvent(EventName value, bool is_durian_boom)
     {
         select_event_ = value;
+        is_create_durian_boom_ = is_durian_boom;
     }
-
-    [SerializeField, Tooltip("ドリアンボムの個数")]
-    int durian_bomb_num_ = 1;
 
     //--------------------------------------------------------------------------
 
@@ -52,7 +58,8 @@ public class EventControl : NetworkBehaviour
         if (!isLocalPlayer) return;
         FindComponent();
         if (!isServer) return;
-        select_event_ = (EventName)Random.Range(0, 3);
+        select_event_ = (EventName)Random.Range(0, (int)EventName.EVENT_MAX);
+        is_create_durian_boom_ = MyRandom.RandomBool();
     }
 
     void Update()
@@ -72,12 +79,15 @@ public class EventControl : NetworkBehaviour
         if (time == 60) return;
         if (time <= 0) return;
 
-        if (time % time_balance_ == 0)
+        if (time % TIME_BALANCE == 0)
         {
             switch (select_event_)
             {
                 case EventName.DURIAN_BOMB:
-                    FindObjectOfType<FruitCreater>().DorianCreate();
+                    if (is_create_durian_boom_)
+                    {
+                        FindObjectOfType<FruitCreater>().DorianCreate();
+                    }
                     break;
 
                 case EventName.KUDAMON_BOUND:
@@ -91,9 +101,11 @@ public class EventControl : NetworkBehaviour
             time_ = time;
 
             if (!isServer) return;
-            var select_event = (EventName)Random.Range(0, 3);
+            var select_event = (EventName)Random.Range(0, (int)EventName.EVENT_MAX);
+            var is_durian_boom = MyRandom.RandomBool();
             select_event_ = select_event;
-            CmdTellServerSelectEvent(select_event);
+            is_create_durian_boom_ = is_durian_boom;
+            CmdTellServerSelectEvent(select_event, is_durian_boom);
         }
     }
 
