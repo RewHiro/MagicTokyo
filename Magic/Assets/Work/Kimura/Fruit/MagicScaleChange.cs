@@ -29,7 +29,7 @@ public class MagicScaleChange : MonoBehaviour
                 "y", kudamon_scale_min_,
                 "z", kudamon_scale_min_,
                 "time", small_time_,
-                "easetype", iTween.EaseType.easeOutQuad));
+                "easetype", iTween.EaseType.easeInOutBounce));
         }
         if (ismagic_ == false)
         {
@@ -39,7 +39,7 @@ public class MagicScaleChange : MonoBehaviour
                 "y", kudamon_scale_max_,
                 "z", kudamon_scale_max_,
                 "time", big_time_,
-                "easetype", iTween.EaseType.easeOutQuad));
+                "easetype", iTween.EaseType.easeOutBounce));
             //easeOutBounce
         }
     }

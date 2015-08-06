@@ -7,7 +7,11 @@ public class RushEventer : MonoBehaviour
     bool is_start_ = false;
     public bool IsStart { get { return is_start_; } }
 
+    ParticleSystem game_object_;
+    [SerializeField]
+    ParticleSystem particleSystem_;
 
+    
     void Update()
     {
         if (!is_start_) return;
@@ -20,5 +24,11 @@ public class RushEventer : MonoBehaviour
     {
         is_start_ = true;
         time_ = 0.0f;
+        GameObject nabe_ = GameObject.Find("Pot");
+        GameObject particle_manager_ = GameObject.Find("Ike3ParticleManager");
+        game_object_ = Instantiate(particleSystem_);
+        game_object_.transform.SetParent(particle_manager_.transform);
+        //game_object_.transform.position = nabe_.transform.position;
+        game_object_.name = particleSystem_.name;
     }
 }

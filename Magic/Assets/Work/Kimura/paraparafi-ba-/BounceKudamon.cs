@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class BounceKudamon : MonoBehaviour
 {
@@ -11,8 +12,8 @@ public class BounceKudamon : MonoBehaviour
     }
 
     IsMagic is_magic_;
-    [SerializeField]
-    GameObject moment_decision_;
+
+    Text start_text_;
 
     [SerializeField, Range(1, 60), TooltipAttribute("イベント時間")]
     float EVENT_TIME = 10.0f;
@@ -23,14 +24,23 @@ public class BounceKudamon : MonoBehaviour
 
     float elapsed_time_;
 
+    float START_EVENT_TIME = 3.0f;
+
+    float start_time_;
+
+    Quaternion origin_camera_rotation;
+
+
     ChangeBounce[] changebounce;
     void Awake()
     {
-        //moment_decision_ = GameObject.Find("MomentDecision");
         elapsed_time_ = EVENT_TIME;
-        //moment_decision_.GetComponent<SphereCollider>().enabled = false;
         changebounce = GetComponentsInChildren<ChangeBounce>();
         is_magic_ = IsMagic.UNUSED_MAGIC;
+        origin_camera_rotation = Camera.main.transform.rotation;
+        start_text_ = GameObject.Find("BounceText").GetComponent<Text>();
+        start_text_.enabled = false;
+        start_time_ = START_EVENT_TIME;
     }
 
 
@@ -47,27 +57,59 @@ public class BounceKudamon : MonoBehaviour
 
             case IsMagic.UNUSED_MAGIC:
                 {
-                    if (Input.GetKey(KeyCode.E))
+                    if (Input.GetKeyDown(KeyCode.E))
                     {
                         is_magic_ = IsMagic.MAGIC_START;
-                        //moment_decision_.GetComponent<SphereCollider>().enabled = true;
+                    }
+
+
+
+                    if (is_magic_ == IsMagic.MAGIC_START)
+                    {
+                        start_text_.enabled = true;
+
+                        changebounce = GetComponentsInChildren<ChangeBounce>();
+
+                        for (int i = 0; i < changebounce.Length; ++i)
+                        {
+                            changebounce[i].Bounce(true, BOUNCE_POWER);
+                        }
+
                     }
                 }
                 break;
 
             case IsMagic.MAGIC_START:
                 {
-                    changebounce = GetComponentsInChildren<ChangeBounce>();
-
-                    //moment_decision_.GetComponent<SphereCollider>().enabled = false;
-                    elapsed_time_ -= Time.deltaTime;
-                    for (int i = 0; i < changebounce.Length; ++i)
+                    if (start_time_ >= 0 )
                     {
-                        changebounce[i].Bounce(true,BOUNCE_POWER);
+
+                        start_time_ -= Time.deltaTime;
+                        Quaternion main_camera_rotation = Camera.main.transform.rotation;
+                        float vibration_x = Random.Range(-0.01f, 0.01f);
+                        float vibration_y = Random.Range(-0.01f, 0.01f);
+
+                        main_camera_rotation.x = origin_camera_rotation.x + vibration_x;
+                        main_camera_rotation.y = origin_camera_rotation.y + vibration_y;
+
+                        Camera.main.transform.rotation = main_camera_rotation;
+
                     }
-                    
+
+                    if(start_time_ <= 0)
+                    {
+                        Camera.main.transform.rotation = origin_camera_rotation;
+
+                        start_time_ = 0;
+                        elapsed_time_ -= Time.deltaTime;
+
+                    }
+
+
+                    Debug.Log(elapsed_time_);
                     if (elapsed_time_ <= 0)
                     {
+                        start_time_ = START_EVENT_TIME;
                         is_magic_ = IsMagic.MAGIC_END;
                     }
                 }
@@ -76,6 +118,7 @@ public class BounceKudamon : MonoBehaviour
             case IsMagic.MAGIC_END:
                 {
                     changebounce = GetComponentsInChildren<ChangeBounce>();
+                    start_text_.enabled = false;
 
                     for (int i = 0; i < changebounce.Length; ++i)
                     {
@@ -91,5 +134,7 @@ public class BounceKudamon : MonoBehaviour
     public void Starter()
     {
         is_magic_ = IsMagic.MAGIC_START;
+        
+
     }
 }
