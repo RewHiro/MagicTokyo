@@ -20,13 +20,17 @@ public class Ike3TyhoonEffectHalo : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         MoveHalo();
-	}
+        Destroy();
+    }
 
     void MoveHalo()
     {
         move_speed_ += 0.01f;
-        transform.position += move_value_ * move_speed_;
+        transform.position += move_value_ * move_speed_;      
+    }
 
+    void Destroy()
+    {
         if (drain_pos_.y > transform.position.y)
         {
             Destroy(gameObject);

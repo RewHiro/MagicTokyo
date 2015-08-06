@@ -11,4 +11,10 @@ public class ScoreSaver : MonoBehaviour
     {
         DontDestroyOnLoad(this);
     }
+
+    void Update()
+    {
+        if (Application.loadedLevelName != "title") return;
+        Destroy(this);
+    }
 }

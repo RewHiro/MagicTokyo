@@ -11,13 +11,24 @@ public class GameEndDirector : NetworkBehaviour
     public bool IsStart { get { return is_start_; } }
 
     const int FRUIT_NUM_ANNOUNCE_TIME = 2;
-    const int CHANGE_SCENE_TIME = 4;
+    const int CHANGE_SCENE_TIME = 2;
 
+
+    Text text_ = null;
+
+    void Start()
+    {
+        text_ = GameObject.Find("EndText").GetComponent<Text>();
+    }
 
     void Update()
     {
         if (!isLocalPlayer) return;
         if (!is_start_) return;
+        if (count_ == 0.0f)
+        {
+            text_.enabled = true;
+        }
         count_ += Time.deltaTime;
 
         if (FRUIT_NUM_ANNOUNCE_TIME == (int)count_)
@@ -46,8 +57,8 @@ public class GameEndDirector : NetworkBehaviour
             result = "lose";
         }
         FindObjectOfType<ScoreSaver>().FruitNum = local_fruit_num;
-        Application.LoadLevel(result);
         NetworkManager.singleton.StopHost();
+        Application.LoadLevel(result);
     }
 
     [ClientRpc]

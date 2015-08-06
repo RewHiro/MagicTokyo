@@ -59,7 +59,7 @@ public class MyNetworkManager : NetworkManager
                 result = "lose";
             }
             FindObjectOfType<ScoreSaver>().FruitNum = local_fruit_num;
+            Application.LoadLevel(result);
         }
-        Application.LoadLevel(result);
     }
 }

@@ -31,6 +31,13 @@ public class Ike3Typhoon : MonoBehaviour
         CreateEffectCube();
     }
 
+    void OnTriggerEnter(Collider other)
+    {
+        ChangeKudamonVelocity(other);
+    }
+
+    /////////////////////////////////////////////////////////////////
+
     void Init()
     {
         var setting = GameObject.Find("Ike3TyphoonSetting")
@@ -50,6 +57,8 @@ public class Ike3Typhoon : MonoBehaviour
         Vector3 offset = new Vector3(0.0f, y, 0.0f);
         drain_pos_ = transform.position + offset;
     }
+
+    /////////////////////////////////////////////////////////////////
 
     void LimitTimeUpdate()
     {
@@ -93,7 +102,10 @@ public class Ike3Typhoon : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    /////////////////////////////////////////////////////////////////
+
+    // OnTriggerEnter
+    void ChangeKudamonVelocity(Collider other)
     {
         var kudamon = GameObject.Find(fruit_manager_name_);
         if (kudamon != null)
@@ -109,7 +121,7 @@ public class Ike3Typhoon : MonoBehaviour
                     drain_pos_ - other.transform.position;
 
                 //other.GetComponent<Rigidbody>().velocity += from_kudamon_pot * power_;
-                
+
                 other.GetComponent<Rigidbody>().velocity /= 5.0f;
                 other.GetComponent<Rigidbody>().velocity += from_kudamon_pot * power_;
 
