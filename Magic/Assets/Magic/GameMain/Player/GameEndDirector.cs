@@ -27,6 +27,10 @@ public class GameEndDirector : NetworkBehaviour
         if (!is_start_) return;
         if (count_ == 0.0f)
         {
+            foreach (var durian in FindObjectsOfType<Ike3dorian>())
+            {
+                durian.ExplodeForcibly();
+            }
             text_.enabled = true;
         }
         count_ += Time.deltaTime;

@@ -86,7 +86,6 @@ public class Ike3dorian : MonoBehaviour {
 
     void DorianExplosion()
     {
-        explosion_count_++;
         if (explosion_count_ == explosion_limit_time_)
         {
             transform.localScale = Vector3.one * explosion_size_;
@@ -106,5 +105,11 @@ public class Ike3dorian : MonoBehaviour {
         {
             Destroy(gameObject);
         }
+        explosion_count_++;
+    }
+
+    public void ExplodeForcibly()
+    {
+        explosion_count_ = explosion_limit_time_;
     }
 }

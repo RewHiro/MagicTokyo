@@ -9,6 +9,7 @@ public class FruitCounter : NetworkBehaviour
     GameObject apple_manager_ = null;
     GameObject lemon_manager_ = null;
     GameObject peach_manager_ = null;
+    GameObject egg_plant_manager_ = null;
 
     int fruit_count_ = 0;
     public int FruitNum { get { return fruit_count_; } }
@@ -22,6 +23,7 @@ public class FruitCounter : NetworkBehaviour
         apple_manager_ = GameObject.Find("AppleManager");
         lemon_manager_ = GameObject.Find("LemonManager");
         peach_manager_ = GameObject.Find("PeachManager");
+        egg_plant_manager_ = GameObject.Find("EggPlantManager");
     }
 
     void Update()
@@ -31,6 +33,7 @@ public class FruitCounter : NetworkBehaviour
         var count = apple_manager_.transform.childCount;
         count += lemon_manager_.transform.childCount;
         count += peach_manager_.transform.childCount;
+        count += egg_plant_manager_.transform.childCount;
 
         if (count == fruit_count_) return;
         
