@@ -30,6 +30,8 @@ public class TuboInDestroy : MonoBehaviour
 
     RushEventer rush_eventer_ = null;
 
+    BoxCollider lid_;
+
     //-----------------------------------------------------------------
 
     //それぞれのくだモンの鍋に入った(消した)数のゲッター
@@ -46,26 +48,22 @@ public class TuboInDestroy : MonoBehaviour
     void Start()
     {
         rush_eventer_ = FindObjectOfType<RushEventer>();
+        lid_ = GameObject.Find("Lid").GetComponent<BoxCollider>();
     }
 
     public void Update()
     {
         //蓋のコライダーを作る
-        var lid = new GameObject();
-        if (GetKudamonCount() == 10)
+        if (GetKudamonCount() >= 10)
         {
-            lid.transform.position = new Vector3(0, 3, 2.5f);
-            lid.transform.rotation = new Quaternion(-20, 0, 0, 0.0f);
-            lid.transform.localScale = new Vector3(2, 0.1f, 2);
-
-            lid.gameObject.AddComponent<BoxCollider>();
+            lid_.isTrigger = false;
         }
 
         //ジェスチャーしたらコライダーを消す
-        //条件にサークルのジェスチャーを取得して入れれば行けるはず
+        // TODO : 条件を[サークルのジェスチャーを取得]に変える
         if (true)
         {
-            GameObject.Destroy(lid);
+            lid_.isTrigger = true;
         }
 
         RushEvent();
