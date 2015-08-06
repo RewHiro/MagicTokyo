@@ -48,7 +48,7 @@ public class GameEndDirector : NetworkBehaviour
         {
             result = "draw";
         }
-        else if (local_fruit_num > remote_fruit_num)
+        else if (local_fruit_num < remote_fruit_num)
         {
             result = "win";
         }

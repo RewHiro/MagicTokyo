@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
 public class ResultTest : MonoBehaviour
 {
@@ -15,11 +16,17 @@ public class ResultTest : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Application.LoadLevel("title");
+            ChangeTitle();
         }
 
         count_ +=Time.deltaTime;
         if (count_ < 10) return;
+        ChangeTitle();
+    }
+
+    private void ChangeTitle()
+    {
         Application.LoadLevel("title");
+        NetworkManager.singleton.StopServer();
     }
 }
