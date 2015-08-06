@@ -4,24 +4,21 @@ using System.Collections;
 public class PeachChange : MonoBehaviour
 {
 
-    JyamamonDestroy[] jyamamondestroy_;
-    FruitCreater fruit_creater_;
-
     [SerializeField]
     ParticleSystem particleSystem = null;
 
+    JyamamonDestroy[] jyamamondestroy_;
+    SmokeEffectDestroy[] smoke_effect_destroy_;
+    JyamamonChangePos[] change_numder_;
+
+    FruitCreater fruit_creater_;
     ParticleSystem game_object;
 
-    SmokeEffectDestroy[] smoke_effect_destroy_;
-
-    int creater_num_;
-    JyamamonChangePos[] change_numder_;
+    const int creater_num_ = 1;
 
     void Awake()
     {
         fruit_creater_ = GameObject.Find("FruitManager").GetComponent<FruitCreater>();
-
-        creater_num_ = 1;
     }
 
     void Start()
@@ -32,7 +29,7 @@ public class PeachChange : MonoBehaviour
 
     void Update()
     {
-        Change();
+//        Change();
     }
 
     void Change()
