@@ -30,10 +30,10 @@ public class EventControl : NetworkBehaviour
     [ClientRpc]
     public void RpcSetSelectEventRemote(EventName value)
     {
-        var time = time_limitter_.LimitCount;
-        if (time_ == time) return;
 
         select_event_ = value;
+        if (select_event_ == value) return;
+
         switch (select_event_)
         {
             case EventName.DURIAN_BOMB:
@@ -53,10 +53,10 @@ public class EventControl : NetworkBehaviour
     [ClientRpc]
     public void RpcSetSelectEventLocal(EventName value)
     {
-        var time = time_limitter_.LimitCount;
-        if (time_ == time) return;
 
         select_event_ = value;
+        if (select_event_ == value) return;
+
         switch (select_event_)
         {
             case EventName.DURIAN_BOMB:
