@@ -52,10 +52,16 @@ public class PlayerMagicAttacker : NetworkBehaviour
 
         foreach (var hand in FindObjectsOfType<SkeletalHand>())
         {
-            var strength = hand.GetLeapHand().GrabStrength;
-            hand.GetComponentInChildren<Light>().intensity = strength * 8.0f;
-            if (magic_type == -1) continue;
+            var light = hand.GetComponentInChildren<Light>();
+            if (magic_type == -1)
+            {
+                light.intensity -= Time.deltaTime * 4;
+                continue;
+            }
 
+            var strength = hand.GetLeapHand().GrabStrength;
+            light.intensity = strength * 8.0f;
+            
             if (1.0f <= strength)
             {
                 magic_action_list_[magic_type]();
