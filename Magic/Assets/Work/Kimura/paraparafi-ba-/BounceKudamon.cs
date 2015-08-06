@@ -81,6 +81,18 @@ public class BounceKudamon : MonoBehaviour
 
             case IsMagic.MAGIC_START:
                 {
+                    if (start_time_ >= 3.0f)
+                    {
+                        start_text_.enabled = true;
+
+                        changebounce = GetComponentsInChildren<ChangeBounce>();
+
+                        for (int i = 0; i < changebounce.Length; ++i)
+                        {
+                            changebounce[i].Bounce(true, BOUNCE_POWER);
+                        }
+                    }
+
                     if (start_time_ >= 0 )
                     {
 
