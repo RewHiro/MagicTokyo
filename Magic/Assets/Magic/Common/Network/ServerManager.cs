@@ -95,6 +95,11 @@ public class ServerManager : NetworkBehaviour
         var remote_player_event
             = remote_player_.GetComponent<EventControl>();
 
+        var local_player_small_fruit
+            = local_player_.GetComponent<SmallFruit>();
+        var remote_player_small_fruit
+            = remote_player_.GetComponent<SmallFruit>();
+
         local_player_damage.RpcTellClientDamage(
             remote_player_attacker.IsAttack,
             remote_player_attacker.AppleNum * LOCAL_APPLE_MULTIPLE,
@@ -142,6 +147,19 @@ public class ServerManager : NetworkBehaviour
             local_player_dorian_boom_damage.IsDamage);
 
         remote_player_event.RpcSetSelectEvent(local_player_event.SelectEvent, !local_player_event.IsCreateDurianBoom);
+
+        if (local_player_small_fruit.IsAttack)
+        {
+            remote_player_small_fruit.RpcTellClientSmallFruitStart();
+            local_player_small_fruit.RpcTellClientStopAttack();
+        }
+
+        if (remote_player_small_fruit.IsAttack)
+        {
+            local_player_small_fruit.RpcTellClientSmallFruitStart();
+            remote_player_small_fruit.RpcTellClientStopAttack();
+        }
+
     }
 
     void PlayerFind()
