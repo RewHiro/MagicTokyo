@@ -21,57 +21,25 @@ public class EventControl : NetworkBehaviour
         KUDAMON_RUSH,       //鍋MAX
         EVENT_MAX,
     }
+
+    [SyncVar]
     EventName select_event_ = EventName.EVENT_MAX;
+
     public EventName SelectEvent
     {
         get { return select_event_; }
     }
 
     [ClientRpc]
-    public void RpcSetSelectEventRemote(EventName value)
+    public void RpcSetSelectEvent(EventName value)
     {
-
         select_event_ = value;
-        if (select_event_ == value) return;
-
-        switch (select_event_)
-        {
-            case EventName.DURIAN_BOMB:
-                FindObjectOfType<FruitCreater>().DorianCreate();
-                break;
-
-            case EventName.KUDAMON_BOUND:
-                FindObjectOfType<BounceKudamon>().Starter();
-                break;
-
-            case EventName.KUDAMON_RUSH:
-                GetComponent<RushEventer>().StartEvent();
-                break;
-        }
     }
 
-    [ClientRpc]
-    public void RpcSetSelectEventLocal(EventName value)
+    [Command]
+    void CmdTellServerSelectEvent(EventName value)
     {
-
         select_event_ = value;
-        if (select_event_ == value) return;
-
-        switch (select_event_)
-        {
-            case EventName.DURIAN_BOMB:
-                FindObjectOfType<FruitCreater>().DorianCreate();
-                break;
-
-            case EventName.KUDAMON_BOUND:
-                FindObjectOfType<BounceKudamon>().Starter();
-                break;
-
-            case EventName.KUDAMON_RUSH:
-                GetComponent<RushEventer>().StartEvent();
-                break;
-        }
-
     }
 
     [SerializeField, Tooltip("ドリアンボムの個数")]
@@ -81,31 +49,51 @@ public class EventControl : NetworkBehaviour
 
     void Start()
     {
-
+        if (!isLocalPlayer) return;
+        FindComponent();
+        if (!isServer) return;
+        select_event_ = (EventName)Random.Range(0, 3);
     }
 
     void Update()
     {
-
+        if (!isLocalPlayer) return;
+        RandEvent();
     }
 
-    public void RandEvent()
+    void RandEvent()
     {
-        //if (!isLocalPlayer) return;
-        FindComponent();
         if (time_limitter_ == null) return;
 
         if (!game_start_director_.IsStart) return;
         var time = time_limitter_.LimitCount;
-        if (time_ == time) return;
 
-        if (time_ == 60) return;
-        if (time_ <= 0) return;
+        if (time_ == time) return;
+        if (time == 60) return;
+        if (time <= 0) return;
 
         if (time % time_balance_ == 0)
         {
-            select_event_ = (EventName)Random.Range(0, 2);
+            switch (select_event_)
+            {
+                case EventName.DURIAN_BOMB:
+                    FindObjectOfType<FruitCreater>().DorianCreate();
+                    break;
+
+                case EventName.KUDAMON_BOUND:
+                    FindObjectOfType<BounceKudamon>().Starter();
+                    break;
+
+                case EventName.KUDAMON_RUSH:
+                    FindObjectOfType<RushEventer>().StartEvent();
+                    break;
+            }
             time_ = time;
+
+            if (!isServer) return;
+            var select_event = (EventName)Random.Range(0, 3);
+            select_event_ = select_event;
+            CmdTellServerSelectEvent(select_event);
         }
     }
 
