@@ -59,10 +59,10 @@ public class PlayerMagicAttacker : NetworkBehaviour
                 continue;
             }
 
-            var strength = hand.GetLeapHand().GrabStrength;
-            light.intensity = strength * 8.0f;
+            var pinch = hand.GetLeapHand().PinchStrength;
+            light.intensity = pinch * 8.0f;
             
-            if (1.0f <= strength)
+            if (1.0f <= pinch)
             {
                 magic_action_list_[magic_type]();
                 player_magic_manager_.MagicExecute();
