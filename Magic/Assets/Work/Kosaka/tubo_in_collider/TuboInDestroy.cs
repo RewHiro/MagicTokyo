@@ -30,7 +30,8 @@ public class TuboInDestroy : MonoBehaviour
 
     RushEventer rush_eventer_ = null;
 
-    BoxCollider lid_;
+    Collider lid_collider_;
+    Renderer lid_renderer_;
 
     //-----------------------------------------------------------------
 
@@ -45,25 +46,37 @@ public class TuboInDestroy : MonoBehaviour
     }
     public bool IsInDorain { get { return is_in_dorian_; } }
 
-    void Start()
+    //---------------------------------------------------------------------
+
+    void Awake()
     {
         rush_eventer_ = FindObjectOfType<RushEventer>();
-        lid_ = GameObject.Find("Lid").GetComponent<BoxCollider>();
+
+        lid_collider_ = GameObject.Find("Lid").GetComponent<Collider>();
+        lid_renderer_ = GameObject.Find("Lid").GetComponent<Renderer>();
     }
 
-    public void Update()
+    void Start()
+    {
+        lid_collider_.isTrigger = true;
+        lid_renderer_.enabled = false;
+    }
+
+    void Update()
     {
         //蓋のコライダーを作る
         if (GetKudamonCount() >= 10)
         {
-            lid_.isTrigger = false;
+            lid_collider_.isTrigger = true;
+            lid_renderer_.enabled = false;
         }
 
         //ジェスチャーしたらコライダーを消す
         // TODO : 条件を[サークルのジェスチャーを取得]に変える
-        if (true)
+        if (0 == 1)
         {
-            lid_.isTrigger = true;
+            lid_collider_.isTrigger = false;
+            lid_renderer_.enabled = true;
         }
 
         RushEvent();
@@ -103,6 +116,8 @@ public class TuboInDestroy : MonoBehaviour
             is_in_dorian_ = true;
         }
     }
+
+    //---------------------------------------------------------------------
 
     void RushEvent()
     {
