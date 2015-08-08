@@ -61,7 +61,7 @@ public class GameEndDirector : NetworkBehaviour
             result = "lose";
         }
         FindObjectOfType<ScoreSaver>().FruitNum = local_fruit_num;
-        NetworkManager.singleton.StopHost();
+        MyNetworkLobbyManager.s_singleton.StopHost();
         Application.LoadLevel(result);
     }
 
