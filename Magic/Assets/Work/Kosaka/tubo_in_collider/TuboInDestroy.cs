@@ -125,7 +125,7 @@ public class TuboInDestroy : MonoBehaviour
         }
         else if (other.name == DORIANBOM_NAME)
         {
-            if (!other.gameObject.GetComponent<Ike3dorian>().IsExplosion) return;
+            if (other.gameObject.GetComponent<Ike3dorian>().IsExplosion) return;
             Destroy(other.gameObject);
             is_in_dorian_ = true;
         }
