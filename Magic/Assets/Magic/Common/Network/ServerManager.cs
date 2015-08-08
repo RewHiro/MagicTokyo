@@ -38,7 +38,7 @@ public class ServerManager : NetworkBehaviour
         if (!isServer) return;
         PlayerFind();
 
-        if (local_player_ == null) return;
+        if (remote_player_ == null) return;
         ClientUpdate();
 
         if (!local_player_.GetComponent<GameStartDirector>().IsStart) return;
@@ -166,7 +166,7 @@ public class ServerManager : NetworkBehaviour
 
     void PlayerFind()
     {
-        if (local_player_ != null) return;
+        if (remote_player_ != null) return;
         if (NetworkManager.singleton.numPlayers != READY_PLAYER_NUM) return;
 
         var players = GameObject.FindObjectsOfType<PlayerSetting>();
