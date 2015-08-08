@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-
 public class TuboInDestroy : MonoBehaviour
 {
     [SerializeField, Tooltip("鍋に入ってから消えるまでの時間(単位：秒)")]
@@ -33,6 +32,9 @@ public class TuboInDestroy : MonoBehaviour
     Collider lid_collider_;
     Renderer lid_renderer_;
 
+    PlayerAttacker player_attacker_ = null;
+    GameStartDirector game_start_director_ = null;
+
     //-----------------------------------------------------------------
 
     //それぞれのくだモンの鍋に入った(消した)数のゲッター
@@ -58,8 +60,15 @@ public class TuboInDestroy : MonoBehaviour
 
     void Start()
     {
-        lid_collider_.isTrigger = true;
-        lid_renderer_.enabled = false;
+        lid_collider_.isTrigger = false;
+        lid_renderer_.enabled = true;
+
+        foreach (var player in FindObjectsOfType<PlayerAttacker>())
+        {
+            if (!player.isLocalPlayer) continue;
+            player_attacker_ = player;
+            game_start_director_ = player.GetComponent<GameStartDirector>();
+        }
     }
 
     void Update()
@@ -71,9 +80,16 @@ public class TuboInDestroy : MonoBehaviour
             lid_renderer_.enabled = false;
         }
 
+        //ゲームが始まったら蓋をはずす
+        if (game_start_director_.IsStart)
+        {
+            lid_collider_.isTrigger = false;
+            lid_renderer_.enabled = true;
+        }
+
         //ジェスチャーしたらコライダーを消す
         // TODO : 条件を[サークルのジェスチャーを取得]に変える
-        if (0 == 1)
+        if (player_attacker_.IsAttack)
         {
             lid_collider_.isTrigger = false;
             lid_renderer_.enabled = true;
