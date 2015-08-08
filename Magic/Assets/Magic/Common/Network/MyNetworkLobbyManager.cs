@@ -58,7 +58,10 @@ public class MyNetworkLobbyManager : NetworkLobbyManager
             {
                 result = "lose";
             }
-            FindObjectOfType<ScoreSaver>().FruitNum = local_fruit_num;
+            var scoresaver = FindObjectOfType<ScoreSaver>();
+            scoresaver.FruitNum = local_fruit_num;
+            scoresaver.RemoteFruitNum = remote_fruit_num;
+            scoresaver.Is1P = false;
             MyNetworkLobbyManager.s_singleton.StopClient();
             Application.LoadLevel(result);
         }
