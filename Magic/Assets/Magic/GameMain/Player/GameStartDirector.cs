@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class GameStartDirector : NetworkBehaviour
 {
 
-    enum State
+    public enum State
     {
         CONNECT,
         READY,
@@ -26,20 +26,21 @@ public class GameStartDirector : NetworkBehaviour
     void Start()
     {
         text_ = GameObject.Find("StartText").GetComponent<Text>();
+        CmdTellServerStart(state_);
     }
 
     void Update()
     {
         if (!isLocalPlayer) return;
+        CmdTellServerStart(state_);
         if (state_ != State.READY) return;
-
         ChangeText();
         count_ += -Time.deltaTime;
 
         if (count_ > 0) return;
 
         state_ = State.START;
-        CmdTellServerStart();
+        CmdTellServerStart(State.START);
         text_.enabled = false;
     }
 
@@ -58,8 +59,8 @@ public class GameStartDirector : NetworkBehaviour
     }
 
     [Command]
-    public void CmdTellServerStart()
+    public void CmdTellServerStart(State state)
     {
-        state_ = State.START;
+        state_ = state;
     }
 }
