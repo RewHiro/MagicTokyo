@@ -18,10 +18,9 @@ public class GaugeController : MonoBehaviour {
     l_bar_ = GameObject.Find("Left");
     r_bar_ = GameObject.Find("Right");
 
-    foreach (var player in FindObjectsOfType<PlayerSetting>())
-    {
-        if (!player.isLocalPlayer) continue;
-        player_ = player;
+    foreach (var player in FindObjectsOfType<PlayerSetting>()) {
+      if (!player.isLocalPlayer) continue;
+      player_ = player;
     }
 
     var l_render = l_bar_.GetComponent<SpriteRenderer>();
@@ -34,17 +33,20 @@ public class GaugeController : MonoBehaviour {
   void Update() {
     if (!IsRefFruitCounter()) { return; }
 
-    float all_num = (float)(fruit_.FruitNum + fruit_.RemoteFruitNum);
+    owner_ = fruit_.FruitNum / (float)fruit_.RemoteFruitNum;
+    enemy_ = fruit_.RemoteFruitNum / (float)fruit_.FruitNum;
 
-    owner_ = fruit_.FruitNum / all_num;
-    enemy_ = fruit_.RemoteFruitNum / all_num;
-
-    l_bar_.transform.localScale *= owner_;
-    r_bar_.transform.localScale *= enemy_;
+    FixGaugeLength(l_bar_.transform, owner_);
+    FixGaugeLength(r_bar_.transform, enemy_);
   }
 
   bool IsRefFruitCounter() {
     if (fruit_ == null) { fruit_ = player_.GetComponent<FruitCounter>(); }
     return fruit_ != null;
+  }
+
+  void FixGaugeLength(Transform gauge, float scaleRatio) {
+    var gaugeScale = new Vector3(3.5f * scaleRatio, 1.0f, 1.0f);
+    gauge.localScale = gaugeScale;
   }
 }
