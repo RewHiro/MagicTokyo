@@ -19,6 +19,9 @@ public class Ike3dorian : MonoBehaviour {
 
     private const int NEXT_FRAME = 1;
 
+    private bool is_explosion_ = false;
+    public bool IsExplosion { get { return is_explosion_; } }
+
     [SerializeField
     ,TooltipAttribute("ここに「FruitManager」prefabを入れてください\n(プログラマー用)")]
     private GameObject fruit_manager_;
@@ -88,6 +91,7 @@ public class Ike3dorian : MonoBehaviour {
     {
         if (explosion_count_ == explosion_limit_time_)
         {
+            is_explosion_ = true;
             transform.localScale = Vector3.one * explosion_size_;
             var create = GameObject.Find(fruit_manager_.name).GetComponent<FruitCreater>();
             create.AppleCreate(apple_num_);

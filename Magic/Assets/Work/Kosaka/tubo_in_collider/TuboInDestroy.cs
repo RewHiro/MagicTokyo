@@ -25,7 +25,7 @@ public class TuboInDestroy : MonoBehaviour
     const string MOMON_NAME = "momon";
 
     const string JAMAMON_NAME = "jamamon";
-    const string DORIANBOM_NAME = "dorianbom_red";
+    const string DORIANBOM_NAME = "dorianbomb_red";
 
     RushEventer rush_eventer_ = null;
 
@@ -60,31 +60,28 @@ public class TuboInDestroy : MonoBehaviour
 
     void Start()
     {
-        lid_collider_.isTrigger = false;
+        lid_collider_.isTrigger = true;
         lid_renderer_.enabled = true;
-
-        foreach (var player in FindObjectsOfType<PlayerAttacker>())
-        {
-            if (!player.isLocalPlayer) continue;
-            player_attacker_ = player;
-            game_start_director_ = player.GetComponent<GameStartDirector>();
-        }
     }
 
     void Update()
     {
+
+        FindPlayer();
+        if (game_start_director_ == null) return;
+
         //蓋のコライダーを作る
         if (GetKudamonCount() >= 10)
         {
             lid_collider_.isTrigger = true;
-            lid_renderer_.enabled = false;
+            lid_renderer_.enabled = true;
         }
 
         //ゲームが始まったら蓋をはずす
         if (game_start_director_.IsStart)
         {
             lid_collider_.isTrigger = false;
-            lid_renderer_.enabled = true;
+            lid_renderer_.enabled = false;
         }
 
         //ジェスチャーしたらコライダーを消す
@@ -92,7 +89,7 @@ public class TuboInDestroy : MonoBehaviour
         if (player_attacker_.IsAttack)
         {
             lid_collider_.isTrigger = false;
-            lid_renderer_.enabled = true;
+            lid_renderer_.enabled = false;
         }
 
         RushEvent();
@@ -128,6 +125,7 @@ public class TuboInDestroy : MonoBehaviour
         }
         else if (other.name == DORIANBOM_NAME)
         {
+            if (!other.gameObject.GetComponent<Ike3dorian>().IsExplosion) return;
             Destroy(other.gameObject);
             is_in_dorian_ = true;
         }
@@ -178,5 +176,16 @@ public class TuboInDestroy : MonoBehaviour
         }
         lemon_count_ = 0;
         apumon_count_ = 0;
+    }
+
+    void FindPlayer()
+    {
+        if (game_start_director_ != null) return;
+        foreach (var player in FindObjectsOfType<PlayerAttacker>())
+        {
+            if (!player.isLocalPlayer) continue;
+            player_attacker_ = player;
+            game_start_director_ = player.gameObject.GetComponent<GameStartDirector>();
+        }
     }
 }
