@@ -33,9 +33,9 @@ public class GaugeController : MonoBehaviour {
   void Update() {
     if (!IsRefFruitCounter()) { return; }
 
-    owner_ = fruit_.FruitNum / (float)fruit_.RemoteFruitNum;
-    enemy_ = fruit_.RemoteFruitNum / (float)fruit_.FruitNum;
-
+    owner_ = CalculateGaugeRatio(fruit_.FruitNum, fruit_.RemoteFruitNum);
+    enemy_ = CalculateGaugeRatio(fruit_.RemoteFruitNum, fruit_.FruitNum);
+    
     FixGaugeLength(l_bar_.transform, owner_);
     FixGaugeLength(r_bar_.transform, enemy_);
   }
@@ -48,5 +48,9 @@ public class GaugeController : MonoBehaviour {
   void FixGaugeLength(Transform gauge, float scaleRatio) {
     var gaugeScale = new Vector3(3.5f * scaleRatio, 1.0f, 1.0f);
     gauge.localScale = gaugeScale;
+  }
+
+  float CalculateGaugeRatio(float ownerNum, float enemyNum) {
+    return (ownerNum != 0.0f && enemyNum != 0.0f) ? ownerNum / enemyNum : 0.0f;
   }
 }

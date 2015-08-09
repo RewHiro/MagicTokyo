@@ -3,18 +3,18 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class SpriteManager : MonoBehaviour {
+public class ItemSpriteManager : MonoBehaviour {
 
-  [SerializeField, TooltipAttribute("スロット演出時間の長さ（単位：秒）")]
+  [SerializeField, Tooltip("スロット演出時間の長さ（単位：秒）")]
   float ROULETTE_TIME = 1.0f;
   int roulette_counter_ = 0;
   int blink_timer_ = 0;
 
-  [SerializeField, Range(1, 5), TooltipAttribute("画像切り替えの速度（1:早い, 5:遅い）")]
+  [SerializeField, Range(1, 5), Tooltip("画像切り替えの速度（1:早い, 5:遅い）")]
   int ROULETTE_SPEED = 2;
   int roulette_reel_ = 0;
 
-  [SerializeField, TooltipAttribute("スロットに使う魔法アイコンの一覧")]
+  [SerializeField, Tooltip("スロットに使う魔法アイコンの一覧")]
   Sprite[] ICON = null;
   public int IconSize { get { return ICON.Length; } }
 
@@ -37,7 +37,7 @@ public class SpriteManager : MonoBehaviour {
       MagicAction();
     }
 
-    if (blink_timer_ > 0) { SlotBlink(); }
+    if (IsSlotBlink()) { SlotBlink(); }
     if (!SlotTrigger) { return; }
 
     ++roulette_counter_;
@@ -72,5 +72,9 @@ public class SpriteManager : MonoBehaviour {
 
   public void MagicAction() {
     sprite_.sprite = null;
+  }
+
+  public bool IsSlotBlink() {
+    return blink_timer_ > 0;
   }
 }
