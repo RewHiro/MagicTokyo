@@ -60,7 +60,7 @@ public class TuboInDestroy : MonoBehaviour
 
     void Start()
     {
-        lid_collider_.isTrigger = true;
+        lid_collider_.isTrigger = false;
         lid_renderer_.enabled = true;
     }
 
@@ -73,14 +73,14 @@ public class TuboInDestroy : MonoBehaviour
         //蓋のコライダーを作る
         if (GetKudamonCount() >= 10)
         {
-            lid_collider_.isTrigger = true;
+            lid_collider_.isTrigger = false;
             lid_renderer_.enabled = true;
         }
 
         //ゲームが始まったら蓋をはずす
         if (game_start_director_.IsStart)
         {
-            lid_collider_.isTrigger = false;
+            lid_collider_.isTrigger = true;
             lid_renderer_.enabled = false;
         }
 
@@ -88,7 +88,7 @@ public class TuboInDestroy : MonoBehaviour
         // TODO : 条件を[サークルのジェスチャーを取得]に変える
         if (player_attacker_.IsAttack)
         {
-            lid_collider_.isTrigger = false;
+            lid_collider_.isTrigger = true;
             lid_renderer_.enabled = false;
         }
 
@@ -125,7 +125,7 @@ public class TuboInDestroy : MonoBehaviour
         }
         else if (other.name == DORIANBOM_NAME)
         {
-            if (!other.gameObject.GetComponent<Ike3dorian>().IsExplosion) return;
+            if (other.gameObject.GetComponent<Ike3dorian>().IsExplosion) return;
             Destroy(other.gameObject);
             is_in_dorian_ = true;
         }

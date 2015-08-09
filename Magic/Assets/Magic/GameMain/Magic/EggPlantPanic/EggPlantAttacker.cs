@@ -10,6 +10,9 @@ public class EggPlantAttacker : NetworkBehaviour
     int egg_plant_num_ = 0;
     public int EggPlantNum { get { return egg_plant_num_; } }
 
+    const float MAGIC_TIME = 0.5f;
+    public float GetMagicTime { get { return MAGIC_TIME; } }
+
     bool is_remote_damage_ = false;
 
     void Update()
@@ -28,7 +31,7 @@ public class EggPlantAttacker : NetworkBehaviour
     }
 
     [Command]
-    void CmdTellServerAttack(bool is_attack,int egg_plant_num)
+    void CmdTellServerAttack(bool is_attack, int egg_plant_num)
     {
         is_attack_ = is_attack;
         egg_plant_num_ = egg_plant_num;

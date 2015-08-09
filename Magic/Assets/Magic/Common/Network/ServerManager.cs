@@ -55,6 +55,12 @@ public class ServerManager : NetworkBehaviour
 
     void ClientUpdate()
     {
+        if (remote_player_.GetComponent<GameStartDirector>().IsConnect)
+        {
+            local_player_.GetComponent<GameStartDirector>().RpcTellClientReady();
+            remote_player_.GetComponent<GameStartDirector>().RpcTellClientReady();
+        }
+
         var local_player_damage
             = local_player_.GetComponent<PlayerDamage>();
         var remote_player_damage
@@ -167,7 +173,6 @@ public class ServerManager : NetworkBehaviour
     void PlayerFind()
     {
         if (remote_player_ != null) return;
-        if (NetworkManager.singleton.numPlayers != READY_PLAYER_NUM) return;
 
         var players = GameObject.FindObjectsOfType<PlayerSetting>();
         foreach(var player in players)
@@ -181,8 +186,5 @@ public class ServerManager : NetworkBehaviour
                 remote_player_ = player.gameObject;
             }
         }
-
-        local_player_.GetComponent<GameStartDirector>().RpcTellClientReady();
-        remote_player_.GetComponent<GameStartDirector>().RpcTellClientReady();
     }
 }
