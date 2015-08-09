@@ -16,6 +16,10 @@ public class MyNetworkLobbyManager : NetworkLobbyManager
     void Start()
     {
         s_singleton = this;
+        var textAsset = Resources.Load("connect") as TextAsset;
+        JsonNode json = JsonNode.Parse(textAsset.text);
+        string ip = json["IP"].Get<string>();
+        MyNetworkLobbyManager.singleton.networkAddress = ip;
     }
 
     public void GameStart()
