@@ -27,10 +27,10 @@ public class PlayerMagicManager : NetworkBehaviour {
     MAGIC_COOL_TIME = new float[magic_num];
 
     // FIXME: それぞれ発動中の長さが取得できないものは、仮の値を使用
-    MAGIC_COOL_TIME[0] = FindObjectOfType<Ike3KinesisSetting>().FloatSecond;
-    MAGIC_COOL_TIME[1] = 1.0f;    // おじゃまパニック（仮
-    MAGIC_COOL_TIME[2] = 5.0f;    // チイサクダモノ（仮
-    MAGIC_COOL_TIME[3] = FindObjectOfType<Ike3TyphoonSetting>().LimitTime_;
+    MAGIC_COOL_TIME[0] = FindObjectOfType<Ike3KinesisSetting>().FloatSecond;     // キネシス
+    MAGIC_COOL_TIME[1] = FindObjectOfType<EggPlantAttacker>().GetMagicTime;      // おじゃま
+    MAGIC_COOL_TIME[2] = FindObjectOfType<SmallFruit>().TotalSmallFruitSecond;   // ちいさく
+    MAGIC_COOL_TIME[3] = FindObjectOfType<Ike3TyphoonSetting>().LimitTime_;      // ミキサー
     MAGIC_COOL_TIME[4] = 1.0f;    // モモンチェンジ（仮
   }
 
