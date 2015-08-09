@@ -60,6 +60,7 @@ public class PlayerMagicManager : NetworkBehaviour {
     MagicType = -1;
     sprite_.MagicAction();
     tubo_.ResetMomon();
+    FindObjectOfType<PotGaugeController>().GaugeReset();
   }
 
   bool IsCoolDown() {
