@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-public class GaugeController : MonoBehaviour {
+public class FruitsGaugeController : MonoBehaviour {
 
   PlayerSetting player_ = null;
   FruitCounter fruit_ = null;
@@ -52,5 +52,10 @@ public class GaugeController : MonoBehaviour {
 
   float CalculateGaugeRatio(float ownerNum, float enemyNum) {
     return (ownerNum != 0.0f && enemyNum != 0.0f) ? ownerNum / enemyNum : 0.0f;
+  }
+
+  // 自分が相手よりも負けている
+  public bool IsOwnerLowRatio() {
+    return owner_ < enemy_;
   }
 }

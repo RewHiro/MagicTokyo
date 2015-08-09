@@ -1,7 +1,6 @@
 ﻿
 using UnityEngine;
 using UnityEngine.Networking;
-using System.Collections.Generic;
 
 
 public class PlayerMagicManager : NetworkBehaviour {
@@ -20,11 +19,9 @@ public class PlayerMagicManager : NetworkBehaviour {
   void Start() {
     if (!isLocalPlayer) return;
     MagicType = -1;
-    sprite_ = FindObjectOfType<ItemSpriteManager>();
     tubo_ = FindObjectOfType<TuboInDestroy>();
-
-    var magic_num = FindObjectOfType<ItemSpriteManager>().IconSize;
-    MAGIC_COOL_TIME = new float[magic_num];
+    
+    MAGIC_COOL_TIME = new float[5];
 
     // FIXME: それぞれ発動中の長さが取得できないものは、仮の値を使用
     MAGIC_COOL_TIME[0] = FindObjectOfType<Ike3KinesisSetting>().FloatSecond;     // キネシス
@@ -35,6 +32,8 @@ public class PlayerMagicManager : NetworkBehaviour {
   }
 
   void Update() {
+    if (sprite_ == null) sprite_ = FindObjectOfType<ItemSpriteManager>();
+
     if (IsCoolDown()) { cool_time_ -= Time.deltaTime; return; }
 
     if (!isLocalPlayer) return;
