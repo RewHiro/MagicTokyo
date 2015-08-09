@@ -1,6 +1,7 @@
 ﻿
 using UnityEngine;
 using UnityEngine.Networking;
+using System.Collections.Generic;
 
 
 public class PlayerMagicManager : NetworkBehaviour {
@@ -11,23 +12,32 @@ public class PlayerMagicManager : NetworkBehaviour {
 
   ItemSpriteManager sprite_ = null;
   TuboInDestroy tubo_ = null;
+  
+  float cool_time_ = 0;
+  float[] MAGIC_COOL_TIME = null;
 
-  readonly int FPS = 60;
-  int cool_time_ = 0;
 
-  [SerializeField, Tooltip("魔法発動後、次の魔法が使用可能になるまでの時間（単位：秒）")]
-  int[] MAGIC_COOL_TIME = null;
-
+  void Awake() {
+    var magic_num = FindObjectOfType<ItemSpriteManager>().IconSize;
+    MAGIC_COOL_TIME = new float[magic_num];
+  }
 
   void Start() {
     if (!isLocalPlayer) return;
     MagicType = -1;
     sprite_ = FindObjectOfType<ItemSpriteManager>();
     tubo_ = FindObjectOfType<TuboInDestroy>();
+    
+    // FIXME: それぞれ発動中の長さが取得できないものは、仮の値を使用
+    MAGIC_COOL_TIME[0] = FindObjectOfType<Ike3KinesisSetting>().FloatSecond;
+    MAGIC_COOL_TIME[1] = 1.0f;    // おじゃまパニック（仮
+    MAGIC_COOL_TIME[2] = 5.0f;    // チイサクダモノ（仮
+    MAGIC_COOL_TIME[3] = FindObjectOfType<Ike3TyphoonSetting>().LimitTime_;
+    MAGIC_COOL_TIME[4] = 1.0f;    // モモンチェンジ（仮
   }
 
   void Update() {
-    if (IsCoolDown()) { --cool_time_; return; }
+    if (IsCoolDown()) { cool_time_ -= Time.deltaTime; return; }
 
     if (!isLocalPlayer) return;
     if (!OnGetMomon() || EnableMagic()) { return; }
@@ -48,13 +58,13 @@ public class PlayerMagicManager : NetworkBehaviour {
     // クールダウン中、またはスロット点滅中は発動できない
     if (IsCoolDown() || sprite_.IsSlotBlink()) return;
 
-    sprite_.MagicAction();
-    cool_time_ = FPS * MAGIC_COOL_TIME[MagicType];
+    cool_time_ = MAGIC_COOL_TIME[MagicType];
     MagicType = -1;
+    sprite_.MagicAction();
     tubo_.ResetMomon();
   }
 
   bool IsCoolDown() {
-    return cool_time_ > 0;
+    return cool_time_ > 0.0f;
   }
 }
