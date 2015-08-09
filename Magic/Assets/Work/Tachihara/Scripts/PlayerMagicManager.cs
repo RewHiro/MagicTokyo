@@ -17,17 +17,15 @@ public class PlayerMagicManager : NetworkBehaviour {
   float[] MAGIC_COOL_TIME = null;
 
 
-  void Awake() {
-    var magic_num = FindObjectOfType<ItemSpriteManager>().IconSize;
-    MAGIC_COOL_TIME = new float[magic_num];
-  }
-
   void Start() {
     if (!isLocalPlayer) return;
     MagicType = -1;
     sprite_ = FindObjectOfType<ItemSpriteManager>();
     tubo_ = FindObjectOfType<TuboInDestroy>();
-    
+
+    var magic_num = FindObjectOfType<ItemSpriteManager>().IconSize;
+    MAGIC_COOL_TIME = new float[magic_num];
+
     // FIXME: それぞれ発動中の長さが取得できないものは、仮の値を使用
     MAGIC_COOL_TIME[0] = FindObjectOfType<Ike3KinesisSetting>().FloatSecond;
     MAGIC_COOL_TIME[1] = 1.0f;    // おじゃまパニック（仮
