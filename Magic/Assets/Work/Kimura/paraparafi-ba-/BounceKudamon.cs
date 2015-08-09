@@ -21,9 +21,13 @@ public class BounceKudamon : MonoBehaviour
     [SerializeField, Range(0.0f, 1.0f), TooltipAttribute("跳ねる力")]
     float BOUNCE_POWER = 0.9f;
 
+    [SerializeField, Range(0.0f, 1.0f), TooltipAttribute("画面の揺れ具合")]
+    float SWAY_POWER = 0.01f;
+
 
     float elapsed_time_;
 
+    [SerializeField, Range(0.0f, 10.0f), TooltipAttribute("画面の揺れる時間")]
     float START_EVENT_TIME = 3.0f;
 
     float start_time_;
@@ -98,8 +102,8 @@ public class BounceKudamon : MonoBehaviour
 
                         start_time_ -= Time.deltaTime;
                         Quaternion main_camera_rotation = Camera.main.transform.rotation;
-                        float vibration_x = Random.Range(-0.01f, 0.01f);
-                        float vibration_y = Random.Range(-0.01f, 0.01f);
+                        float vibration_x = Random.Range(-SWAY_POWER, SWAY_POWER);
+                        float vibration_y = Random.Range(-SWAY_POWER, SWAY_POWER);
 
                         main_camera_rotation.x = origin_camera_rotation.x + vibration_x;
                         main_camera_rotation.y = origin_camera_rotation.y + vibration_y;

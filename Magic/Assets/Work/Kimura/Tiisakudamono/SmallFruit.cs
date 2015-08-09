@@ -25,19 +25,25 @@ public class SmallFruit : NetworkBehaviour
     MagicScaleChange[] magic_scale_change_;
 
     [SerializeField, Range(0.1f, 1.0f), TooltipAttribute("くだモンのどれだけ小さくなるかを入れてください")]
-    float SCALE_MIN = 0.5f;
+    float SCALE_MIN_ = 0.5f;
 
     [SerializeField, Range(1, 100), TooltipAttribute("魔法の全体時間　\n※最低でもSCALE_CHANGE_TIMEの２倍以上の値にしてください")]
-    float MAGIC_TIME = 5.0f;
+    float MAGIC_TIME_ = 5.0f;
 
     [SerializeField, Range(1, 100), TooltipAttribute("大きさが変化する時間 \n※MAGIC_TIMEの値を超えていた場合、MAGIC_TIMEの２分の１になる")]
-    float SCALE_CHANGE_TIME = 1.0f;
+    float SCALE_CHANGE_TIME_ = 1.0f;
+
+    float EFFECT_TIME_MAX_ = 2.0f;
 
     float elapsed_time_;
 
     int start_create_max_;
 
     float effect_time_;
+
+    float totaltime;
+
+    public float TotalSmallFruitSecond { get { return  MAGIC_TIME_ + EFFECT_TIME_MAX_; } }
 
     ParticleSystem magic_start_effect;
 
@@ -55,19 +61,20 @@ public class SmallFruit : NetworkBehaviour
 
     void Start()
     {
+
         if (!isLocalPlayer) return;
 
         fruit_manager_ = FindObjectOfType<FruitCreater>().gameObject;
 
-        effect_time_ = 2.0f;
-        elapsed_time_ = MAGIC_TIME;
+        effect_time_ = EFFECT_TIME_MAX_;
+        elapsed_time_ = MAGIC_TIME_;
         ismagic_ = IsMagic.UNUSED_MAGIC;
         start_create_max_ = 100;
         hand_controller_ = GameObject.Find("LeapHandController").GetComponent<HandController>();
         magic_scale_change_ = fruit_manager_.GetComponentsInChildren<MagicScaleChange>();
-        if (SCALE_CHANGE_TIME >= MAGIC_TIME)
+        if (SCALE_CHANGE_TIME_ >= MAGIC_TIME_)
         {
-            SCALE_CHANGE_TIME = MAGIC_TIME / 2;
+            SCALE_CHANGE_TIME_ = MAGIC_TIME_ / 2;
         }
     }
 
@@ -106,7 +113,7 @@ public class SmallFruit : NetworkBehaviour
 
             case IsMagic.EffECT_START:
                 {
-                    if (effect_time_ >= 2.0f)
+                    if (effect_time_ >= EFFECT_TIME_MAX_)
                     {
                         GameObject particle_manager_ = GameObject.Find("Ike3ParticleManager");
                         explosion_effecct = Instantiate(explosion_effect_particle_);
@@ -134,7 +141,7 @@ public class SmallFruit : NetworkBehaviour
                             magic_start_effect.transform.position = magic_scale_change_[i].transform.position;
                             magic_start_effect.name = magic_start_effect_particle_.name;
                             smoke_effect_destroy_ = particle_manager_.GetComponentsInChildren<SmokeEffectDestroy>();
-                            magic_scale_change_[i].ScaleChange(true, SCALE_MIN, SCALE_CHANGE_TIME);
+                            magic_scale_change_[i].ScaleChange(true, SCALE_MIN_, SCALE_CHANGE_TIME_);
                             smoke_effect_destroy_[i].SmokeDestroy(true);
                         }
                         ismagic_ = IsMagic.MAGIC_START;
@@ -150,7 +157,7 @@ public class SmallFruit : NetworkBehaviour
                     elapsed_time_ -= Time.deltaTime;
 
                     Debug.Log(elapsed_time_);
-                    if (elapsed_time_ <= SCALE_CHANGE_TIME)
+                    if (elapsed_time_ <= SCALE_CHANGE_TIME_)
                     {
                         ismagic_ = IsMagic.MAGIC_END;
                     }
@@ -164,12 +171,12 @@ public class SmallFruit : NetworkBehaviour
                     for (int i = 0; i < magic_scale_change_.Length; ++i)
                     {
 
-                        magic_scale_change_[i].ScaleChange(false, SCALE_MIN, SCALE_CHANGE_TIME);
+                        magic_scale_change_[i].ScaleChange(false, SCALE_MIN_, SCALE_CHANGE_TIME_);
                         
                     }
                     ismagic_ = IsMagic.UNUSED_MAGIC;
-                    elapsed_time_ = MAGIC_TIME;
-                    effect_time_ = 2.0f;
+                    elapsed_time_ = MAGIC_TIME_;
+                    effect_time_ = EFFECT_TIME_MAX_;
                     GameObject effect_destroy = GameObject.Find("FireBall");
                     
                     Destroy(effect_destroy);
