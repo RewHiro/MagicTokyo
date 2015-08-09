@@ -31,7 +31,7 @@ public class PlayerMagicManager : NetworkBehaviour {
     MAGIC_COOL_TIME[1] = FindObjectOfType<EggPlantAttacker>().GetMagicTime;      // おじゃま
     MAGIC_COOL_TIME[2] = FindObjectOfType<SmallFruit>().TotalSmallFruitSecond;   // ちいさく
     MAGIC_COOL_TIME[3] = FindObjectOfType<Ike3TyphoonSetting>().LimitTime_;      // ミキサー
-    MAGIC_COOL_TIME[4] = 1.0f;    // モモンチェンジ（仮
+    MAGIC_COOL_TIME[4] = 1.0f;    // ピーチェンジ（仮
   }
 
   void Update() {
@@ -40,7 +40,7 @@ public class PlayerMagicManager : NetworkBehaviour {
     if (!isLocalPlayer) return;
     if (!OnGetMomon() || EnableMagic()) { return; }
 
-    MagicType = Random.Range(0, sprite_.IconSize - 1);
+    MagicType = Random.Range(0, sprite_.IconSize);
     sprite_.SlotTriggerEnter();
   }
 
