@@ -43,7 +43,7 @@ public class SceneState : MonoBehaviour {
     
     // ゲーム本編に移行
     if (canShiftStart()) {
-      MyNetworkLobbyManager.s_singleton.GameStart();
+      GameObject.Find("MyNetworkLobbyManager").GetComponent<MyNetworkLobbyManager>().GameStart();
     }
   }
 
