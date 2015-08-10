@@ -1,6 +1,5 @@
 ﻿
 using UnityEngine;
-using System.Collections;
 using Leap;
 
 enum TitleState {
@@ -44,7 +43,7 @@ public class SceneState : MonoBehaviour {
     
     // ゲーム本編に移行
     if (canShiftStart()) {
-      state_ = TitleState.Start;
+      MyNetworkLobbyManager.s_singleton.GameStart();
     }
   }
 
@@ -58,7 +57,7 @@ public class SceneState : MonoBehaviour {
     for (int i = 0; i < finger_count; ++i) {
       if (gestures[i].Type == Gesture.GestureType.TYPE_SWIPE) {
         return true;
-      } 
+      }
     }
     return false;
   }
@@ -75,7 +74,7 @@ public class SceneState : MonoBehaviour {
   }
 
   bool isRecognizedHand() {
-    var hand = GetComponent<RigidHand>();
+    var hand = FindObjectOfType<MyRigidHand>();
 
     if (hand == null) return false;
 
