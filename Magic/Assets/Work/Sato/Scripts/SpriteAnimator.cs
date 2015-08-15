@@ -1,53 +1,105 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SpriteAnimator : MonoBehaviour {
+public class SpriteAnimator : MonoBehaviour
+{
+
+    enum iTweenAnimation
+    {
+        Move,
+        Rotate,
+        LoopRotate,
+        Scale,
+    };
+    public bool do_loop_;
+   
+
+    [SerializeField]
+    private iTweenAnimation animation_patern_;
+    [SerializeField]
+    private iTweenAnimation next_animation_patern_;
+    //アニメーションの目的位置、サイズ、回転量（ｚ軸のみ）
+    //到達時間、遅延時間. iTween用にハッシュテーブルを用意.
+    public Vector2 target_pos_;
+    public Vector2 target_size_;
+    public float target_rotate_;
+    public float animation_speed_;
+    public float target_time_;
+    public float delay_time_;
+    private Hashtable hash_table_ = new Hashtable();
+   
+
+
     [SerializeField]
     private GameObject target_image_prefab;
     [SerializeField]
     bool is_ease_out_bounce;
-     [SerializeField,Range(0,10)]
+    [SerializeField, Range(0, 10)]
     float out_bounce_time;
-     [SerializeField]
-     float out_of_bounce_tgt_pos;
-     [SerializeField]
-     bool is_move;
-     [SerializeField, Range(0, 10)]
-     float move_time;
-     [SerializeField]
-     float move_tgt_pos;
-   
+    [SerializeField]
+    float out_of_bounce_tgt_pos;
+    [SerializeField]
+    bool is_move;
+    [SerializeField, Range(0, 10)]
+    float move_time;
+    [SerializeField]
+    float move_tgt_pos;
+
 
 
     void Awake()
     {
        
     }
-	// Use this for initialization
-	void Start () 
+    // Use this for initialization
+    void Start()
     {
-        //”ｘ”現在位置からー２０ランダムに揺れる .
-      //     iTween.ShakePosition(target_image_prefab,iTween.Hash("x",-200));
-       //    iTween.ShakeRotation(target_image_prefab, iTween.Hash("x", 260));
+        
 
-       // このコードが適用されたオブジェクトは、3秒かけて原点(0, 0, 0)を向くように調整される
-       // iTween.LookTo(target_image_prefab, new Vector3(0,90,0), 3);
-        if (is_ease_out_bounce)
-        {
-            iTween.MoveTo(target_image_prefab,
-                                     iTween.Hash("y", out_of_bounce_tgt_pos, "time",out_bounce_time, "easetype", iTween.EaseType.easeOutBounce));
+        //到達時間,遅延時間と、ループ処理を初期化.
+        hash_table_.Add("time", target_time_);
+        hash_table_.Add("delay", delay_time_);
+
+        if (do_loop_){
+
+            //ループタイプは”start~end,end~start,start~end”で今のとこ固定
+            hash_table_.Add("looptype", iTween.LoopType.pingPong);
+
         }
-        if (is_move)
+        //アニメーションパターンに分けて、ハッシュテーブルを変更
+        //上から、移動、拡縮、回転アニメーション
+        switch (animation_patern_)
         {
-            iTween.MoveTo(target_image_prefab,
-                                     iTween.Hash("x",move_tgt_pos, "time", move_time, "easetype", iTween.EaseType.easeInBack));
+            case iTweenAnimation.Move:
+                hash_table_.Add("x", target_pos_.x);
+                hash_table_.Add("y", target_pos_.y);
+                iTween.MoveTo(gameObject, hash_table_);
+                break;
+            case iTweenAnimation.Scale:
+                hash_table_.Add("x", target_size_.x);
+                hash_table_.Add("y", target_size_.y);
+                iTween.ScaleTo(gameObject, hash_table_);
+                break;
+            case iTweenAnimation.Rotate:
+                hash_table_.Add("z", target_rotate_);
+                iTween.RotateTo(gameObject, hash_table_);
+                break;
+
+            default:
+                Debug.Log("iTweenアニメーションが設定されていません.");
+                break;
+          
         }
 
-	}
-	
-	
-	void Update () 
+
+       
+
+    }
+
+
+    void Update()
     {
        
+
     }
 }

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 0b648cfa8229e9245a55ce2619572d0b
-timeCreated: 1437478424
+timeCreated: 1438957846
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -500,6 +500,7 @@ TextureImporter:
     21300984: lose_492
     21300986: lose_493
     21300988: lose_494
+    21300990: LOSE_0
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -545,15 +546,15 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: lose_0
+    - name: LOSE_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 1
-        width: 498
-        height: 498
-      alignment: 1
-      pivot: {x: 0, y: 1}
+        x: 14
+        y: 641
+        width: 619
+        height: 372
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 
