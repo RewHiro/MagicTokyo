@@ -12,6 +12,9 @@ public class TuboInDestroy : MonoBehaviour
     [SerializeField, Range(0, 10), Tooltip("ラッシュイベント時の鍋に入っているレーモンの数")]
     int MAX_LEMON_NUM = 5;
 
+    [SerializeField, Tooltip("鍋に入る最大数")]
+    int KUDAMON_MAX_COUNT = 10;
+
     //それぞれのくだモンの鍋に入った(消した)数
     int lemon_count_ = 0;
     int apumon_count_ = 0;
@@ -29,11 +32,10 @@ public class TuboInDestroy : MonoBehaviour
 
     RushEventer rush_eventer_ = null;
 
-    Collider lid_collider_;
-    Renderer lid_renderer_;
-
     PlayerAttacker player_attacker_ = null;
     GameStartDirector game_start_director_ = null;
+
+    LidControl lid_control_ = null;
 
     //-----------------------------------------------------------------
 
@@ -53,44 +55,29 @@ public class TuboInDestroy : MonoBehaviour
     void Awake()
     {
         rush_eventer_ = FindObjectOfType<RushEventer>();
-
-        lid_collider_ = GameObject.Find("Lid").GetComponent<Collider>();
-        lid_renderer_ = GameObject.Find("Lid").GetComponent<Renderer>();
-    }
-
-    void Start()
-    {
-        lid_collider_.isTrigger = false;
-        lid_renderer_.enabled = true;
+        lid_control_ = FindObjectOfType<LidControl>();
     }
 
     void Update()
     {
-
         FindPlayer();
         if (game_start_director_ == null) return;
 
-        //蓋のコライダーを作る
-        if (GetKudamonCount() >= 10)
-        {
-            lid_collider_.isTrigger = false;
-            lid_renderer_.enabled = true;
-        }
+        //----------------------------------------------
+
+        //くだモンがMAXなら蓋をつける
+        if (GetKudamonCount() >= KUDAMON_MAX_COUNT)
+            lid_control_.can_rendering_lid_ = true;
 
         //ゲームが始まったら蓋をはずす
         if (game_start_director_.IsStart)
-        {
-            lid_collider_.isTrigger = true;
-            lid_renderer_.enabled = false;
-        }
+            lid_control_.can_rendering_lid_ = false;
 
-        //ジェスチャーしたらコライダーを消す
-        // TODO : 条件を[サークルのジェスチャーを取得]に変える
+        //ジェスチャーで蓋をはずす
         if (player_attacker_.IsAttack)
-        {
-            lid_collider_.isTrigger = true;
-            lid_renderer_.enabled = false;
-        }
+            lid_control_.can_rendering_lid_ = false;
+
+        //----------------------------------------------
 
         RushEvent();
     }
@@ -102,25 +89,22 @@ public class TuboInDestroy : MonoBehaviour
         //それぞれのくだモンを「消す処理」と「カウント処理」（と「入ったものを出力」するためのデバッグ）
         if (other.name == LEMON_NAME)
         {
-            Destroy(other.gameObject, DESTROY_TIME);
+            Destroy(other.gameObject);
             lemon_count_++;
-            //Debug.Log(" Lemon Destroy " + lemon_count);
         }
         else if (other.name == APUMON_NAME)
         {
-            Destroy(other.gameObject, DESTROY_TIME);
+            Destroy(other.gameObject);
             apumon_count_++;
-            //Debug.Log(" Apple Destroy " + apumon_count);
         }
         else if (other.name == MOMON_NAME)
         {
-            Destroy(other.gameObject, DESTROY_TIME);
+            Destroy(other.gameObject);
             is_in_momon_ = true;
-            //Debug.Log(" Peach Destroy " + momon_count);
         }
         else if (other.name == JAMAMON_NAME)
         {
-            Destroy(other.gameObject, DESTROY_TIME);
+            Destroy(other.gameObject);
             JamamonFlyOut();
         }
         else if (other.name == DORIANBOM_NAME)

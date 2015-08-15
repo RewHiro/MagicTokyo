@@ -90,6 +90,7 @@ public class SuckAdd : MonoBehaviour
                 //回転させてその方向に応じて移動する(渦の再現？)
                 kudamons[i].rigid_.AddRelativeForce(0.0f, 0.1f, 0.0f);
                 kudamons[i].rigid_.AddForce(transform.forward * 5);
+
                 //入りやすくする為の重力
                 kudamons[i].rigid_.AddForce(new Vector3(0, -down_force_, 0));
 
