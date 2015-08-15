@@ -121,8 +121,6 @@ public class BounceKudamon : MonoBehaviour
 
                     }
 
-
-                    Debug.Log(elapsed_time_);
                     if (elapsed_time_ <= 0)
                     {
                         start_time_ = START_EVENT_TIME;
