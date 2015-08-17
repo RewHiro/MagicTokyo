@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class GameStartDirector : NetworkBehaviour
 {
 
-    public enum State
+    enum State
     {
         CONNECT,
         READY,
@@ -19,28 +19,63 @@ public class GameStartDirector : NetworkBehaviour
     public bool IsStart { get { return state_ == State.START; } }
 
     float count_ = 3;
+    float standby_count_ = 0.0f;
+    const float STANBY_LIMIT = 3.0f;
     public int ReadyCount { get { return (int)count_; } }
 
     Text text_;
 
+    [SerializeField
+   , TooltipAttribute("ここに「Ike3ParticleManager」prefabを入れてください\n(プログラマー用)")]
+    private GameObject particle_manager_;
+
+    [SerializeField
+    , TooltipAttribute("表示させたいパーティクルを入れてください(「「3」」←これ　こ　れ)→「2」→「1」→「Start」")]
+    private ParticleSystem particle_;
+
     void Start()
     {
         text_ = GameObject.Find("StartText").GetComponent<Text>();
-        CmdTellServerStart(state_);
     }
+
+    [ClientRpc]
+    public void RpcCountDownLocal()
+    {
+        GameObject particle_manager = GameObject.Find(particle_manager_.name);
+        ParticleSystem game_object = Instantiate(particle_);
+        game_object.transform.SetParent(particle_manager.transform);
+        game_object.transform.position = new Vector3(0.0f, 3.0f, 1.5f);
+        game_object.name = particle_.name;
+    }
+
+    //public void RpcCountDownRemote()
+    //{
+    //    GameObject particle_manager = GameObject.Find(particle_manager_.name);
+    //    ParticleSystem game_object = Instantiate(particle_);
+    //    game_object.transform.SetParent(particle_manager.transform);
+    //    game_object.transform.position = new Vector3(0.0f, 4.0f, 1.5f);
+    //    game_object.name = particle_.name;
+    //}
 
     void Update()
     {
         if (!isLocalPlayer) return;
-        CmdTellServerStart(state_);
         if (state_ != State.READY) return;
-        ChangeText();
+
+        if(STANBY_LIMIT > standby_count_)
+        {
+            standby_count_ += Time.deltaTime;
+            return;
+        }
+        if(count_ == STANBY_LIMIT) { RpcCountDownLocal(); }
+        //ChangeText();
+        text_.text = "";
         count_ += -Time.deltaTime;
 
-        if (count_ > 0) return;
+        if (count_ > -1) return;
 
         state_ = State.START;
-        CmdTellServerStart(State.START);
+        CmdTellServerStart();
         text_.enabled = false;
     }
 
@@ -59,8 +94,8 @@ public class GameStartDirector : NetworkBehaviour
     }
 
     [Command]
-    public void CmdTellServerStart(State state)
+    public void CmdTellServerStart()
     {
-        state_ = state;
+        state_ = State.START;
     }
 }
