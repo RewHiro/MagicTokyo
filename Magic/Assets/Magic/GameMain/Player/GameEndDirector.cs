@@ -24,7 +24,6 @@ public class GameEndDirector : NetworkBehaviour
     , TooltipAttribute("表示させたいタイムアップのパーティクルを入れてください")]
     private ParticleSystem particle_;
 
-    [ClientRpc]
     public void RpcFinishLocal()
     {
         GameObject particle_manager = GameObject.Find(particle_manager_.name);
@@ -46,6 +45,10 @@ public class GameEndDirector : NetworkBehaviour
         if (count_ == 0.0f)
         {
             RpcFinishLocal();
+            foreach (var durian in FindObjectsOfType<Ike3dorian>())
+            {
+                durian.ExplodeForcibly();
+            }
             //text_.enabled = true;
         }
         count_ += Time.deltaTime;
@@ -67,7 +70,7 @@ public class GameEndDirector : NetworkBehaviour
         {
             result = "draw";
         }
-        else if (local_fruit_num > remote_fruit_num)
+        else if (local_fruit_num < remote_fruit_num)
         {
             result = "win";
         }
@@ -75,8 +78,12 @@ public class GameEndDirector : NetworkBehaviour
         {
             result = "lose";
         }
-        FindObjectOfType<ScoreSaver>().FruitNum = local_fruit_num;
-        NetworkManager.singleton.StopHost();
+        var score_saver = FindObjectOfType<ScoreSaver>();
+        score_saver.FruitNum = local_fruit_num;
+        score_saver.RemoteFruitNum = remote_fruit_num;
+        score_saver.Is1P = true;
+
+        MyNetworkLobbyManager.s_singleton.StopHost();
         Application.LoadLevel(result);
     }
 
