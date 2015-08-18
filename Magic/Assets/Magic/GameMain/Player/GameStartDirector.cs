@@ -38,7 +38,6 @@ public class GameStartDirector : NetworkBehaviour
         text_ = GameObject.Find("StartText").GetComponent<Text>();
     }
 
-    [ClientRpc]
     public void RpcCountDownLocal()
     {
         GameObject particle_manager = GameObject.Find(particle_manager_.name);
@@ -73,7 +72,7 @@ public class GameStartDirector : NetworkBehaviour
         count_ += -Time.deltaTime;
 
         if (count_ > -1) return;
-
+        Debug.Log("OK");
         state_ = State.START;
         CmdTellServerStart();
         text_.enabled = false;
