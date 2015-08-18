@@ -13,13 +13,13 @@ public class PlayerMagicAttacker : NetworkBehaviour
     Dictionary<int, MagicAction> magic_action_list_ =
         new Dictionary<int, MagicAction>();
 
-    HandController hand_controller_ = null;
+    GameObject hand_manager_ = null;
 
     void Start()
     {
         if (!isLocalPlayer) return;
 
-        hand_controller_ = FindObjectOfType<HandController>();
+        hand_manager_ = GameObject.Find("HandManager");
 
         magic_action_list_.Add(
             0,
@@ -50,7 +50,7 @@ public class PlayerMagicAttacker : NetworkBehaviour
         if (!isLocalPlayer) return;
         var magic_type = player_magic_manager_.MagicType;
 
-        foreach (var hand in FindObjectsOfType<SkeletalHand>())
+        foreach (var hand in hand_manager_.GetComponentsInChildren<SkeletalHand>())
         {
             var light = hand.GetComponentInChildren<Light>();
             if (magic_type == -1)
