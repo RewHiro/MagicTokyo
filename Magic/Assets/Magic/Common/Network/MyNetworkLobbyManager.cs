@@ -10,6 +10,7 @@ public class MyNetworkLobbyManager : NetworkLobbyManager
 
     readonly int TITLE_HASH_CODE = "title".GetHashCode();
     readonly int GAMEMAIN_HASH_CODE = "gamemain".GetHashCode();
+    readonly int YANAI_TITLE_HASH_CODE = "yanai_title".GetHashCode();
 
     bool is_ready_ = false;
 
@@ -76,7 +77,8 @@ public class MyNetworkLobbyManager : NetworkLobbyManager
         ChangeScene();
         var loaded_level_name = Application.loadedLevelName.GetHashCode();
         if (loaded_level_name == TITLE_HASH_CODE ||
-            loaded_level_name == GAMEMAIN_HASH_CODE)
+            loaded_level_name == GAMEMAIN_HASH_CODE ||
+            loaded_level_name == YANAI_TITLE_HASH_CODE)
             return;
         Destroy(gameObject);
     }
@@ -84,7 +86,8 @@ public class MyNetworkLobbyManager : NetworkLobbyManager
     void ChangeScene()
     {
         var loaded_level_name = Application.loadedLevelName.GetHashCode();
-        if (loaded_level_name != TITLE_HASH_CODE) return;
+        if (!(loaded_level_name == TITLE_HASH_CODE ||
+            loaded_level_name == YANAI_TITLE_HASH_CODE)) return;
         if (lobbySlots.Length == 0) return;
         if (lobbySlots[1] == null) return;
         if (lobbySlots[0].readyToBegin) return;
