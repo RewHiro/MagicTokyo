@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using UnityEngine.Networking;
 public class ResultAnimationManager : MonoBehaviour {
 
     //あらいさんへ！おつかれさまです。
@@ -29,6 +29,11 @@ public class ResultAnimationManager : MonoBehaviour {
     public bool IsWin{ get { return is_win_; }}
     private bool is_draw_;
     public bool IsDraw { get { return is_draw_; } }
+
+    private bool do_goto_title_;
+    public bool DoGoToTitle { set { do_goto_title_ = value; } }
+    private float sarching_timer;
+    private const float ScenechageTime = 2.0F;
 
     void JadageWin() {
 
@@ -95,11 +100,14 @@ public class ResultAnimationManager : MonoBehaviour {
         canvas_refernce_.GetComponent<Canvas>().enabled = false;
         do_open_ = false;
         do_result_ = false;
-       
+        do_goto_title_ = false;
+        sarching_timer = 0;
+      
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update()
+    {
 
         //りざると開始
         if (do_result_)
@@ -107,7 +115,7 @@ public class ResultAnimationManager : MonoBehaviour {
             canvas_refernce_.GetComponent<Canvas>().enabled = true;
             //勝ち負けをジャッジ！
             JadageWin();
-            
+
             //最初にスコアのみ表示.どぅるるるが始まります.
             var obj = Instantiate(ScorePanel);
             obj.transform.parent = canvas_refernce_.transform;
@@ -116,8 +124,9 @@ public class ResultAnimationManager : MonoBehaviour {
         }
 
         //スコア表示終了後
-        if (do_open_){
-            
+        if (do_open_)
+        {
+
             //キャラクターと、勝敗ロゴを生成.
             //キャンバスの子にすると、pos,scale情報がずれるので
             //初期値を補完、その後再代入.(いいやり方他におもいつくまで)
@@ -137,12 +146,33 @@ public class ResultAnimationManager : MonoBehaviour {
             character.transform.localPosition = defalt_chara_pos;
             character.transform.localScale = defalt_chara_scale;
 
-          
+
 
             //一度だけ作成.
             do_open_ = false;
 
         }
 
-	}
+        //手をかざして２秒でタイトルへ.
+        if (do_goto_title_)
+        {
+
+
+            if (GameObject.Find("CleanRobotLeftHand") == null || GameObject.Find("CleanRobotRightHand") == null)
+            {
+                sarching_timer = 0;
+            }
+            else
+            {
+
+                sarching_timer += 1 * Time.deltaTime;
+                //
+                if (sarching_timer >= ScenechageTime){
+                    Application.LoadLevel("title");
+                    NetworkManager.singleton.StopServer();
+                }
+            }
+
+        }
+    }
 }
