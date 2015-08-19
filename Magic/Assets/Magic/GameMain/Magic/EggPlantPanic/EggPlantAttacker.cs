@@ -15,6 +15,14 @@ public class EggPlantAttacker : NetworkBehaviour
 
     bool is_remote_damage_ = false;
 
+    Particle particle_ = null;
+
+    void Start()
+    {
+        if (!isLocalPlayer) return;
+        particle_ = FindObjectOfType<Particle>();
+    }
+
     void Update()
     {
         if (!isLocalPlayer) return;
@@ -28,6 +36,7 @@ public class EggPlantAttacker : NetworkBehaviour
         CmdTellServerAttack(true, 5);
         is_attack_ = true;
         egg_plant_num_ = 5;
+        particle_.apply(Particle.State.Attack);
     }
 
     [Command]

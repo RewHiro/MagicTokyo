@@ -33,11 +33,14 @@ public class PlayerAttacker : NetworkBehaviour
 
     const int POT_LIMIT_NUM = 10;
 
+    Particle particle_ = null;
+
     void Start()
     {
         if (!isLocalPlayer) return;
         hand_controller_ = FindObjectOfType<HandController>();
         tubo_in_destory_ = FindObjectOfType<TuboInDestroy>();
+        particle_ = FindObjectOfType<Particle>();
     }
 
     void Update()
@@ -67,6 +70,8 @@ public class PlayerAttacker : NetworkBehaviour
                     lemon_num);
                 apple_num_ = apple_num;
                 lemon_num_ = lemon_num;
+                particle_.apply(Particle.State.Attack);
+
             }
             else
             {
