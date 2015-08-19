@@ -4,20 +4,26 @@ using System.Collections;
 public class SpriteAnimator : MonoBehaviour
 {
 
-    enum iTweenAnimation
+    enum iTweenAnimation : int
     {
-        Move,
+        Move = 0,
         Rotate,
         LoopRotate,
         Scale,
     };
-    public bool do_loop_;
-   
-
     [SerializeField]
     private iTweenAnimation animation_patern_;
+   
+    public int SetAnimation{
+        set {
+            //Move = 0,Rotate = 1,LoopRotate,Scale
+            animation_patern_ = (iTweenAnimation)value;
+        }
+    }
     [SerializeField]
-    private iTweenAnimation next_animation_patern_;
+    private iTweenAnimation second_animation_patern_;
+    public bool do_loop_;
+
     //アニメーションの目的位置、サイズ、回転量（ｚ軸のみ）
     //到達時間、遅延時間. iTween用にハッシュテーブルを用意.
     public Vector2 target_pos_;

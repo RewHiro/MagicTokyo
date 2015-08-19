@@ -6,7 +6,7 @@ public class ImageAnimator : MonoBehaviour
     //移動、拡縮アニメーション.
     enum AnimationType : int
     {
-        SIN_ANIMA,
+        SIN_ANIMA = 0,
         SIN_ABS_ANIMA,
         ZOOMING_ANIMA,
         ROTATO,
@@ -15,14 +15,19 @@ public class ImageAnimator : MonoBehaviour
     public bool do_stop_animation_ = false;
     [SerializeField]
     private AnimationType animation_type_;
+    public int SetType
+    {
+        set { animation_type_ = (AnimationType)value; }
+    }
+
     [SerializeField, Range(-10, 10)]
-    private float animation_speed_ = 0.1f;
+    public float animation_speed_ = 0.1f;
     [SerializeField, Range(-50, 50)]
-    private float animation_range_ = 1.0f;
+    public float animation_range_ = 1.0f;
     [SerializeField]
-    private bool is_add_vec_x = false;
+    public bool is_add_vec_x = false;
     [SerializeField]
-    private bool is_add_vec_y = false;
+    public bool is_add_vec_y = false;
     [SerializeField]
     private bool is_add_vec_z = false;
 
@@ -49,7 +54,7 @@ public class ImageAnimator : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+       
     }
 
     // Update is called once per frame
