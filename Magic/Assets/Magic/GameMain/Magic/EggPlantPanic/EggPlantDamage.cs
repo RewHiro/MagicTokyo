@@ -12,6 +12,14 @@ public class EggPlantDamage : NetworkBehaviour
     int egg_plant_num_ = 0;
     public int EggPlantNum { get { return egg_plant_num_; } }
 
+    Particle particle_ = null;
+
+    void Start()
+    {
+        if (!isLocalPlayer) return;
+        particle_ = FindObjectOfType<Particle>();
+    }
+
     void Update()
     {
         if (!isLocalPlayer) return;
@@ -20,6 +28,7 @@ public class EggPlantDamage : NetworkBehaviour
             if (is_guard_) return;
             FindObjectOfType<FruitCreater>().EggPlantCreate(egg_plant_num_);
             is_guard_ = true;
+            particle_.apply(Particle.State.Damage);
         }
         else
         {

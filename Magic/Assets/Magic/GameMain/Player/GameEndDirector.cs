@@ -16,9 +16,26 @@ public class GameEndDirector : NetworkBehaviour
 
     Text text_ = null;
 
+    [SerializeField
+   , TooltipAttribute("ここに「Ike3ParticleManager」prefabを入れてください\n(プログラマー用)")]
+    private GameObject particle_manager_;
+
+    [SerializeField
+    , TooltipAttribute("表示させたいタイムアップのパーティクルを入れてください")]
+    private ParticleSystem particle_;
+
+    public void RpcFinishLocal()
+    {
+        GameObject particle_manager = GameObject.Find(particle_manager_.name);
+        ParticleSystem game_object = Instantiate(particle_);
+        game_object.transform.SetParent(particle_manager.transform);
+        game_object.transform.position = new Vector3(0.0f, 3.0f, 1.5f);
+        game_object.name = particle_.name;
+    }
+
     void Start()
     {
-        text_ = GameObject.Find("EndText").GetComponent<Text>();
+        //text_ = GameObject.Find("EndText").GetComponent<Text>();
     }
 
     void Update()
@@ -27,11 +44,12 @@ public class GameEndDirector : NetworkBehaviour
         if (!is_start_) return;
         if (count_ == 0.0f)
         {
+            RpcFinishLocal();
             foreach (var durian in FindObjectsOfType<Ike3dorian>())
             {
                 durian.ExplodeForcibly();
             }
-            text_.enabled = true;
+            //text_.enabled = true;
         }
         count_ += Time.deltaTime;
 
@@ -60,10 +78,11 @@ public class GameEndDirector : NetworkBehaviour
         {
             result = "lose";
         }
-        var scoresaver = FindObjectOfType<ScoreSaver>();
-        scoresaver.FruitNum = local_fruit_num;
-        scoresaver.RemoteFruitNum = remote_fruit_num;
-        scoresaver.Is1P = true;
+        var score_saver = FindObjectOfType<ScoreSaver>();
+        score_saver.FruitNum = local_fruit_num;
+        score_saver.RemoteFruitNum = remote_fruit_num;
+        score_saver.Is1P = true;
+
         MyNetworkLobbyManager.s_singleton.StopHost();
         Application.LoadLevel(result);
     }

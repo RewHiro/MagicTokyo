@@ -14,6 +14,14 @@ public class PlayerDamage : NetworkBehaviour
     int apple_num_ = 0;
     int lemon_num_ = 0;
 
+    Particle particle_ = null;
+
+    void Start()
+    {
+        if (!isLocalPlayer) return;
+        particle_ = FindObjectOfType<Particle>();
+    }
+
     void Update()
     {
         if (!isLocalPlayer) return;
@@ -23,6 +31,7 @@ public class PlayerDamage : NetworkBehaviour
             FindObjectOfType<FruitCreater>().AppleCreate(apple_num_);
             FindObjectOfType<FruitCreater>().LemonCreate(lemon_num_);
             is_guard_ = true;
+            particle_.apply(Particle.State.Damage);
         }
         else
         {
