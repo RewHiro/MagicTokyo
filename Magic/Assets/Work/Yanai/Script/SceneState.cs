@@ -45,6 +45,9 @@ public class SceneState : MonoBehaviour {
     if (canShiftStart()) {
       GameObject.Find("MyNetworkLobbyManager").GetComponent<MyNetworkLobbyManager>().GameStart();
     }
+    if (Input.anyKeyDown) {
+      GameObject.Find("MyNetworkLobbyManager").GetComponent<MyNetworkLobbyManager>().GameStart();
+    }
   }
 
   bool canShiftDemoPlay() {
@@ -74,7 +77,7 @@ public class SceneState : MonoBehaviour {
   }
 
   bool isRecognizedHand() {
-    var hand = FindObjectOfType<MyRigidHand>();
+    var hand = FindObjectOfType<RigidHand>();
 
     if (hand == null) return false;
 
