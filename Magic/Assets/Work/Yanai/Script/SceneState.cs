@@ -43,7 +43,11 @@ public class SceneState : MonoBehaviour {
     
     // ゲーム本編に移行
     if (canShiftStart()) {
-      GameObject.Find("MyNetworkLobbyManager").GetComponent<MyNetworkLobbyManager>().GameStart();
+            foreach (var player in FindObjectsOfType<LobbyPlayer>())
+            {
+                if (!player.isLocalPlayer) continue;
+                player.ChangeReady();
+            }
     }
   }
 
@@ -74,7 +78,7 @@ public class SceneState : MonoBehaviour {
   }
 
   bool isRecognizedHand() {
-    var hand = FindObjectOfType<MyRigidHand>();
+    var hand = FindObjectOfType<RigidHand>();
 
     if (hand == null) return false;
 

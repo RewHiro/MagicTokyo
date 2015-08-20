@@ -11,7 +11,7 @@ public class ServerManager : NetworkBehaviour
 
     const int READY_PLAYER_NUM = 2;
 
-    [SerializeField,Range(1,120),TooltipAttribute("制限時間")]
+    [SerializeField, Range(1, 120), TooltipAttribute("制限時間")]
     int TIME_LIMIT_SECOND = 2;
 
     [SerializeField, Range(1, 10), TooltipAttribute("レモネードが出すアプモンの倍率")]
@@ -47,7 +47,7 @@ public class ServerManager : NetworkBehaviour
         if (local_player_.GetComponent<GameEndDirector>().IsStart) return;
         var delta_time = Time.deltaTime;
         count_ += -delta_time;
-        
+
         if (0 != (int)count_) return;
         local_player_.GetComponent<GameEndDirector>().RpcTellClientStart();
         remote_player_.GetComponent<GameEndDirector>().RpcTellClientStart();
@@ -58,6 +58,10 @@ public class ServerManager : NetworkBehaviour
         if (remote_player_.GetComponent<GameStartDirector>().IsConnect)
         {
             local_player_.GetComponent<GameStartDirector>().RpcTellClientReady();
+            remote_player_.GetComponent<GameStartDirector>().RpcTellClientReady();
+        }
+        if (local_player_.GetComponent<GameStartDirector>().IsReady)
+        {
             remote_player_.GetComponent<GameStartDirector>().RpcTellClientReady();
         }
 
@@ -153,7 +157,7 @@ public class ServerManager : NetworkBehaviour
             local_player_dorian_boom_damage.IsDamage);
 
         remote_player_event.RpcSetSelectEvent(
-            local_player_event.SelectEvent, 
+            local_player_event.SelectEvent,
             !local_player_event.IsCreateDurianBoom);
 
         if (local_player_small_fruit.IsAttack)
@@ -175,7 +179,7 @@ public class ServerManager : NetworkBehaviour
         if (remote_player_ != null) return;
 
         var players = GameObject.FindObjectsOfType<PlayerSetting>();
-        foreach(var player in players)
+        foreach (var player in players)
         {
             if (player.isLocalPlayer)
             {

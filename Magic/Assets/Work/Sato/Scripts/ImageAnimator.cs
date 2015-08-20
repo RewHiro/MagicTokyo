@@ -6,28 +6,32 @@ public class ImageAnimator : MonoBehaviour
     //移動、拡縮アニメーション.
     enum AnimationType : int
     {
-        SIN_ANIMA,
+        SIN_ANIMA = 0,
         SIN_ABS_ANIMA,
         ZOOMING_ANIMA,
+        ROTATO,
     }
+
+    public bool do_stop_animation_ = false;
     [SerializeField]
     private AnimationType animation_type_;
+    public int SetType
+    {
+        set { animation_type_ = (AnimationType)value; }
+    }
+
     [SerializeField, Range(-10, 10)]
-    private float animation_speed_ = 0.1f;
+    public float animation_speed_ = 0.1f;
     [SerializeField, Range(-50, 50)]
-    private float animation_range_ = 1.0f;
+    public float animation_range_ = 1.0f;
     [SerializeField]
-    private bool is_add_vec_x = false;
+    public bool is_add_vec_x = false;
     [SerializeField]
-    private bool is_add_vec_y = false;
+    public bool is_add_vec_y = false;
     [SerializeField]
     private bool is_add_vec_z = false;
 
-    //透明度のアニメーション.
-    [SerializeField]
-    private bool do_alpfa_anima_;
-    [SerializeField, Range(-10, 10)]
-    private float alpfa_animation_speed_ = 0.1f;
+   
 
     private float animation_count_;
     private Vector3 sprite_pos_;
@@ -50,54 +54,58 @@ public class ImageAnimator : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+       
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        animation_count_ += animation_speed_;
-        //デバッグ用.
-        if (is_add_vec_x) add_x_ = 1; else add_x_ = 0;
-        if (is_add_vec_y) add_y_ = 1; else add_y_ = 0;
-        if (is_add_vec_z) add_z_ = 1; else add_z_ = 0;
-
-
-        //インスペクターでアニメーションを設定.
-        switch (animation_type_)
+        //Do animation!
+        if (!do_stop_animation_)
         {
-            case AnimationType.SIN_ANIMA:
-                this.transform.localPosition =
-                new Vector3(sprite_pos_.x + add_x_ * ((float)(System.Math.Sin(animation_count_)) * animation_range_),
-                                     sprite_pos_.y + add_y_ * ((float)(System.Math.Sin(animation_count_)) * animation_range_),
-                                     sprite_pos_.z + add_z_ * ((float)(System.Math.Sin(animation_count_)) * animation_range_));
-                break;
-            case AnimationType.SIN_ABS_ANIMA:
+            animation_count_ += animation_speed_;
+            //デバッグ用.
+            if (is_add_vec_x) add_x_ = 1; else add_x_ = 0;
+            if (is_add_vec_y) add_y_ = 1; else add_y_ = 0;
+            if (is_add_vec_z) add_z_ = 1; else add_z_ = 0;
 
-                this.transform.localPosition =
-                new Vector3(sprite_pos_.x + add_x_ * ((float)System.Math.Abs(System.Math.Sin(animation_count_)) * animation_range_),
-                                     sprite_pos_.y + add_y_ * ((float)System.Math.Abs(System.Math.Sin(animation_count_)) * animation_range_),
-                                     sprite_pos_.z + add_z_ * ((float)System.Math.Abs(System.Math.Sin(animation_count_)) * animation_range_));
-                break;
-            case AnimationType.ZOOMING_ANIMA:
-                this.transform.localScale =
-                new Vector3(sprite_scale_.x + add_x_ * ((float)System.Math.Abs(System.Math.Sin(animation_count_)) * animation_range_),
-                                     sprite_scale_.y + add_y_ * ((float)System.Math.Abs(System.Math.Sin(animation_count_)) * animation_range_),
-                                     sprite_scale_.z + add_z_ * ((float)System.Math.Abs(System.Math.Sin(animation_count_)) * animation_range_));
-                break;
 
-        }
-        //透明度のアニメーション、見え隠れする.
-        if(do_alpfa_anima_)
-        {
-            //alpfa値最大の255以上、または０以下の時は加算しない.
-       //     if (sprite_color_.r + (byte)(System.Math.Abs(System.Math.Sin(animation_count_))) < 255 &&
-       //         sprite_color_.r + (byte)(System.Math.Abs(System.Math.Sin(animation_count_)))  > 0)
+            //インスペクターでアニメーションを設定.
+            switch (animation_type_)
             {
-                sprite_color_.a = (byte)( System.Math.Abs(System.Math.Sin(animation_count_)));
+                case AnimationType.SIN_ANIMA:
+
+                    this.transform.localPosition =
+                    new Vector3(sprite_pos_.x + add_x_ * ((float)(System.Math.Sin(animation_count_)) * animation_range_),
+                                         sprite_pos_.y + add_y_ * ((float)(System.Math.Sin(animation_count_)) * animation_range_),
+                                         sprite_pos_.z + add_z_ * ((float)(System.Math.Sin(animation_count_)) * animation_range_));
+
+                    break;
+                case AnimationType.SIN_ABS_ANIMA:
+
+                    this.transform.localPosition =
+                    new Vector3(sprite_pos_.x + add_x_ * ((float)System.Math.Abs(System.Math.Sin(animation_count_)) * animation_range_),
+                                         sprite_pos_.y + add_y_ * ((float)System.Math.Abs(System.Math.Sin(animation_count_)) * animation_range_),
+                                         sprite_pos_.z + add_z_ * ((float)System.Math.Abs(System.Math.Sin(animation_count_)) * animation_range_));
+
+                    break;
+                case AnimationType.ZOOMING_ANIMA:
+
+                    this.transform.localScale =
+                    new Vector3(sprite_scale_.x + add_x_ * ((float)System.Math.Abs(System.Math.Sin(animation_count_)) * animation_range_),
+                                         sprite_scale_.y + add_y_ * ((float)System.Math.Abs(System.Math.Sin(animation_count_)) * animation_range_),
+                                         sprite_scale_.z + add_z_ * ((float)System.Math.Abs(System.Math.Sin(animation_count_)) * animation_range_));
+
+                    break;
+                case AnimationType.ROTATO:
+
+                    transform.Rotate(0, 0, Time.deltaTime * animation_speed_);
+
+                    break;
+
+
             }
-            
         }
+       
     }
 }

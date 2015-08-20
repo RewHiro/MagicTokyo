@@ -21,8 +21,6 @@ public class PlayerAttacker : NetworkBehaviour
 
     bool is_guard_ = false;
 
-    bool is_right_ = false;
-
     HandController hand_controller_ = null;
     //SkeletalHand hand_ = null;
 
@@ -54,6 +52,7 @@ public class PlayerAttacker : NetworkBehaviour
     {
         foreach (var hand in hand_controller_.GetFrame().Hands)
         {
+            if (!hand.IsRight) continue;
             var gesture_list = hand.Frame.Gestures();
             if (gesture_list[0].IsValid)
             {
@@ -62,7 +61,6 @@ public class PlayerAttacker : NetworkBehaviour
                 if (gesture.DurationSeconds < TURN_SECOND) return;
                 CmdTellServerAttack(true);
                 is_attack_ = true;
-                is_right_ = hand.IsRight;
                 var apple_num = tubo_in_destory_.GetApumonCount();
                 var lemon_num = tubo_in_destory_.GetLemonCount();
                 CmdTellServerFruitNum(
@@ -89,8 +87,7 @@ public class PlayerAttacker : NetworkBehaviour
             is_guard_ = true;
 
             // 攻撃エフェクト
-            if (POT_LIMIT_NUM <= tubo_in_destory_.GetKudamonCount() && 
-                is_right_)
+            if (POT_LIMIT_NUM <= tubo_in_destory_.GetKudamonCount())
             {
                 FindObjectOfType<FruitCreater>().PeachCreate(1);
             }
