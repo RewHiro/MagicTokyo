@@ -8,10 +8,11 @@ public class GameEndDirector : NetworkBehaviour
     float count_ = 0;
 
     bool is_start_ = false;
+    bool is_start_result_ = false;
     public bool IsStart { get { return is_start_; } }
 
     const int FRUIT_NUM_ANNOUNCE_TIME = 2;
-    const int CHANGE_SCENE_TIME = 2;
+    const int CHANGE_SCENE_TIME = 15;
 
 
     Text text_ = null;
@@ -55,36 +56,27 @@ public class GameEndDirector : NetworkBehaviour
 
         if (FRUIT_NUM_ANNOUNCE_TIME == (int)count_)
         {
-            //　総数表示
+            if(!is_start_result_)
+            {
+                //　総数表示
+                var fruit_counter = GetComponent<FruitCounter>();
+                var local_fruit_num = fruit_counter.FruitNum;
+                var remote_fruit_num = fruit_counter.RemoteFruitNum;
+
+                var score_saver = FindObjectOfType<ScoreSaver>();
+                score_saver.FruitNum = local_fruit_num;
+                score_saver.RemoteFruitNum = remote_fruit_num;
+                score_saver.Is1P = isServer;
+
+                FindObjectOfType<ResultAnimationManager>().DoResult = true;
+                is_start_result_ = true;
+            }
         }
 
 
         if (count_ < CHANGE_SCENE_TIME) return;
         if (!isServer) return;
-        var fruit_counter = GetComponent<FruitCounter>();
-        var local_fruit_num = fruit_counter.FruitNum;
-        var remote_fruit_num = fruit_counter.RemoteFruitNum;
-        string result = "";
-
-        if (local_fruit_num == remote_fruit_num)
-        {
-            result = "draw";
-        }
-        else if (local_fruit_num < remote_fruit_num)
-        {
-            result = "win";
-        }
-        else
-        {
-            result = "lose";
-        }
-        var score_saver = FindObjectOfType<ScoreSaver>();
-        score_saver.FruitNum = local_fruit_num;
-        score_saver.RemoteFruitNum = remote_fruit_num;
-        score_saver.Is1P = true;
-
-        MyNetworkLobbyManager.s_singleton.StopHost();
-        Application.LoadLevel(result);
+        MyNetworkLobbyManager.s_singleton.ServerReturnToLobby();
     }
 
     [ClientRpc]

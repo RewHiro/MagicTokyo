@@ -1,22 +1,51 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class LobbyPlayer : NetworkLobbyPlayer
 {
 
     readonly int TITLE_HASH_CODE = "title".GetHashCode();
+    bool is_ready = false;
 
+    [SerializeField]
+    bool DEBUG = false;
 
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
-    void Start()
+    void Update()
     {
-        if (isServer) return;
         if (!isLocalPlayer) return;
+
+        if (DEBUG)
+        {
+            if (Application.loadedLevelName == "title" ||
+                Application.loadedLevelName == "yanai_title")
+            {
+                if (Input.anyKeyDown)
+                {
+                    ChangeReady();
+                }
+            }
+
+        }
+        if (Application.loadedLevelName == "gamemain")
+        {
+            is_ready = false;
+        }
+    }
+
+    public void ChangeReady()
+    {
+        if (is_ready) return;
+        if (!isLocalPlayer) return;
+        if (null == MyNetworkLobbyManager.s_singleton.lobbySlots[1]) return;
         SendReadyToBeginMessage();
+        GameObject.Find("WaitText").GetComponent<Text>().enabled = true;
+        is_ready = true;
     }
 }

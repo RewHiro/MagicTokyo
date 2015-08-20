@@ -43,10 +43,11 @@ public class SceneState : MonoBehaviour {
     
     // ゲーム本編に移行
     if (canShiftStart()) {
-      GameObject.Find("MyNetworkLobbyManager").GetComponent<MyNetworkLobbyManager>().GameStart();
-    }
-    if (Input.anyKeyDown) {
-      GameObject.Find("MyNetworkLobbyManager").GetComponent<MyNetworkLobbyManager>().GameStart();
+            foreach (var player in FindObjectsOfType<LobbyPlayer>())
+            {
+                if (!player.isLocalPlayer) continue;
+                player.ChangeReady();
+            }
     }
   }
 
