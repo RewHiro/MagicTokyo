@@ -3,17 +3,16 @@ using UnityEngine;
 using System.Collections.Generic;
 
 
-class Audio {
-  public static AudioSource bgm = new AudioSource();
-  public static List<AudioSource> se = null;
+[System.Serializable]
+class AudioVolume {
+  [Range(1.0f, 10.0f)]
+  public float delay_time_ = 5.0f;
 
-  public static Dictionary<uint, AudioClip> clips = null;
+  [Range(0.0f, 1.0f)]
+  public float bgm_volume_ = 1.0f;
 
-  public static void Init() {
-    bgm.clip = null;
-    se.Clear();
-    clips.Clear();
-  }
+  [Range(0.0f, 1.0f)]
+  public float se_volume_ = 1.0f;
 }
 
 
@@ -22,101 +21,92 @@ public class AudioManager : MonoBehaviour {
   [SerializeField, Tooltip("同時に再生できる SE の最大数")]
   uint max_se_num_ = 4;
 
-  static uint unique_id_ = 0;
-  uint GetUniqueID() {
-    if (unique_id_ == ~(uint)0) { unique_id_ = 0; }
-    return unique_id_++;
-  }
+  [SerializeField]
+  AudioVolume av_ = null;
 
-
-  void Awake() {
-    var objects = FindObjectsOfType<AudioManager>();
-    if (objects.Length > 1) { Destroy(gameObject); }
-    else { DontDestroyOnLoad(gameObject); }
-  }
-
-  void Update() {
-    foreach (var se in Audio.se) {
-      if (!se.isPlaying) Audio.se.Remove(se);
-    }
-  }
-
-  public void Init() {
-    var audio = FindObjectOfType<AudioSetting>();
-
-    Audio.bgm.loop = audio.IsBgmLooping();
-    Audio.bgm.spatialBlend = 0.0f;   // 距離で音量が変わらないようにする
-  }
-
-  public void PlayBgm(uint index) {
-  }
-
-  public void StopBgm() {
-  }
-
-  public void PlaySe(uint index) {
-    if (Audio.se.Count >= max_se_num_) { return; }
-    if (!Audio.clips.ContainsKey(index)) { return; }
-
-    var source = new AudioSource();
-    source.clip = Audio.clips[index];
-    Audio.se.Add(source);
-
-    foreach (var se in Audio.se) {
-      if (!se.isPlaying) se.Play();
-    }
-  }
-
-  /*
-  static AudioManager manager_ = null;
-  public static AudioManager instance {
-    get {
-      if (manager_ == null) { manager_ = new AudioManager(); }
-      return manager_;
-    }
-  }
-
-  public static uint GetUniqueID() {
-    uint unique_id = 0;
-    if (unique_id == ~(uint)0) { unique_id = 0; }
-    return unique_id;
-  }
-
-  [SerializeField, Tooltip("同時に再生できる SE の最大数")]
-  int max_se_ = 4;
+  bool stop_delay_bgm_ = false;
+  float delay_speed_ = 0.0f;
 
   AudioSource bgm_ = null;
   List<AudioSource> se_ = null;
 
-  Dictionary<uint, AudioClip> clips_ = null;
+  List<AudioSource> clips_ = null;
+
+  public static AudioManager Instance { get; private set; }
+
 
   void Awake() {
+    Debug.Log("AudioManager.Awake()");
+
     var objects = FindObjectsOfType<AudioManager>();
     if (objects.Length > 1) { Destroy(gameObject); }
     else { DontDestroyOnLoad(gameObject); }
+
+    Instance = gameObject.GetComponent<AudioManager>();
+    bgm_ = null;
+    se_ = new List<AudioSource>();
+    clips_ = new List<AudioSource>();
+
+    Debug.Log("AudioManager.Awake() fin");
+  }
+
+  void Start() {
+    Debug.Log("AudioManager.Start()");
+
+    var setting = FindObjectOfType<AudioSetting>();
+    var list = GameObject.Find("Audio");
+
+    var bgm_list = setting.GetBgmClips();
+    var bgm = new GameObject();
+    bgm.transform.parent = list.transform;
+    bgm_ = bgm.AddComponent<AudioSource>();
+    bgm_.clip = bgm_list[Random.Range(0, bgm_list.Count)];
+    bgm_.loop = setting.IsBgmLooping();
+    bgm_.volume = av_.bgm_volume_;
+    bgm_.spatialBlend = 0.0f;
+
+    Debug.Log("AudioManager.Start() fin");
   }
 
   void Update() {
-    foreach (var se in se_) { if (!se.isPlaying) se_.Remove(se); }
+    Debug.Log(string.Format("volume = {0}", delay_speed_));
+
+    if (se_.Count > 0) {
+      foreach (var se in se_) { if (!se.isPlaying) se_.Remove(se); }
+    }
+
+    if (!stop_delay_bgm_) { return; }
+
+    delay_speed_ += Time.deltaTime;
+    var delay_time = (av_.delay_time_ - delay_speed_) / av_.delay_time_;
+    bgm_.volume = delay_time;
   }
 
-  public void PlayBgm(uint index) {
-    if (!clips_.ContainsKey(index)) { return; }
-
-    var next_bgm = clips_[index];
-    if (bgm_.clip == next_bgm) { return; }
-
-    bgm_.Stop();
-    bgm_.clip = next_bgm;
+  public void PlayBgm() {
+    bgm_.volume = av_.bgm_volume_;
     bgm_.Play();
+
+    stop_delay_bgm_ = false;
   }
 
   public void StopBgm() {
     bgm_.Stop();
-    bgm_ = null;
   }
 
-  public void PlaySe(uint index) {
+  /// <summary>
+  /// delay_time 秒かけてフェードアウト
+  /// </summary>
+  public void StopDelayBgm() {
+    stop_delay_bgm_ = true;
+    delay_speed_ = 0.0f;
   }
-  */
+
+  public void PlaySe(int index) {
+    if (se_.Count >= max_se_num_) { return; }
+    if (index < 0 || index >= clips_.Count) { return; }
+
+    se_.Add(clips_[index]);
+
+    foreach (var se in se_) { if (!se.isPlaying) se.Play(); }
+  }
 }
