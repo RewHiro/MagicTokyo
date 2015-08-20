@@ -22,6 +22,7 @@ public class PotGaugeController : MonoBehaviour {
 
     tubo_ = FindObjectOfType<TuboInDestroy>();
     effect_ = GameObject.Find("PotIconEffect").GetComponent<SpriteRenderer>();
+    effect_.color = new Color(1, 1, 1, 0);
   }
 
   void Update() {
@@ -33,7 +34,10 @@ public class PotGaugeController : MonoBehaviour {
     bar_.localScale = scale;
 
     var maximum = current_count_ == 10;
+    if (!maximum) { return; }
+
     effect_.color = new Color(1, 1, 1, maximum ? 1.0f : 0.0f);
+    effect_.transform.Rotate(new Vector3(0, 0, -Time.deltaTime * 60));
   }
 
   public void GaugeReset() {

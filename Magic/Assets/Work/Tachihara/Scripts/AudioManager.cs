@@ -36,8 +36,6 @@ public class AudioManager : MonoBehaviour {
 
 
   void Awake() {
-    Debug.Log("AudioManager.Awake()");
-
     var objects = FindObjectsOfType<AudioManager>();
     if (objects.Length > 1) { Destroy(gameObject); }
     else { DontDestroyOnLoad(gameObject); }
@@ -46,8 +44,6 @@ public class AudioManager : MonoBehaviour {
     bgm_ = null;
     se_ = new List<AudioSource>();
     clips_ = new List<AudioSource>();
-
-    Debug.Log("AudioManager.Awake() fin");
   }
 
   void Start() {
@@ -65,15 +61,25 @@ public class AudioManager : MonoBehaviour {
     bgm_.volume = av_.bgm_volume_;
     bgm_.spatialBlend = 0.0f;
 
+    var se_list = setting.GetSeClips();
+    foreach (var se_clip in se_list) {
+      var se = new GameObject();
+      se.transform.parent = list.transform;
+
+      var source = se.AddComponent<AudioSource>();
+      source.clip = se_clip;
+      source.volume = av_.se_volume_;
+      source.spatialBlend = 0.0f;
+
+      clips_.Add(source);
+      Debug.Log("hoge");
+    }
+
     Debug.Log("AudioManager.Start() fin");
   }
 
   void Update() {
-    Debug.Log(string.Format("volume = {0}", delay_speed_));
-
-    if (se_.Count > 0) {
-      foreach (var se in se_) { if (!se.isPlaying) se_.Remove(se); }
-    }
+    foreach (var se in se_) { if (!se.isPlaying) se_.Remove(se); }
 
     if (!stop_delay_bgm_) { return; }
 
