@@ -15,11 +15,16 @@ public class PlayerMagicAttacker : NetworkBehaviour
 
     GameObject hand_manager_ = null;
 
+    HandController hand_controller_ = null;
+
+    bool is_guard_ = false;
+
     void Start()
     {
         if (!isLocalPlayer) return;
 
         hand_manager_ = GameObject.Find("HandManager");
+        hand_controller_ = FindObjectOfType<HandController>();
 
         magic_action_list_.Add(
             0,
@@ -50,23 +55,27 @@ public class PlayerMagicAttacker : NetworkBehaviour
         if (!isLocalPlayer) return;
         var magic_type = player_magic_manager_.MagicType;
 
-        foreach (var hand in hand_manager_.GetComponentsInChildren<SkeletalHand>())
+        foreach (var hand in hand_controller_.GetFrame().Hands)
         {
-            var light = hand.GetComponentInChildren<Light>();
+            if (!hand.IsLeft) continue;
             if (magic_type == -1)
             {
-                light.intensity -= Time.deltaTime * 4;
                 continue;
             }
 
-            var pinch = hand.GetLeapHand().PinchStrength;
-            light.intensity = pinch * 8.0f;
-            
-            if (1.0f <= pinch)
+            var gesture_list = hand.Frame.Gestures();
+            if (gesture_list[0].IsValid)
             {
+                if (is_guard_) break;
+                CircleGesture gesture = new CircleGesture(gesture_list[0]);
+                if (gesture.DurationSeconds < 1.0f) return;
                 magic_action_list_[magic_type]();
                 player_magic_manager_.MagicExecute();
-                break;
+                is_guard_ = true;
+            }
+            else
+            {
+                is_guard_ = false;
             }
         }
     }
