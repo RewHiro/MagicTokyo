@@ -4,7 +4,6 @@ using Leap;
 
 enum TitleState {
   Set,
-  DemoPlay,
   Start,
 }
 
@@ -12,7 +11,6 @@ public class SceneState : MonoBehaviour {
 
   TitleState state_;
   Controller controller = new Controller();
-  GestureList gestures;
 
   [SerializeField]
   int VALID_MAX = 60;
@@ -29,40 +27,15 @@ public class SceneState : MonoBehaviour {
 
   void Awake() {
     state_ = TitleState.Set;
-    controller.EnableGesture(Gesture.GestureType.TYPE_SWIPE);
   }
 
   void Start() {}
 
   void Update() {
-
-    // デモプレイに移行
-    if (canShiftDemoPlay()) {
-      state_ = TitleState.DemoPlay;
-    }
-    
     // ゲーム本編に移行
     if (canShiftStart()) {
       GameObject.Find("MyNetworkLobbyManager").GetComponent<MyNetworkLobbyManager>().GameStart();
     }
-    if (Input.anyKeyDown) {
-      GameObject.Find("MyNetworkLobbyManager").GetComponent<MyNetworkLobbyManager>().GameStart();
-    }
-  }
-
-  bool canShiftDemoPlay() {
-    if (!isRecognizedHand()) return false;
-
-    Frame frame = controller.Frame();
-    gestures = frame.Gestures();
-    var finger_count = frame.Fingers.Count;
-
-    for (int i = 0; i < finger_count; ++i) {
-      if (gestures[i].Type == Gesture.GestureType.TYPE_SWIPE) {
-        return true;
-      }
-    }
-    return false;
   }
 
   bool canShiftStart() {
@@ -86,9 +59,5 @@ public class SceneState : MonoBehaviour {
 
   public bool isStart() {
     return state_ == TitleState.Start;
-  }
-
-  public bool isDemoPlay() {
-    return state_ == TitleState.DemoPlay;
   }
 }
