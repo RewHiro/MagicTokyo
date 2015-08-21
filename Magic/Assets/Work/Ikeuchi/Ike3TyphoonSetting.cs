@@ -70,5 +70,6 @@ public class Ike3TyphoonSetting : MonoBehaviour {
         game_object.transform.position = tubo_obj_.transform.position;
         game_object.transform.Translate(0.0f, 3.0f, 0.0f);
         game_object.name = typhoon_obj_.name;
+        AudioManager.Instance.PlaySe(13);
     }
 }

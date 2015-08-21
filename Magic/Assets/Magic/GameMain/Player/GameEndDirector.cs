@@ -46,6 +46,7 @@ public class GameEndDirector : NetworkBehaviour
         if (count_ == 0.0f)
         {
             RpcFinishLocal();
+            AudioManager.Instance.PlaySe(6);
             foreach (var durian in FindObjectsOfType<Ike3dorian>())
             {
                 durian.ExplodeForcibly();

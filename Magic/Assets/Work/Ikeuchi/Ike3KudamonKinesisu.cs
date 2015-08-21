@@ -19,6 +19,7 @@ public class Ike3KudamonKinesisu : MonoBehaviour
 
     public void KudamonKinesis()
     {
+        AudioManager.Instance.PlaySe(15);
         // どのくだもんを浮かせるか決める処理
         var kudamon_obj = GetComponentsInChildren<Ike3KudamonMove>();
 

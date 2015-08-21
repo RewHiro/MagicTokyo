@@ -68,7 +68,6 @@ public class PlayerAttacker : NetworkBehaviour
                     lemon_num);
                 apple_num_ = apple_num;
                 lemon_num_ = lemon_num;
-                particle_.apply(Particle.State.Attack);
 
             }
             else
@@ -87,6 +86,8 @@ public class PlayerAttacker : NetworkBehaviour
             is_guard_ = true;
 
             // 攻撃エフェクト
+            particle_.apply(Particle.State.Attack);
+            AudioManager.Instance.PlaySe(0);
             if (POT_LIMIT_NUM <= tubo_in_destory_.GetKudamonCount())
             {
                 FindObjectOfType<FruitCreater>().PeachCreate(1);

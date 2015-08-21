@@ -23,6 +23,8 @@ public class GameStartDirector : NetworkBehaviour
     const float STANBY_LIMIT = 3.0f;
     public int ReadyCount { get { return (int)count_; } }
 
+    bool is_se_player = false;
+
     Text text_;
 
     [SerializeField
@@ -35,6 +37,7 @@ public class GameStartDirector : NetworkBehaviour
 
     void Start()
     {
+        if (!isLocalPlayer) return;
         text_ = GameObject.Find("StartText").GetComponent<Text>();
     }
 
@@ -66,7 +69,11 @@ public class GameStartDirector : NetworkBehaviour
             standby_count_ += Time.deltaTime;
             return;
         }
-        if(count_ == STANBY_LIMIT) { RpcCountDownLocal(); }
+        if(count_ == STANBY_LIMIT)
+        {
+            AudioManager.Instance.PlayBgm();
+            RpcCountDownLocal();
+        }
         //ChangeText();
         text_.text = "";
         count_ += -Time.deltaTime;
@@ -76,6 +83,10 @@ public class GameStartDirector : NetworkBehaviour
         state_ = State.START;
         CmdTellServerStart();
         text_.enabled = false;
+        if (!is_se_player)
+        {
+            AudioManager.Instance.PlaySe(5);
+        }
     }
 
     void ChangeText()
