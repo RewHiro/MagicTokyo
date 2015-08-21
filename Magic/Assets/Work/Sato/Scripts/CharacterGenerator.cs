@@ -47,8 +47,6 @@ public class CharacterGenerator : MonoBehaviour {
         bool player_number = score_saver.Is1P;
         bool is_win = result_refernce.IsWin;
         bool is_draw = result_refernce.IsDraw;
-
-        player_number = false;
       
 
         //プレイヤー番号、勝敗をもとに表示する画像を設定

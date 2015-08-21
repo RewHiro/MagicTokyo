@@ -40,7 +40,7 @@ public class ResultAnimationManager : MonoBehaviour {
         var score_saver = GameObject.FindObjectOfType<ScoreSaver>();
 
            //勝ち,負け,引き分け、判定.
-           if (score_saver.FruitNum > score_saver.RemoteFruitNum)
+           if (score_saver.FruitNum < score_saver.RemoteFruitNum)
            {
 
                //勝ち
@@ -49,7 +49,7 @@ public class ResultAnimationManager : MonoBehaviour {
 
 
            }
-           else if (score_saver.FruitNum < score_saver.RemoteFruitNum)
+           else if (score_saver.FruitNum > score_saver.RemoteFruitNum)
            {
 
                //負け
