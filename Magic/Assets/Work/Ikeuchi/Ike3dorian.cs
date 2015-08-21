@@ -104,6 +104,7 @@ public class Ike3dorian : MonoBehaviour {
             game_object.transform.SetParent(particle_manager.transform);
             game_object.transform.position = transform.position;
             game_object.name = particle_.name;
+            AudioManager.Instance.PlaySe(9);
         }
         else if (explosion_count_ == explosion_limit_time_ + NEXT_FRAME)
         {

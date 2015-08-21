@@ -115,6 +115,7 @@ public class SmallFruit : NetworkBehaviour
                 {
                     if (effect_time_ >= EFFECT_TIME_MAX_)
                     {
+                        AudioManager.Instance.PlaySe(10);
                         GameObject particle_manager_ = GameObject.Find("Ike3ParticleManager");
                         explosion_effecct = Instantiate(explosion_effect_particle_);
                         explosion_effecct.transform.SetParent(particle_manager_.transform);

@@ -72,6 +72,7 @@ public class PlayerMagicAttacker : NetworkBehaviour
                 magic_action_list_[magic_type]();
                 player_magic_manager_.MagicExecute();
                 is_guard_ = true;
+                AudioManager.Instance.PlaySe(11);
             }
             else
             {

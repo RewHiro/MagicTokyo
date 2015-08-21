@@ -32,6 +32,7 @@ public class PlayerDamage : NetworkBehaviour
             FindObjectOfType<FruitCreater>().LemonCreate(lemon_num_);
             is_guard_ = true;
             particle_.apply(Particle.State.Damage);
+            AudioManager.Instance.PlaySe(4);
         }
         else
         {

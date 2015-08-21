@@ -87,6 +87,7 @@ public class BounceKudamon : MonoBehaviour
                 {
                     if (start_time_ >= 3.0f)
                     {
+                        AudioManager.Instance.PlaySe(12);
                         start_text_.enabled = true;
 
                         changebounce = GetComponentsInChildren<ChangeBounce>();
