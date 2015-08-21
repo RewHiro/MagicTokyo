@@ -68,7 +68,7 @@ public class PlayerMagicAttacker : NetworkBehaviour
             {
                 if (is_guard_) break;
                 CircleGesture gesture = new CircleGesture(gesture_list[0]);
-                if (gesture.DurationSeconds < 1.0f) return;
+                if (gesture.DurationSeconds < 0.5f) return;
                 magic_action_list_[magic_type]();
                 player_magic_manager_.MagicExecute();
                 is_guard_ = true;
