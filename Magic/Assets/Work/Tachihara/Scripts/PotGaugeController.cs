@@ -13,6 +13,7 @@ public class PotGaugeController : MonoBehaviour {
   int accumlation_count_ = 0;   // 累積カウント
 
   SpriteRenderer effect_ = null;
+  Color ALPHA = new Color(1, 1, 1, 0);
 
 
   void Start() {
@@ -22,7 +23,7 @@ public class PotGaugeController : MonoBehaviour {
 
     tubo_ = FindObjectOfType<TuboInDestroy>();
     effect_ = GameObject.Find("PotIconEffect").GetComponent<SpriteRenderer>();
-    effect_.color = new Color(1, 1, 1, 0);
+    effect_.color = ALPHA;
   }
 
   void Update() {
@@ -33,10 +34,12 @@ public class PotGaugeController : MonoBehaviour {
     var scale = new Vector3(SCALE_X, SCALE_Y * ratio, 1.0f);
     bar_.localScale = scale;
 
-    var maximum = current_count_ == 10;
-    if (!maximum) { return; }
+    var maximum = (current_count_ == 10);
 
-    effect_.color = new Color(1, 1, 1, maximum ? 1.0f : 0.0f);
+    var set_color = (maximum ? Color.white : ALPHA);
+    if (effect_.color != set_color) { effect_.color = set_color; }
+
+    if (!maximum) { return; }
     effect_.transform.Rotate(new Vector3(0, 0, -Time.deltaTime * 60));
   }
 
