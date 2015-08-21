@@ -9,6 +9,9 @@ public class MyNetworkLobbyManager : NetworkLobbyManager
     public static MyNetworkLobbyManager s_singleton = null;
     string titel = null;
 
+    int bgm_count_ = 0;
+    public int BGMCount{get{ return bgm_count_; }set { bgm_count_ = value; } }
+
     void Start()
     {
         titel = Application.loadedLevelName;
