@@ -76,11 +76,9 @@ public class Score : MonoBehaviour {
                 //最大桁のアニメーションが終わったら、キャラクター、ロゴを表示.
                 if (time_counter_ > animation_end_target_time + show_delay_time_)
                 {
-                    if (transform.name == "1P_Digit3")
-                    {
                         GameObject.FindObjectOfType<ResultAnimationManager>().DoOpen = true;
                         is_end_send_ = true;
-                    }
+                    
                 }
 
             }
