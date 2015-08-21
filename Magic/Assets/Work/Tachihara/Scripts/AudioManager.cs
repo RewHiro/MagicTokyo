@@ -30,7 +30,8 @@ public class AudioManager : MonoBehaviour {
   AudioSource bgm_ = null;
   List<AudioSource> se_ = null;
 
-  List<AudioSource> clips_ = null;
+  List<AudioClip> bgm_clips_ = null;
+  List<AudioSource> se_clips_ = null;
 
   public static AudioManager Instance { get; private set; }
 
@@ -40,10 +41,25 @@ public class AudioManager : MonoBehaviour {
     if (objects.Length > 1) { Destroy(gameObject); }
     else { DontDestroyOnLoad(gameObject); }
 
-    Instance = gameObject.GetComponent<AudioManager>();
+    Instance = FindObjectOfType<AudioManager>();
+    if (Instance == null) {
+      Debug.LogError("null instance");
+
+      var manager = new GameObject();
+      var setting = new GameObject().AddComponent<AudioSetting>();
+      var audio = new GameObject();
+      setting.transform.parent = manager.transform;
+      audio.transform.parent = manager.transform;
+
+      Instance = manager.AddComponent<AudioManager>();
+    }
+
     bgm_ = null;
     se_ = new List<AudioSource>();
-    clips_ = new List<AudioSource>();
+    bgm_clips_ = new List<AudioClip>();
+    se_clips_ = new List<AudioSource>();
+
+    Debug.Log("AudioManager.Awake() fin");
   }
 
   void Start() {
@@ -52,11 +68,10 @@ public class AudioManager : MonoBehaviour {
     var setting = FindObjectOfType<AudioSetting>();
     var list = GameObject.Find("Audio");
 
-    var bgm_list = setting.GetBgmClips();
+    bgm_clips_ = setting.GetBgmClips();
     var bgm = new GameObject();
     bgm.transform.parent = list.transform;
     bgm_ = bgm.AddComponent<AudioSource>();
-    bgm_.clip = bgm_list[Random.Range(0, bgm_list.Count)];
     bgm_.loop = setting.IsBgmLooping();
     bgm_.volume = av_.bgm_volume_;
     bgm_.spatialBlend = 0.0f;
@@ -71,7 +86,7 @@ public class AudioManager : MonoBehaviour {
       source.volume = av_.se_volume_;
       source.spatialBlend = 0.0f;
 
-      clips_.Add(source);
+      se_clips_.Add(source);
       Debug.Log("hoge");
     }
 
@@ -88,7 +103,10 @@ public class AudioManager : MonoBehaviour {
     bgm_.volume = delay_time;
   }
 
-  public void PlayBgm() {
+  public void PlayBgm(int index) {
+    if (index < 0 || index >= bgm_clips_.Count) { return; }
+
+    bgm_.clip = bgm_clips_[index];
     bgm_.volume = av_.bgm_volume_;
     bgm_.Play();
 
@@ -109,9 +127,9 @@ public class AudioManager : MonoBehaviour {
 
   public void PlaySe(int index) {
     if (se_.Count >= max_se_num_) { return; }
-    if (index < 0 || index >= clips_.Count) { return; }
+    if (index < 0 || index >= se_clips_.Count) { return; }
 
-    se_.Add(clips_[index]);
+    se_.Add(se_clips_[index]);
 
     foreach (var se in se_) { if (!se.isPlaying) se.Play(); }
   }

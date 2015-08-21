@@ -35,7 +35,7 @@ public class FruitsGaugeController : MonoBehaviour {
 
     owner_ = CalculateGaugeRatio(fruit_.FruitNum, fruit_.RemoteFruitNum);
     enemy_ = CalculateGaugeRatio(fruit_.RemoteFruitNum, fruit_.FruitNum);
-    
+
     FixGaugeLength(l_bar_.transform, owner_);
     FixGaugeLength(r_bar_.transform, enemy_);
   }
@@ -46,16 +46,12 @@ public class FruitsGaugeController : MonoBehaviour {
   }
 
   void FixGaugeLength(Transform gauge, float scaleRatio) {
+    if (scaleRatio > 2.0f) { scaleRatio = 2.0f; }
     var gaugeScale = new Vector3(3.5f * scaleRatio, 1.0f, 1.0f);
     gauge.localScale = gaugeScale;
   }
 
   float CalculateGaugeRatio(float ownerNum, float enemyNum) {
     return (ownerNum != 0.0f && enemyNum != 0.0f) ? ownerNum / enemyNum : 0.0f;
-  }
-
-  // 自分が相手よりも負けている
-  public bool IsOwnerLowRatio() {
-    return owner_ < enemy_;
   }
 }
