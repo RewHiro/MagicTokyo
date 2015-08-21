@@ -33,8 +33,8 @@ public class FruitsGaugeController : MonoBehaviour {
   void Update() {
     if (!IsRefFruitCounter()) { return; }
 
-    owner_ = CalculateGaugeRatio(fruit_.FruitNum, fruit_.RemoteFruitNum);
-    enemy_ = CalculateGaugeRatio(fruit_.RemoteFruitNum, fruit_.FruitNum);
+    owner_ = CalculateGaugeRatio(fruit_.RemoteFruitNum, fruit_.FruitNum);
+    enemy_ = CalculateGaugeRatio(fruit_.FruitNum, fruit_.RemoteFruitNum);
 
     FixGaugeLength(l_bar_.transform, owner_);
     FixGaugeLength(r_bar_.transform, enemy_);
