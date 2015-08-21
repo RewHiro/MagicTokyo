@@ -10,12 +10,8 @@ public class IconManager : MonoBehaviour {
   [SerializeField]
   Vector3 ENEMY_POS = Vector3.zero;
 
-  TimeLimitter time_ = null;
-
 
   void Start() {
-    time_ = FindObjectOfType<TimeLimitter>();
-
     PlayerSetting player = null;
     foreach (var obj in FindObjectsOfType<PlayerSetting>()) {
       if (!obj.isLocalPlayer) continue;
@@ -34,13 +30,5 @@ public class IconManager : MonoBehaviour {
     var p2 = GameObject.Find("Player_2");
     p1.GetComponent<GaugeSpriteSelecter>().Setup(is_server);
     p2.GetComponent<GaugeSpriteSelecter>().Setup(!is_server);
-  }
-
-  void Update() {
-    if (time_.LimitCount > 10) return;
-
-    var own_lose = FindObjectOfType<FruitsGaugeController>().IsOwnerLowRatio();
-    var transform = GameObject.Find(own_lose ? "Le-mon" : "Apumon").transform;
-    transform.Rotate(new Vector3(0, 0, 2.0f * (60 - time_.LimitCount)));
   }
 }

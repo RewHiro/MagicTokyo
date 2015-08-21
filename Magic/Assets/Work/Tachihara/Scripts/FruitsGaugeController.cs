@@ -54,9 +54,4 @@ public class FruitsGaugeController : MonoBehaviour {
   float CalculateGaugeRatio(float ownerNum, float enemyNum) {
     return (ownerNum != 0.0f && enemyNum != 0.0f) ? ownerNum / enemyNum : 0.0f;
   }
-
-  // 自分が相手よりも負けている
-  public bool IsOwnerLowRatio() {
-    return owner_ < enemy_;
-  }
 }
