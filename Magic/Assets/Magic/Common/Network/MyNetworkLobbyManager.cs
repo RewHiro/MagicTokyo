@@ -12,6 +12,9 @@ public class MyNetworkLobbyManager : NetworkLobbyManager
     int bgm_count_ = 0;
     public int BGMCount{get{ return bgm_count_; }set { bgm_count_ = value; } }
 
+    bool is_1p_ = true;
+    public bool Is1P { get { return is_1p_; }}
+
     void Start()
     {
         titel = Application.loadedLevelName;
@@ -21,9 +24,9 @@ public class MyNetworkLobbyManager : NetworkLobbyManager
         string ip = json["IP"].Get<string>();
         MyNetworkLobbyManager.singleton.networkAddress = ip;
 
-
         if (null == MyNetworkLobbyManager.s_singleton.StartHost())
         {
+            MyNetworkLobbyManager.s_singleton.is_1p_ = false;
             MyNetworkLobbyManager.s_singleton.StartClient();
         }
     }
