@@ -15,12 +15,12 @@ public class TitleCharacterDirector : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        iTween.PunchRotation(
-            gameObject,
-            iTween.Hash(
-                "amount", Vector3.up * ANGLE,
-                "time", 5.0f
-                ));
+        //iTween.PunchRotation(
+        //    gameObject,
+        //    iTween.Hash(
+        //        "amount", Vector3.up * ANGLE,
+        //        "time", 5.0f
+        //        ));
 
 
 
