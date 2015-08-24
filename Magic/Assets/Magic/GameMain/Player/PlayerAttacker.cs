@@ -33,6 +33,16 @@ public class PlayerAttacker : NetworkBehaviour
 
     const int POT_LIMIT_NUM = 10;
 
+    [SerializeField
+    , TooltipAttribute("ここに「AttackApple」prefabを入れてください\n(プログラマー用)")]
+    GameObject apple_attack_obj_ = null;
+    [SerializeField
+    , TooltipAttribute("ここに「AttackLemon」prefabを入れてください\n(プログラマー用)")]
+    GameObject lemon_attack_obj_ = null;
+    [SerializeField
+    , TooltipAttribute("ここに「Pot」prefabを入れてください\n(プログラマー用)")]
+    GameObject pot_obj_ = null;
+
     void Start()
     {
         if (!isLocalPlayer) return;
@@ -67,6 +77,33 @@ public class PlayerAttacker : NetworkBehaviour
                     lemon_num);
                 apple_num_ = apple_num;
                 lemon_num_ = lemon_num;
+
+                bool flag_ap = apple_attack_obj_ != null;
+                bool flag_le = lemon_attack_obj_ != null;
+                bool flag_po = pot_obj_ != null;
+
+                bool flag = flag_ap && flag_le && flag_po;
+                if (flag)
+                {
+                    for (int num = 0; num < apple_num_; num++)
+                    {
+                        GameObject game_object = Instantiate(apple_attack_obj_);
+                        GameObject pot_obj = GameObject.Find(pot_obj_.name);
+                        game_object.transform.SetParent(pot_obj.transform);
+                        game_object.name = apple_attack_obj_.name;
+                    }
+                    for (int num = 0; num < lemon_num_; num++)
+                    {
+                        GameObject game_object = Instantiate(lemon_attack_obj_);
+                        GameObject pot_obj = GameObject.Find(pot_obj_.name);
+                        game_object.transform.SetParent(pot_obj.transform);
+                        game_object.name = lemon_attack_obj_.name;
+                    }
+                }
+                else
+                {
+                    Debug.Log("AttackApple(lemon) または Pot が入っていません");
+                }
             }
             else
             {

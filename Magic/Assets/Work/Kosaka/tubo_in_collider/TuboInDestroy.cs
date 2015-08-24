@@ -15,6 +15,10 @@ public class TuboInDestroy : MonoBehaviour
     [SerializeField, Tooltip("鍋に入る最大数")]
     int KUDAMON_MAX_COUNT = 10;
 
+    [SerializeField
+   , TooltipAttribute("ここに「AttackDrian」prefabを入れてください\n(プログラマー用)")]
+    GameObject drian_attack_obj_ = null;
+
     //それぞれのくだモンの鍋に入った(消した)数
     int lemon_count_ = 0;
     int apumon_count_ = 0;
@@ -112,6 +116,17 @@ public class TuboInDestroy : MonoBehaviour
             if (other.gameObject.GetComponent<Ike3dorian>().IsExplosion) return;
             Destroy(other.gameObject);
             is_in_dorian_ = true;
+
+            if(drian_attack_obj_ != null)
+            {
+                GameObject game_object = Instantiate(drian_attack_obj_);
+                game_object.transform.SetParent(this.transform);
+                game_object.name = drian_attack_obj_.name;
+            }
+            else
+            {
+                Debug.Log("drian_attack_obj_ にプレハブが入っていません");
+            }
         }
     }
 
