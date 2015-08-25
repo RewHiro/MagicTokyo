@@ -120,7 +120,7 @@ public class TuboInDestroy : MonoBehaviour
             if(drian_attack_obj_ != null)
             {
                 GameObject game_object = Instantiate(drian_attack_obj_);
-                game_object.transform.SetParent(this.transform);
+                game_object.transform.position = transform.position;
                 game_object.name = drian_attack_obj_.name;
             }
             else
