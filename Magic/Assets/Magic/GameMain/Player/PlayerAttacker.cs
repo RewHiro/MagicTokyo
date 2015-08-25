@@ -105,14 +105,14 @@ public class PlayerAttacker : NetworkBehaviour
                 {
                     GameObject game_object = Instantiate(apple_attack_obj_);
                     GameObject pot_obj = GameObject.Find(pot_obj_.name);
-                    game_object.transform.SetParent(pot_obj.transform);
+                    game_object.transform.position = pot_obj.transform.position;
                     game_object.name = apple_attack_obj_.name;
                 }
                 for (int num = 0; num < lemon_num_; num++)
                 {
                     GameObject game_object = Instantiate(lemon_attack_obj_);
                     GameObject pot_obj = GameObject.Find(pot_obj_.name);
-                    game_object.transform.SetParent(pot_obj.transform);
+                    game_object.transform.position = pot_obj.transform.position;
                     game_object.name = lemon_attack_obj_.name;
                 }
             }

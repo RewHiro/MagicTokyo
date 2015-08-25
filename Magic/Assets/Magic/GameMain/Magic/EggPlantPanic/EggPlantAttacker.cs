@@ -47,7 +47,7 @@ public class EggPlantAttacker : NetworkBehaviour
             {
                 GameObject game_object = Instantiate(jamamon_attack_obj_);
                 GameObject pot_obj = GameObject.Find(pot_obj_.name);
-                game_object.transform.SetParent(pot_obj.transform);
+                game_object.transform.position = pot_obj.transform.position;
                 game_object.name = jamamon_attack_obj_.name;
             }
         }
