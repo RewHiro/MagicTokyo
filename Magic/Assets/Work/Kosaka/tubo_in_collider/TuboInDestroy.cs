@@ -69,13 +69,14 @@ public class TuboInDestroy : MonoBehaviour
 
         //----------------------------------------------
 
+        //ゲームが始まったら蓋をはずす
+        if (game_start_director_.IsStart)
+            lid_control_.can_rendering_lid_ = false;
+
         //くだモンがMAXなら蓋をつける
         if (GetKudamonCount() >= KUDAMON_MAX_COUNT)
             lid_control_.can_rendering_lid_ = true;
 
-        //ゲームが始まったら蓋をはずす
-        if (game_start_director_.IsStart)
-            lid_control_.can_rendering_lid_ = false;
 
         //ジェスチャーで蓋をはずす
         if (player_attacker_.IsAttack)
