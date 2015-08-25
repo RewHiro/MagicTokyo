@@ -5,6 +5,10 @@ using UnityEngine.Networking;
 public class DorianBoomDamage : NetworkBehaviour
 {
 
+    [SerializeField
+, TooltipAttribute("ここに「AttackDrian」prefabを入れてください\n(プログラマー用)")]
+    GameObject drian_attack_obj_ = null;
+
     bool is_damage_ = false;
     public bool IsDamage { get { return is_damage_; } }
 
@@ -16,7 +20,11 @@ public class DorianBoomDamage : NetworkBehaviour
         if (is_damage_)
         {
             if (is_guard_) return;
-            FindObjectOfType<FruitCreater>().DorianCreate(1);
+
+            GameObject game_object = Instantiate(drian_attack_obj_);
+            game_object.GetComponent<Ike3AttackFruitMove>().UpDownChange(0, 0, 0, 1);
+            game_object.transform.position = new Vector3(0, 5, 0);
+
             is_guard_ = true;
         }
         else
