@@ -25,7 +25,7 @@ public class Ike3AttackFruitMove : MonoBehaviour
     }
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         const float LIMIT_VALUE = 0.15f;
         float up_down_value = 0.15f;
@@ -53,25 +53,25 @@ public class Ike3AttackFruitMove : MonoBehaviour
             if (apple_num_ != 0)
             {
                 var fruit = creater.AppleCreate();
-                fruit.transform.position = gameObject.transform.position;
+                fruit.transform.position = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
             }
 
             if (lemon_num_ != 0)
             {
                 var fruit = creater.LemonCreate();
-                fruit.transform.position = gameObject.transform.position;
+                fruit.transform.position = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
             }
 
             if (egg_plant_num_ != 0)
             {
                 var fruit = creater.EggPlantCreate();
-                fruit.transform.position = gameObject.transform.position;
+                fruit.transform.position = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
             }
 
             if (durian_num_ != 0)
             {
                 var fruit = creater.DorianCreate();
-                fruit.transform.position = gameObject.transform.position;
+                fruit.transform.position = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
             }
 
             AudioManager.Instance.PlaySe(4);
