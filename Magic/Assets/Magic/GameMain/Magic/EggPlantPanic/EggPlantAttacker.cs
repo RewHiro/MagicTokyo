@@ -15,13 +15,12 @@ public class EggPlantAttacker : NetworkBehaviour
 
     bool is_remote_damage_ = false;
 
-    Particle particle_ = null;
-
-    void Start()
-    {
-        if (!isLocalPlayer) return;
-        particle_ = FindObjectOfType<Particle>();
-    }
+    [SerializeField
+    , TooltipAttribute("ここに「AttackJamamon」prefabを入れてください\n(プログラマー用)")]
+    GameObject jamamon_attack_obj_ = null;
+    [SerializeField
+    , TooltipAttribute("ここに「Pot」prefabを入れてください\n(プログラマー用)")]
+    GameObject pot_obj_ = null;
 
     void Update()
     {
@@ -33,10 +32,29 @@ public class EggPlantAttacker : NetworkBehaviour
 
     public void StartEggPlantPanic()
     {
+        if (!isLocalPlayer) return;
         CmdTellServerAttack(true, 5);
         is_attack_ = true;
         egg_plant_num_ = 5;
-        particle_.apply(Particle.State.Attack);
+
+        bool flag_jat = jamamon_attack_obj_ != null;
+        bool flag_po = pot_obj_ != null;
+
+        bool flag = flag_jat && flag_po;
+        if (flag)
+        {
+            for (int num = 0; num < 5; num++)
+            {
+                GameObject game_object = Instantiate(jamamon_attack_obj_);
+                GameObject pot_obj = GameObject.Find(pot_obj_.name);
+                game_object.transform.SetParent(pot_obj.transform);
+                game_object.name = jamamon_attack_obj_.name;
+            }
+        }
+        else
+        {
+            Debug.Log("AttackJamamon または Pot が入っていません");
+        }
     }
 
     [Command]

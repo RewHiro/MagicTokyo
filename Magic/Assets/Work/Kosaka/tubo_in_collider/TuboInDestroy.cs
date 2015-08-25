@@ -15,14 +15,16 @@ public class TuboInDestroy : MonoBehaviour
     [SerializeField, Tooltip("鍋に入る最大数")]
     int KUDAMON_MAX_COUNT = 10;
 
+    [SerializeField
+   , TooltipAttribute("ここに「AttackDrian」prefabを入れてください\n(プログラマー用)")]
+    GameObject drian_attack_obj_ = null;
+
     //それぞれのくだモンの鍋に入った(消した)数
     int lemon_count_ = 0;
     int apumon_count_ = 0;
     bool is_in_momon_ = false;
 
     bool is_in_dorian_ = false;
-
-    bool is_se_play_ = false;
 
     //くだモンの名前
     const string LEMON_NAME = "le-mon";
@@ -67,21 +69,13 @@ public class TuboInDestroy : MonoBehaviour
 
         //----------------------------------------------
 
+        //くだモンがMAXなら蓋をつける
+        if (GetKudamonCount() >= KUDAMON_MAX_COUNT)
+            lid_control_.can_rendering_lid_ = true;
+
         //ゲームが始まったら蓋をはずす
         if (game_start_director_.IsStart)
             lid_control_.can_rendering_lid_ = false;
-
-
-        //くだモンがMAXなら蓋をつける
-        if (GetKudamonCount() >= KUDAMON_MAX_COUNT)
-        {
-            if (!is_se_play_)
-            {
-                AudioManager.Instance.PlaySe(1);
-                is_se_play_ = true;
-            }
-            lid_control_.can_rendering_lid_ = true;
-        }
 
         //ジェスチャーで蓋をはずす
         if (player_attacker_.IsAttack)
@@ -101,21 +95,16 @@ public class TuboInDestroy : MonoBehaviour
         {
             Destroy(other.gameObject);
             lemon_count_++;
-            AudioManager.Instance.PlaySe(2);
         }
         else if (other.name == APUMON_NAME)
         {
             Destroy(other.gameObject);
             apumon_count_++;
-            AudioManager.Instance.PlaySe(2);
         }
         else if (other.name == MOMON_NAME)
         {
             Destroy(other.gameObject);
             is_in_momon_ = true;
-            AudioManager.Instance.PlaySe(3);
-            AudioManager.Instance.PlaySe(14);
-
         }
         else if (other.name == JAMAMON_NAME)
         {
@@ -127,7 +116,17 @@ public class TuboInDestroy : MonoBehaviour
             if (other.gameObject.GetComponent<Ike3dorian>().IsExplosion) return;
             Destroy(other.gameObject);
             is_in_dorian_ = true;
-            AudioManager.Instance.PlaySe(8);
+
+            if(drian_attack_obj_ != null)
+            {
+                GameObject game_object = Instantiate(drian_attack_obj_);
+                game_object.transform.SetParent(this.transform);
+                game_object.name = drian_attack_obj_.name;
+            }
+            else
+            {
+                Debug.Log("drian_attack_obj_ にプレハブが入っていません");
+            }
         }
     }
 
@@ -144,7 +143,6 @@ public class TuboInDestroy : MonoBehaviour
     {
         lemon_count_ = 0;
         apumon_count_ = 0;
-        is_se_play_ = false;
     }
 
     public void ResetMomon()

@@ -16,6 +16,13 @@ public class PlayerDamage : NetworkBehaviour
 
     Particle particle_ = null;
 
+    [SerializeField
+, TooltipAttribute("ここに「AttackApple」prefabを入れてください\n(プログラマー用)")]
+    GameObject apple_attack_obj_ = null;
+    [SerializeField
+    , TooltipAttribute("ここに「AttackLemon」prefabを入れてください\n(プログラマー用)")]
+    GameObject lemon_attack_obj_ = null;
+
     void Start()
     {
         if (!isLocalPlayer) return;
@@ -28,11 +35,22 @@ public class PlayerDamage : NetworkBehaviour
         if (is_damage_)
         {
             if (is_guard_) return;
-            FindObjectOfType<FruitCreater>().AppleCreate(apple_num_);
-            FindObjectOfType<FruitCreater>().LemonCreate(lemon_num_);
+
+            for (int num = 0; num < apple_num_; num++)
+            {
+                GameObject game_object = Instantiate(apple_attack_obj_);
+                game_object.GetComponent<Ike3AttackFruitMove>().UpDownChange(1);
+                game_object.transform.position = new Vector3(0, 5, 0);
+            }
+
+            for (int num = 0; num < lemon_num_; num++)
+            {
+                GameObject game_object = Instantiate(lemon_attack_obj_);
+                game_object.GetComponent<Ike3AttackFruitMove>().UpDownChange(0, 1);
+                game_object.transform.position = new Vector3(0, 5, 0);
+            }
             is_guard_ = true;
-            particle_.apply(Particle.State.Damage);
-            AudioManager.Instance.PlaySe(4);
+
         }
         else
         {
