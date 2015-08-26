@@ -5,7 +5,7 @@ public class LidControl : MonoBehaviour
 {
 
     Collider lid_collider_;
-    Renderer lid_renderer_;
+    SpriteRenderer lid_renderer_;
 
     public bool can_rendering_lid_ { get; set; }
 
@@ -14,7 +14,7 @@ public class LidControl : MonoBehaviour
     void Awake()
     {
         lid_collider_ = GetComponent<Collider>();
-        lid_renderer_ = GetComponent<Renderer>();
+        lid_renderer_ = GetComponent<SpriteRenderer>();
     }
 
     void Start()
