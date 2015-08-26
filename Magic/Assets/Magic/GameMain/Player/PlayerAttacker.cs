@@ -21,6 +21,8 @@ public class PlayerAttacker : NetworkBehaviour
 
     bool is_guard_ = false;
 
+    bool is_right_ = false;
+
     HandController hand_controller_ = null;
     //SkeletalHand hand_ = null;
 
@@ -31,14 +33,21 @@ public class PlayerAttacker : NetworkBehaviour
 
     const int POT_LIMIT_NUM = 10;
 
-    Particle particle_ = null;
+    [SerializeField
+    , TooltipAttribute("ここに「AttackApple」prefabを入れてください\n(プログラマー用)")]
+    GameObject apple_attack_obj_ = null;
+    [SerializeField
+    , TooltipAttribute("ここに「AttackLemon」prefabを入れてください\n(プログラマー用)")]
+    GameObject lemon_attack_obj_ = null;
+    [SerializeField
+    , TooltipAttribute("ここに「Pot」prefabを入れてください\n(プログラマー用)")]
+    GameObject pot_obj_ = null;
 
     void Start()
     {
         if (!isLocalPlayer) return;
         hand_controller_ = FindObjectOfType<HandController>();
         tubo_in_destory_ = FindObjectOfType<TuboInDestroy>();
-        particle_ = FindObjectOfType<Particle>();
     }
 
     void Update()
@@ -52,7 +61,6 @@ public class PlayerAttacker : NetworkBehaviour
     {
         foreach (var hand in hand_controller_.GetFrame().Hands)
         {
-            if (!hand.IsRight) continue;
             var gesture_list = hand.Frame.Gestures();
             if (gesture_list[0].IsValid)
             {
@@ -61,6 +69,7 @@ public class PlayerAttacker : NetworkBehaviour
                 if (gesture.DurationSeconds < TURN_SECOND) return;
                 CmdTellServerAttack(true);
                 is_attack_ = true;
+                is_right_ = hand.IsRight;
                 var apple_num = tubo_in_destory_.GetApumonCount();
                 var lemon_num = tubo_in_destory_.GetLemonCount();
                 CmdTellServerFruitNum(
@@ -68,7 +77,6 @@ public class PlayerAttacker : NetworkBehaviour
                     lemon_num);
                 apple_num_ = apple_num;
                 lemon_num_ = lemon_num;
-
             }
             else
             {
@@ -85,10 +93,37 @@ public class PlayerAttacker : NetworkBehaviour
             if (is_guard_) return;
             is_guard_ = true;
 
+
+            bool flag_ap = apple_attack_obj_ != null;
+            bool flag_le = lemon_attack_obj_ != null;
+            bool flag_po = pot_obj_ != null;
+
+            bool flag = flag_ap && flag_le && flag_po;
+            if (flag)
+            {
+                for (int num = 0; num < apple_num_; num++)
+                {
+                    GameObject game_object = Instantiate(apple_attack_obj_);
+                    GameObject pot_obj = GameObject.Find(pot_obj_.name);
+                    game_object.transform.position = pot_obj.transform.position;
+                    game_object.name = apple_attack_obj_.name;
+                }
+                for (int num = 0; num < lemon_num_; num++)
+                {
+                    GameObject game_object = Instantiate(lemon_attack_obj_);
+                    GameObject pot_obj = GameObject.Find(pot_obj_.name);
+                    game_object.transform.position = pot_obj.transform.position;
+                    game_object.name = lemon_attack_obj_.name;
+                }
+            }
+            else
+            {
+                Debug.Log("AttackApple(lemon) または Pot が入っていません");
+            }
+
             // 攻撃エフェクト
-            particle_.apply(Particle.State.Attack);
-            AudioManager.Instance.PlaySe(0);
-            if (POT_LIMIT_NUM <= tubo_in_destory_.GetKudamonCount())
+            if (POT_LIMIT_NUM <= tubo_in_destory_.GetKudamonCount() && 
+                is_right_)
             {
                 FindObjectOfType<FruitCreater>().PeachCreate(1);
             }
