@@ -53,6 +53,7 @@ public class PlayerMagicAttacker : NetworkBehaviour
     void Update()
     {
         if (!isLocalPlayer) return;
+        if (GetComponent<GameEndDirector>().IsStart) return;
         var magic_type = player_magic_manager_.MagicType;
 
         foreach (var hand in hand_controller_.GetFrame().Hands)

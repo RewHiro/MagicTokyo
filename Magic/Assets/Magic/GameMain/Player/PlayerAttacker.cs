@@ -53,6 +53,7 @@ public class PlayerAttacker : NetworkBehaviour
     void Update()
     {
         if (!isLocalPlayer) return;
+        if (GetComponent<GameEndDirector>().IsStart) return;
         GestureUpdate();
         AttackEffect();
     }

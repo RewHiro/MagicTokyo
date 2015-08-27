@@ -126,11 +126,12 @@ public class AudioManager : MonoBehaviour {
   }
 
   public void PlaySe(int index) {
-    if (se_.Count >= max_se_num_) { return; }
-    if (index < 0 || index >= se_clips_.Count) { return; }
+        //if (se_.Count >= max_se_num_) { return; }
+        //if (index < 0 || index >= se_clips_.Count) { return; }
 
-    se_.Add(se_clips_[index]);
+        //se_.Add(se_clips_[index]);
 
-    foreach (var se in se_) { if (!se.isPlaying) se.Play(); }
+        //foreach (var se in se_) { if (!se.isPlaying) se.Play(); }
+        se_clips_[index].Play();
   }
 }

@@ -38,6 +38,7 @@ public class TuboInDestroy : MonoBehaviour
 
     PlayerAttacker player_attacker_ = null;
     GameStartDirector game_start_director_ = null;
+    GameEndDirector game_end_director_ = null;
 
     LidControl lid_control_ = null;
 
@@ -81,6 +82,10 @@ public class TuboInDestroy : MonoBehaviour
         //ジェスチャーで蓋をはずす
         if (player_attacker_.IsAttack)
             lid_control_.can_rendering_lid_ = false;
+
+
+        if(game_end_director_.IsStart)
+            lid_control_.can_rendering_lid_ = true;
 
         //----------------------------------------------
 
@@ -186,6 +191,7 @@ public class TuboInDestroy : MonoBehaviour
             if (!player.isLocalPlayer) continue;
             player_attacker_ = player;
             game_start_director_ = player.gameObject.GetComponent<GameStartDirector>();
+            game_end_director_ = player.gameObject.GetComponent<GameEndDirector>();
         }
     }
 }
