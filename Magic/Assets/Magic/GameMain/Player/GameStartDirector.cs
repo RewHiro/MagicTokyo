@@ -87,7 +87,16 @@ public class GameStartDirector : NetworkBehaviour
         text_.enabled = false;
         if (!is_se_player)
         {
-            AudioManager.Instance.PlaySe(5);
+            if (MyNetworkLobbyManager.s_singleton.Is1P)
+            {
+                AudioManager.Instance.PlaySe(22);
+            }
+            else
+            {
+                AudioManager.Instance.PlaySe(18);
+            }
+            //AudioManager.Instance.PlaySe(5);
+            is_se_player = true;
         }
     }
 

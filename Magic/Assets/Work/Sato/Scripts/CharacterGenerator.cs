@@ -47,7 +47,9 @@ public class CharacterGenerator : MonoBehaviour {
         bool player_number = score_saver.Is1P;
         bool is_win = result_refernce.IsWin;
         bool is_draw = result_refernce.IsDraw;
-      
+
+
+        var audio_manager = AudioManager.Instance;
 
         //プレイヤー番号、勝敗をもとに表示する画像を設定
         if (player_number){
@@ -55,9 +57,11 @@ public class CharacterGenerator : MonoBehaviour {
             //1P画像.(Lemon)
             if (is_win){
                 Kudamon_Image_Type_ = Kudamon_Type_.Lemon_Win_;
+                audio_manager.PlaySe(23);
             }
             else{
                 Kudamon_Image_Type_ = Kudamon_Type_.Lemon_Lose_;
+                audio_manager.PlaySe(21);
             }
 
         }
@@ -65,10 +69,13 @@ public class CharacterGenerator : MonoBehaviour {
 
             //2P画像.(apmon)
             if (is_win) {
-                Kudamon_Image_Type_ = Kudamon_Type_.Appmon_Win_;
+                Kudamon_Image_Type_ = Kudamon_Type_.Appmon_Win_;                audio_manager.PlaySe(23);
+                audio_manager.PlaySe(19);
             }
-            else{
+            else
+            {
                 Kudamon_Image_Type_ = Kudamon_Type_.Appmon_Lose_;
+                audio_manager.PlaySe(17);
             }
 
         }
