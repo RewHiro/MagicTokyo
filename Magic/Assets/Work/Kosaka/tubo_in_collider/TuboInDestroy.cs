@@ -84,7 +84,7 @@ public class TuboInDestroy : MonoBehaviour
             lid_control_.can_rendering_lid_ = false;
 
 
-        if(game_end_director_.IsStart)
+        if (game_end_director_.IsStart)
             lid_control_.can_rendering_lid_ = true;
 
         //----------------------------------------------
@@ -100,11 +100,13 @@ public class TuboInDestroy : MonoBehaviour
         if (other.name == LEMON_NAME)
         {
             Destroy(other.gameObject);
+            if (GetKudamonCount() >= KUDAMON_MAX_COUNT) return;
             lemon_count_++;
         }
         else if (other.name == APUMON_NAME)
         {
             Destroy(other.gameObject);
+            if (GetKudamonCount() >= KUDAMON_MAX_COUNT) return;
             apumon_count_++;
         }
         else if (other.name == MOMON_NAME)
@@ -123,7 +125,7 @@ public class TuboInDestroy : MonoBehaviour
             Destroy(other.gameObject);
             is_in_dorian_ = true;
 
-            if(drian_attack_obj_ != null)
+            if (drian_attack_obj_ != null)
             {
                 GameObject game_object = Instantiate(drian_attack_obj_);
                 game_object.transform.position = transform.position;

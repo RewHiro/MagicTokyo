@@ -19,13 +19,20 @@ public class MyNetworkLobbyManager : NetworkLobbyManager
     {
         titel = Application.loadedLevelName;
         s_singleton = this;
+
         var textAsset = Resources.Load("connect") as TextAsset;
         JsonNode json = JsonNode.Parse(textAsset.text);
-        string ip = json["IP"].Get<string>();
-        MyNetworkLobbyManager.singleton.networkAddress = ip;
 
-        if (null == MyNetworkLobbyManager.s_singleton.StartHost())
+        var is_host = json["Host"].Get<bool>();
+        if (is_host)
         {
+            MyNetworkLobbyManager.s_singleton.StartHost();
+        }
+        else
+        {
+            string ip = json["IP"].Get<string>();
+            MyNetworkLobbyManager.singleton.networkAddress = ip;
+
             MyNetworkLobbyManager.s_singleton.is_1p_ = false;
             MyNetworkLobbyManager.s_singleton.StartClient();
         }
@@ -34,6 +41,17 @@ public class MyNetworkLobbyManager : NetworkLobbyManager
     public void GameStart()
     {
 
+    }
+
+    public override void OnClientDisconnect(NetworkConnection conn)
+    {
+        base.OnClientDisconnect(conn);
+        var textAsset = Resources.Load("connect") as TextAsset;
+        JsonNode json = JsonNode.Parse(textAsset.text);
+        string ip = json["IP"].Get<string>();
+        MyNetworkLobbyManager.singleton.networkAddress = ip;
+        MyNetworkLobbyManager.s_singleton.is_1p_ = false;
+        MyNetworkLobbyManager.s_singleton.StartClient();
     }
 
 }
