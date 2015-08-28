@@ -58,10 +58,13 @@ public class CharacterGenerator : MonoBehaviour {
             if (is_win){
                 Kudamon_Image_Type_ = Kudamon_Type_.Lemon_Win_;
                 audio_manager.PlaySe(23);
+                Debug.Log("1pwin");
             }
             else{
                 Kudamon_Image_Type_ = Kudamon_Type_.Lemon_Lose_;
                 audio_manager.PlaySe(21);
+                Debug.Log("1plose");
+
             }
 
         }
@@ -69,13 +72,17 @@ public class CharacterGenerator : MonoBehaviour {
 
             //2P画像.(apmon)
             if (is_win) {
-                Kudamon_Image_Type_ = Kudamon_Type_.Appmon_Win_;                audio_manager.PlaySe(23);
+                Kudamon_Image_Type_ = Kudamon_Type_.Appmon_Win_;
                 audio_manager.PlaySe(19);
+                Debug.Log("2pwin");
+
             }
             else
             {
                 Kudamon_Image_Type_ = Kudamon_Type_.Appmon_Lose_;
                 audio_manager.PlaySe(17);
+                Debug.Log("2plose");
+
             }
 
         }
