@@ -47,31 +47,34 @@ public class Ike3AttackFruitMove : MonoBehaviour
         if (transform.position.y > 10) { Destroy(gameObject); }
 
         if (!is_attack_) return;
-        if (transform.position.y < 0)
+        if (transform.position.y < 0.5f)
         {
+
+            const float y = 0.5f;
+
             var creater = FindObjectOfType<FruitCreater>();
             if (apple_num_ != 0)
             {
                 var fruit = creater.AppleCreate();
-                fruit.transform.position = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
+                fruit.transform.position = new Vector3(gameObject.transform.position.x, y, gameObject.transform.position.z);
             }
 
             if (lemon_num_ != 0)
             {
                 var fruit = creater.LemonCreate();
-                fruit.transform.position = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
+                fruit.transform.position = new Vector3(gameObject.transform.position.x, y, gameObject.transform.position.z);
             }
 
             if (egg_plant_num_ != 0)
             {
                 var fruit = creater.EggPlantCreate();
-                fruit.transform.position = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
+                fruit.transform.position = new Vector3(gameObject.transform.position.x, y, gameObject.transform.position.z);
             }
 
             if (durian_num_ != 0)
             {
                 var fruit = creater.DorianCreate();
-                fruit.transform.position = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
+                fruit.transform.position = new Vector3(gameObject.transform.position.x, y, gameObject.transform.position.z);
             }
 
             AudioManager.Instance.PlaySe(4);
