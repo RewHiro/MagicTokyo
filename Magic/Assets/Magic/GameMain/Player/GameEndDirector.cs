@@ -77,6 +77,7 @@ public class GameEndDirector : NetworkBehaviour
 
         if (count_ < CHANGE_SCENE_TIME) return;
         if (!isServer) return;
+        AudioManager.Instance.StopBgm();
         MyNetworkLobbyManager.s_singleton.ServerReturnToLobby();
     }
 

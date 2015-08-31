@@ -46,7 +46,6 @@ public class SkeletalHand : HandModel
         SetPositions();
         if (player_magic_manager_ == null) return;
         if (player_magic_manager_.MagicType == -1) return;
-        GetComponentInChildren<Light>().intensity = GetLeapHand().GrabStrength * 8.0f;
     }
 
     protected Vector3 GetPalmCenter()

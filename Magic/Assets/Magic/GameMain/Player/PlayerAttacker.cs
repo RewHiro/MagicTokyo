@@ -53,6 +53,7 @@ public class PlayerAttacker : NetworkBehaviour
     void Update()
     {
         if (!isLocalPlayer) return;
+        if (GetComponent<GameEndDirector>().IsStart) return;
         GestureUpdate();
         AttackEffect();
     }
@@ -93,6 +94,14 @@ public class PlayerAttacker : NetworkBehaviour
             if (is_guard_) return;
             is_guard_ = true;
 
+            if (MyNetworkLobbyManager.s_singleton.Is1P)
+            {
+                AudioManager.Instance.PlaySe(20);
+            }
+            else
+            {
+                AudioManager.Instance.PlaySe(16);
+            }
 
             bool flag_ap = apple_attack_obj_ != null;
             bool flag_le = lemon_attack_obj_ != null;
