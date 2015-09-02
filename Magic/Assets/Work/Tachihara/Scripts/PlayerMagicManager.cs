@@ -32,11 +32,12 @@ public class PlayerMagicManager : NetworkBehaviour {
   }
 
   void Update() {
+    if (!isLocalPlayer) return;
     if (sprite_ == null) sprite_ = FindObjectOfType<ItemSpriteManager>();
 
     if (IsCoolDown()) { cool_time_ -= Time.deltaTime; return; }
 
-    if (!isLocalPlayer) return;
+
     if (!OnGetMomon() || EnableMagic()) { return; }
 
     MagicType = Random.Range(0, sprite_.IconSize);

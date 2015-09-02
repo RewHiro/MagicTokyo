@@ -63,27 +63,52 @@ public class PlayerAttacker : NetworkBehaviour
         foreach (var hand in hand_controller_.GetFrame().Hands)
         {
             var gesture_list = hand.Frame.Gestures();
-            if (gesture_list[0].IsValid)
-            {
 
-                CircleGesture gesture = new CircleGesture(gesture_list[0]);
-                if (gesture.DurationSeconds < TURN_SECOND) return;
-                CmdTellServerAttack(true);
-                is_attack_ = true;
-                is_right_ = hand.IsRight;
-                var apple_num = tubo_in_destory_.GetApumonCount();
-                var lemon_num = tubo_in_destory_.GetLemonCount();
-                CmdTellServerFruitNum(
-                    apple_num,
-                    lemon_num);
-                apple_num_ = apple_num;
-                lemon_num_ = lemon_num;
-            }
-            else
+            foreach (CircleGesture gesture in gesture_list)
             {
-                CmdTellServerAttack(false);
-                is_attack_ = false;
+                if (gesture.IsValid)
+                {
+                    if (!hand.IsRight) continue;
+                    if (gesture.DurationSeconds < TURN_SECOND) return;
+                    CmdTellServerAttack(true);
+                    is_attack_ = true;
+                    is_right_ = hand.IsRight;
+                    var apple_num = tubo_in_destory_.GetApumonCount();
+                    var lemon_num = tubo_in_destory_.GetLemonCount();
+                    CmdTellServerFruitNum(
+                        apple_num,
+                        lemon_num);
+                    apple_num_ = apple_num;
+                    lemon_num_ = lemon_num;
+                }
+                else
+                {
+                    CmdTellServerAttack(false);
+                    is_attack_ = false;
+                }
             }
+
+            //if (gesture_list[0].IsValid)
+            //{
+            //    if (!hand.IsRight) continue;
+            //    CircleGesture gesture = new CircleGesture(gesture_list[0]);
+            //    if (gesture.DurationSeconds < TURN_SECOND) return;
+            //    CmdTellServerAttack(true);
+            //    is_attack_ = true;
+            //    is_right_ = hand.IsRight;
+            //    var apple_num = tubo_in_destory_.GetApumonCount();
+            //    var lemon_num = tubo_in_destory_.GetLemonCount();
+            //    CmdTellServerFruitNum(
+            //        apple_num,
+            //        lemon_num);
+            //    apple_num_ = apple_num;
+            //    lemon_num_ = lemon_num;
+            //}
+            //else
+            //{
+            //    CmdTellServerAttack(false);
+            //    is_attack_ = false;
+            //}
         }
     }
 
@@ -91,7 +116,8 @@ public class PlayerAttacker : NetworkBehaviour
     {
         if (is_remote_damage_)
         {
-            if (is_guard_) return;
+            //これis_guard_でreturnするの要らないかも->連続で回しても攻撃できる
+            //if (is_guard_) return;
             is_guard_ = true;
 
             if (MyNetworkLobbyManager.s_singleton.Is1P)

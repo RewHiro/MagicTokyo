@@ -58,7 +58,6 @@ public class PlayerMagicAttacker : NetworkBehaviour
 
         foreach (var hand in hand_controller_.GetFrame().Hands)
         {
-            if (!hand.IsLeft) continue;
             if (magic_type == -1)
             {
                 continue;
@@ -67,6 +66,7 @@ public class PlayerMagicAttacker : NetworkBehaviour
             var gesture_list = hand.Frame.Gestures();
             if (gesture_list[0].IsValid)
             {
+                if (!hand.IsLeft) continue;
                 if (is_guard_) break;
                 CircleGesture gesture = new CircleGesture(gesture_list[0]);
                 if (gesture.DurationSeconds < 0.5f) return;
