@@ -21,22 +21,21 @@ public class PotGaugeController : MonoBehaviour {
     SCALE_X = bar_.transform.localScale.x;
     SCALE_Y = bar_.transform.localScale.y;
 
+    bar_.localScale = Vector3.forward;
+
     tubo_ = FindObjectOfType<TuboInDestroy>();
-    effect_ = GameObject.Find("PotIconEffect").GetComponent<SpriteRenderer>();
+    var pot_icon = GameObject.Find("PotIconEffect");
+    effect_ = pot_icon.GetComponent<SpriteRenderer>();
     effect_.color = ALPHA;
   }
 
   void Update() {
     if (IsCountMax()) {
-      effect_.transform.Rotate(new Vector3(0, 0, -Time.deltaTime * 60));
+      var rotate_speed = -Time.deltaTime * 60.0f;
+      effect_.transform.Rotate(Vector3.forward * rotate_speed);
     }
 
-    // 計算前の値を取得、ナベの中身が増えてなければ処理をスキップ
-    {
-      var prev = current_count_;
-      CountUp();
-      if (prev == current_count_) { return; }
-    }
+    if (IsNotCountChange()) { return; }
     if (current_count_ > 10) { current_count_ = 10; }
 
     var ratio = current_count_ * 0.1f;
@@ -61,5 +60,14 @@ public class PotGaugeController : MonoBehaviour {
     current_count_ = tubo_.GetKudamonCount() - last_count_;
   }
 
-  bool IsCountMax() { return current_count_ == 10; }
+  bool IsCountMax() {
+    return current_count_ >= 10;
+  }
+
+  // カウントが直前のフレームから変化してなければ true を返す
+  bool IsNotCountChange() {
+    var prev = current_count_;
+    CountUp();
+    return prev == current_count_;
+  }
 }
