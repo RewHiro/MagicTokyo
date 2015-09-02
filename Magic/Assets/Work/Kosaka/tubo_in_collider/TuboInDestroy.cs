@@ -74,6 +74,7 @@ public class TuboInDestroy : MonoBehaviour
         smoke_scale_ = smoke_.transform.localScale;
     }
 
+
     void SmokeUpdate()
     {
         var smoke_scale_resize = new Vector3(0.1f, 0.1f, 0.1f);

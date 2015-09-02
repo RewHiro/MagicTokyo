@@ -56,28 +56,29 @@ public class PlayerMagicAttacker : NetworkBehaviour
         if (GetComponent<GameEndDirector>().IsStart) return;
         var magic_type = player_magic_manager_.MagicType;
 
+
+
         foreach (var hand in hand_controller_.GetFrame().Hands)
         {
-            if (magic_type == -1)
-            {
-                continue;
-            }
+            if (!hand.IsLeft) continue;
+            if (magic_type == -1) continue;
 
             var gesture_list = hand.Frame.Gestures();
-            if (gesture_list[0].IsValid)
+
+            foreach (Gesture gesture in gesture_list)
             {
-                if (!hand.IsLeft) continue;
-                if (is_guard_) break;
-                CircleGesture gesture = new CircleGesture(gesture_list[0]);
-                if (gesture.DurationSeconds < 0.5f) return;
-                magic_action_list_[magic_type]();
-                player_magic_manager_.MagicExecute();
-                is_guard_ = true;
-                AudioManager.Instance.PlaySe(11);
-            }
-            else
-            {
-                is_guard_ = false;
+
+                var circle_gesture = new CircleGesture(gesture);
+
+                if (circle_gesture.IsValid)
+                {
+                    if (!hand.IsLeft) continue;
+                    if (gesture.DurationSeconds < 0.5f) return;
+                    magic_action_list_[magic_type]();
+                    player_magic_manager_.MagicExecute();
+                    AudioManager.Instance.PlaySe(11);
+                    break;
+                }
             }
         }
     }

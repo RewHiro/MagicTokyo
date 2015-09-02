@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.Networking;
 using Leap;
 
-[NetworkSettings(channel=0,sendInterval = 0.001f)]
+[NetworkSettings(channel = 0, sendInterval = 0.001f)]
 public class PlayerAttacker : NetworkBehaviour
 {
     [SyncVar]
@@ -60,19 +60,24 @@ public class PlayerAttacker : NetworkBehaviour
 
     void GestureUpdate()
     {
+        is_attack_ = false;
+        CmdTellServerAttack(false);
+
         foreach (var hand in hand_controller_.GetFrame().Hands)
         {
+            if (!hand.IsRight) continue;
             var gesture_list = hand.Frame.Gestures();
 
-            foreach (CircleGesture gesture in gesture_list)
+            foreach (Gesture gesture in gesture_list)
             {
-                if (gesture.IsValid)
+                var circle_gesture = new CircleGesture(gesture);
+
+                if (circle_gesture.IsValid)
                 {
-                    if (!hand.IsRight) continue;
-                    if (gesture.DurationSeconds < TURN_SECOND) return;
+
+                    if (circle_gesture.DurationSeconds < TURN_SECOND) return;
                     CmdTellServerAttack(true);
                     is_attack_ = true;
-                    is_right_ = hand.IsRight;
                     var apple_num = tubo_in_destory_.GetApumonCount();
                     var lemon_num = tubo_in_destory_.GetLemonCount();
                     CmdTellServerFruitNum(
@@ -80,35 +85,9 @@ public class PlayerAttacker : NetworkBehaviour
                         lemon_num);
                     apple_num_ = apple_num;
                     lemon_num_ = lemon_num;
-                }
-                else
-                {
-                    CmdTellServerAttack(false);
-                    is_attack_ = false;
+                    break;
                 }
             }
-
-            //if (gesture_list[0].IsValid)
-            //{
-            //    if (!hand.IsRight) continue;
-            //    CircleGesture gesture = new CircleGesture(gesture_list[0]);
-            //    if (gesture.DurationSeconds < TURN_SECOND) return;
-            //    CmdTellServerAttack(true);
-            //    is_attack_ = true;
-            //    is_right_ = hand.IsRight;
-            //    var apple_num = tubo_in_destory_.GetApumonCount();
-            //    var lemon_num = tubo_in_destory_.GetLemonCount();
-            //    CmdTellServerFruitNum(
-            //        apple_num,
-            //        lemon_num);
-            //    apple_num_ = apple_num;
-            //    lemon_num_ = lemon_num;
-            //}
-            //else
-            //{
-            //    CmdTellServerAttack(false);
-            //    is_attack_ = false;
-            //}
         }
     }
 
@@ -116,8 +95,13 @@ public class PlayerAttacker : NetworkBehaviour
     {
         if (is_remote_damage_)
         {
-            //これis_guard_でreturnするの要らないかも->連続で回しても攻撃できる
-            //if (is_guard_) return;
+            if (tubo_in_destory_.GetKudamonCount() <= 0)
+            {
+                is_guard_ = false;
+            }
+
+            if (is_guard_) return;
+
             is_guard_ = true;
 
             if (MyNetworkLobbyManager.s_singleton.Is1P)
@@ -157,8 +141,7 @@ public class PlayerAttacker : NetworkBehaviour
             }
 
             // 攻撃エフェクト
-            if (POT_LIMIT_NUM <= tubo_in_destory_.GetKudamonCount() && 
-                is_right_)
+            if (POT_LIMIT_NUM <= tubo_in_destory_.GetKudamonCount())
             {
                 FindObjectOfType<FruitCreater>().PeachCreate(1);
             }
@@ -177,7 +160,7 @@ public class PlayerAttacker : NetworkBehaviour
     }
 
     [Command]
-    void CmdTellServerFruitNum(int apple_num,int lemon_num)
+    void CmdTellServerFruitNum(int apple_num, int lemon_num)
     {
         apple_num_ = apple_num;
         lemon_num_ = lemon_num;
