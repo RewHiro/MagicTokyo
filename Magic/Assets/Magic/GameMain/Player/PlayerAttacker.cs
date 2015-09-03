@@ -85,6 +85,7 @@ public class PlayerAttacker : NetworkBehaviour
                         lemon_num);
                     apple_num_ = apple_num;
                     lemon_num_ = lemon_num;
+                    FindObjectOfType<PotGaugeController>().GaugeReset();
                     break;
                 }
             }
