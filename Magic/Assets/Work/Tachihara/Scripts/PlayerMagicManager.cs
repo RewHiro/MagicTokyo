@@ -11,7 +11,7 @@ public class PlayerMagicManager : NetworkBehaviour {
 
   ItemSpriteManager sprite_ = null;
   TuboInDestroy tubo_ = null;
-  
+
   float cool_time_ = 0;
   float[] MAGIC_COOL_TIME = null;
 
@@ -20,7 +20,7 @@ public class PlayerMagicManager : NetworkBehaviour {
     if (!isLocalPlayer) return;
     MagicType = -1;
     tubo_ = FindObjectOfType<TuboInDestroy>();
-    
+
     MAGIC_COOL_TIME = new float[5];
 
     // FIXME: それぞれ発動中の長さが取得できないものは、仮の値を使用
@@ -60,7 +60,6 @@ public class PlayerMagicManager : NetworkBehaviour {
     MagicType = -1;
     sprite_.MagicAction();
     tubo_.ResetMomon();
-    FindObjectOfType<PotGaugeController>().GaugeReset();
   }
 
   bool IsCoolDown() {
