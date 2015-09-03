@@ -36,10 +36,10 @@ public class PotGaugeController : MonoBehaviour {
       effect_.transform.Rotate(Vector3.forward * rotate_speed);
     }
 
-    if (IsNotCountChange()) { return; }
-    if (current_count_ > 10) { current_count_ = 10; }
-
-    var ratio = current_count_ * 0.1f;
+        //if (IsNotCountChange()) { return; }
+        //if (current_count_ > 10) { current_count_ = 10; }
+        current_count_ = tubo_.GetKudamonCount();
+        var ratio = current_count_ * 0.1f;
     var scale = new Vector3(SCALE_X, SCALE_Y * ratio, 1.0f);
     bar_.localScale = scale;
 
