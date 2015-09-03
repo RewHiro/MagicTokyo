@@ -85,7 +85,6 @@ public class PlayerAttacker : NetworkBehaviour
                         lemon_num);
                     apple_num_ = apple_num;
                     lemon_num_ = lemon_num;
-                    FindObjectOfType<PotGaugeController>().GaugeReset();
                     break;
                 }
             }
@@ -147,6 +146,7 @@ public class PlayerAttacker : NetworkBehaviour
                 FindObjectOfType<FruitCreater>().PeachCreate(1);
             }
             tubo_in_destory_.ResetCount();
+            FindObjectOfType<PotGaugeController>().GaugeReset();
         }
         else
         {
