@@ -1,5 +1,6 @@
 ﻿
 using UnityEngine;
+using System.Collections.Generic;
 
 
 public class PotGaugeController : MonoBehaviour {
@@ -58,6 +59,13 @@ public class PotGaugeController : MonoBehaviour {
 
   void CountUp() {
     current_count_ = tubo_.GetKudamonCount() - last_count_;
+
+    // log output
+    var log_list = new List<string>();
+    log_list.Add(string.Format("current = {0}", current_count_));
+    log_list.Add(string.Format("pot     = {0}", tubo_.GetKudamonCount()));
+    log_list.Add(string.Format("last    = {0}", last_count_));
+    foreach (var log in log_list) { Debug.Log(log); }
   }
 
   bool IsCountMax() {
