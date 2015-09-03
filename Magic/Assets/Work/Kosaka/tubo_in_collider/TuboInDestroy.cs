@@ -70,28 +70,28 @@ public class TuboInDestroy : MonoBehaviour
         rush_eventer_ = FindObjectOfType<RushEventer>();
         lid_control_ = FindObjectOfType<LidControl>();
 
-        smoke_ = GameObject.Find("Smoke");
-        smoke_scale_ = smoke_.transform.localScale;
+        //smoke_ = GameObject.Find("Smoke");
+        //smoke_scale_ = smoke_.transform.localScale;
     }
 
 
     void SmokeUpdate()
     {
-        var smoke_scale_resize = new Vector3(0.1f, 0.1f, 0.1f);
-        if (is_active_smoke_)
-        {
-            smoke_time_++;
-            if (smoke_time_ > (60 * 2))
-                is_active_smoke_ = false;
-            smoke_.transform.Translate(0, 3, 0);
-            smoke_.transform.localScale += smoke_scale_resize;
-        }
-        else
-        {
-            smoke_.transform.localScale = smoke_scale_;
-            smoke_time_ = 0;
-            is_active_smoke_ = true;
-        }
+        //var smoke_scale_resize = new Vector3(0.1f, 0.1f, 0.1f);
+        //if (is_active_smoke_)
+        //{
+        //    smoke_time_++;
+        //    if (smoke_time_ > (60 * 2))
+        //        is_active_smoke_ = false;
+        //    smoke_.transform.Translate(0, 3, 0);
+        //    smoke_.transform.localScale += smoke_scale_resize;
+        //}
+        //else
+        //{
+        //    smoke_.transform.localScale = smoke_scale_;
+        //    smoke_time_ = 0;
+        //    is_active_smoke_ = true;
+        //}
     }
 
     void Update()
