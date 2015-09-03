@@ -1,5 +1,6 @@
 ﻿
 using UnityEngine;
+using System.Collections.Generic;
 
 
 public class PotGaugeController : MonoBehaviour {
@@ -21,22 +22,21 @@ public class PotGaugeController : MonoBehaviour {
     SCALE_X = bar_.transform.localScale.x;
     SCALE_Y = bar_.transform.localScale.y;
 
+    bar_.localScale = Vector3.forward;
+
     tubo_ = FindObjectOfType<TuboInDestroy>();
-    effect_ = GameObject.Find("PotIconEffect").GetComponent<SpriteRenderer>();
+    var pot_icon = GameObject.Find("PotIconEffect");
+    effect_ = pot_icon.GetComponent<SpriteRenderer>();
     effect_.color = ALPHA;
   }
 
   void Update() {
     if (IsCountMax()) {
-      effect_.transform.Rotate(new Vector3(0, 0, -Time.deltaTime * 60));
+      var rotate_speed = -Time.deltaTime * 60.0f;
+      effect_.transform.Rotate(Vector3.forward * rotate_speed);
     }
 
-    // 計算前の値を取得、ナベの中身が増えてなければ処理をスキップ
-    {
-      var prev = current_count_;
-      CountUp();
-      if (prev == current_count_) { return; }
-    }
+    if (IsNotCountChange()) { return; }
     if (current_count_ > 10) { current_count_ = 10; }
 
     var ratio = current_count_ * 0.1f;
@@ -59,7 +59,23 @@ public class PotGaugeController : MonoBehaviour {
 
   void CountUp() {
     current_count_ = tubo_.GetKudamonCount() - last_count_;
+
+    // log output
+    var log_list = new List<string>();
+    log_list.Add(string.Format("current = {0}", current_count_));
+    log_list.Add(string.Format("pot     = {0}", tubo_.GetKudamonCount()));
+    log_list.Add(string.Format("last    = {0}", last_count_));
+    foreach (var log in log_list) { Debug.Log(log); }
   }
 
-  bool IsCountMax() { return current_count_ == 10; }
+  bool IsCountMax() {
+    return current_count_ >= 10;
+  }
+
+  // カウントが直前のフレームから変化してなければ true を返す
+  bool IsNotCountChange() {
+    var prev = current_count_;
+    CountUp();
+    return prev == current_count_;
+  }
 }
