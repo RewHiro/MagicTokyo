@@ -1,4 +1,4 @@
 {
-    "IP": "10.25.34.207",
-    "Host": true
+    "IP": "localhost",
+    "Host": false
 }
