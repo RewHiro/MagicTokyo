@@ -18,7 +18,7 @@ public class TransformController : MonoBehaviour {
     transform.rotation = Camera.main.transform.rotation;
     transform.localScale = Vector3.one * SCALE;
 
-    NEUTRAL = transform.position;
+    NEUTRAL = transform.position + Vector3.up * 1.2f;
   }
 
   void FixedUpdate() {
