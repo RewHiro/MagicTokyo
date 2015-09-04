@@ -23,8 +23,7 @@ public class LidControl : MonoBehaviour
 
     public void Awake()
     {
-        lid_collider = gameObject.GetComponent<Collider>();
-        
+        lid_collider = gameObject.GetComponent<Collider>();      
         lid_scale_xy_ = LID_SCALE_MAX_;
     }
 
