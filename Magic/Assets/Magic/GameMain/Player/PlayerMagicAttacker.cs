@@ -17,6 +17,9 @@ public class PlayerMagicAttacker : NetworkBehaviour
 
     HandController hand_controller_ = null;
 
+    [SerializeField, Range(0.0f, 10.0f), TooltipAttribute("回した時間")]
+    float TURN_SECOND = 1.0f;
+
     bool is_guard_ = false;
 
     void Start()
@@ -73,7 +76,7 @@ public class PlayerMagicAttacker : NetworkBehaviour
                 if (circle_gesture.IsValid)
                 {
                     if (!hand.IsLeft) continue;
-                    if (gesture.DurationSeconds < 0.5f) return;
+                    if (gesture.DurationSeconds < TURN_SECOND) return;
                     magic_action_list_[magic_type]();
                     player_magic_manager_.MagicExecute();
                     AudioManager.Instance.PlaySe(11);
