@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class TuboInDestroy : MonoBehaviour
 {
@@ -26,8 +26,6 @@ public class TuboInDestroy : MonoBehaviour
 
     bool is_in_dorian_ = false;
 
-    bool is_active_smoke_ = true;
-
     //くだモンの名前
     const string LEMON_NAME = "le-mon";
     const string APUMON_NAME = "apumon";
@@ -44,11 +42,9 @@ public class TuboInDestroy : MonoBehaviour
 
     LidControl lid_control_ = null;
 
-    GameObject smoke_;
 
-    Vector3 smoke_scale_;
-
-    int smoke_time_ = 0;
+    [SerializeField]
+    GameObject smoke_prehub_ = null;
 
     //-----------------------------------------------------------------
 
@@ -69,28 +65,6 @@ public class TuboInDestroy : MonoBehaviour
     {
         rush_eventer_ = FindObjectOfType<RushEventer>();
         lid_control_ = FindObjectOfType<LidControl>();
-
-        smoke_ = GameObject.Find("Smoke");
-        smoke_scale_ = smoke_.transform.localScale;
-    }
-
-    void SmokeUpdate()
-    {
-        var smoke_scale_resize = new Vector3(0.1f, 0.1f, 0.1f);
-        if (is_active_smoke_)
-        {
-            smoke_time_++;
-            if (smoke_time_ > (60 * 2))
-                is_active_smoke_ = false;
-            smoke_.transform.Translate(0, 3, 0);
-            smoke_.transform.localScale += smoke_scale_resize;
-        }
-        else
-        {
-            smoke_.transform.localScale = smoke_scale_;
-            smoke_time_ = 0;
-            is_active_smoke_ = true;
-        }
     }
 
     void Update()
@@ -125,6 +99,12 @@ public class TuboInDestroy : MonoBehaviour
     //鍋の中のTrigger判定
     void OnTriggerEnter(Collider other)
     {
+        //煙の生成
+        if (other.name != "")
+        {
+            var smoke_ = Instantiate(smoke_prehub_).GetComponent<Transform>();
+            smoke_.parent = GameObject.Find("Pot").transform;
+        }
 
         //それぞれのくだモンを「消す処理」と「カウント処理」（と「入ったものを出力」するためのデバッグ）
         if (other.name == LEMON_NAME)
@@ -132,26 +112,22 @@ public class TuboInDestroy : MonoBehaviour
             Destroy(other.gameObject);
             if (GetKudamonCount() >= KUDAMON_MAX_COUNT) return;
             lemon_count_++;
-            SmokeUpdate();
         }
         else if (other.name == APUMON_NAME)
         {
             Destroy(other.gameObject);
             if (GetKudamonCount() >= KUDAMON_MAX_COUNT) return;
             apumon_count_++;
-            SmokeUpdate();
         }
         else if (other.name == MOMON_NAME)
         {
             Destroy(other.gameObject);
             is_in_momon_ = true;
-            SmokeUpdate();
         }
         else if (other.name == JAMAMON_NAME)
         {
             Destroy(other.gameObject);
             JamamonFlyOut();
-            SmokeUpdate();
         }
         else if (other.name == DORIANBOM_NAME)
         {
@@ -170,7 +146,6 @@ public class TuboInDestroy : MonoBehaviour
                 Debug.Log("drian_attack_obj_ にプレハブが入っていません");
             }
         }
-        SmokeUpdate();
     }
 
     //---------------------------------------------------------------------
