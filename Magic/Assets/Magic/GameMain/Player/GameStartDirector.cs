@@ -38,11 +38,17 @@ public class GameStartDirector : NetworkBehaviour
 
     void Start()
     {
-        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        var is_tutorial = MyNetworkLobbyManager.s_singleton.IsTutorial;
+        if (!is_tutorial)
         {
             if (!isLocalPlayer) return;
         }
         text_ = GameObject.Find("StartText").GetComponent<Text>();
+
+        if (is_tutorial)
+        {
+            text_.enabled = false;
+        }
     }
 
     public void RpcCountDownLocal()
@@ -87,7 +93,6 @@ public class GameStartDirector : NetworkBehaviour
         count_ += -Time.deltaTime;
 
         if (count_ > 0) return;
-        Debug.Log("OK");
         state_ = State.START;
         CmdTellServerStart();
         text_.enabled = false;

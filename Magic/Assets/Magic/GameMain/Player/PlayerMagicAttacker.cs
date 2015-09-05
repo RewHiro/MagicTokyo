@@ -61,8 +61,9 @@ public class PlayerMagicAttacker : NetworkBehaviour
         if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
         {
             if (!isLocalPlayer) return;
+            if (GetComponent<GameEndDirector>().IsStart) return;
         }
-        if (GetComponent<GameEndDirector>().IsStart) return;
+
         var magic_type = player_magic_manager_.MagicType;
 
 
