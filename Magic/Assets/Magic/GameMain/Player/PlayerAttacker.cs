@@ -58,8 +58,8 @@ public class PlayerAttacker : NetworkBehaviour
         if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
         {
             if (!isLocalPlayer) return;
+            if (GetComponent<GameEndDirector>().IsStart) return;
         }
-        if (GetComponent<GameEndDirector>().IsStart) return;
         GestureUpdate();
         AttackEffect();
     }
@@ -67,8 +67,10 @@ public class PlayerAttacker : NetworkBehaviour
     void GestureUpdate()
     {
         is_attack_ = false;
-        CmdTellServerAttack(false);
-
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            CmdTellServerAttack(false);
+        }
         foreach (var hand in hand_controller_.GetFrame().Hands)
         {
             if (!hand.IsRight) continue;
