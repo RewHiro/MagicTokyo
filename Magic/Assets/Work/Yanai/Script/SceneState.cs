@@ -47,11 +47,17 @@ public class SceneState : MonoBehaviour
     {
         TitleUpdate();
         TutorialUpdate();
+        Debug.Log(valid_count_);
     }
 
     bool canShiftStart()
     {
-        if (!isRecognizedHand()) return false;
+        if (!isRecognizedHand())
+        {
+            ValidCount = 0;
+            return false;
+        }
+
         if (ValidCount < ValidMax)
         {
             ValidCount++;
@@ -65,8 +71,8 @@ public class SceneState : MonoBehaviour
 
     bool isRecognizedHand()
     {
-        var hand = FindObjectOfType<RigidHand>();
-
+        var hand = FindObjectOfType<MyRigidHand>();
+        
         if (hand == null) return false;
 
         return true;
