@@ -203,7 +203,10 @@ public class TuboInDestroy : MonoBehaviour
         if (game_start_director_ != null) return;
         foreach (var player in FindObjectsOfType<PlayerAttacker>())
         {
-            if (!player.isLocalPlayer) continue;
+            if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+            {
+                if (!player.isLocalPlayer) continue;
+            }
             player_attacker_ = player;
             game_start_director_ = player.gameObject.GetComponent<GameStartDirector>();
             game_end_director_ = player.gameObject.GetComponent<GameEndDirector>();

@@ -19,7 +19,10 @@ public class FruitCounter : NetworkBehaviour
 
     void Start()
     {
-        if (!isLocalPlayer) return;
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (!isLocalPlayer) return;
+        }
         apple_manager_ = GameObject.Find("AppleManager");
         lemon_manager_ = GameObject.Find("LemonManager");
         peach_manager_ = GameObject.Find("PeachManager");
@@ -28,7 +31,10 @@ public class FruitCounter : NetworkBehaviour
 
     void Update()
     {
-        if (!isLocalPlayer) return;
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (!isLocalPlayer) return;
+        }
 
         var count = apple_manager_.transform.childCount;
         count += lemon_manager_.transform.childCount;

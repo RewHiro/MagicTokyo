@@ -16,7 +16,10 @@ public class DorianBoomDamage : NetworkBehaviour
 
     void Update()
     {
-        if (!isLocalPlayer) return;
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (!isLocalPlayer) return;
+        }
         if (is_damage_)
         {
             if (is_guard_) return;

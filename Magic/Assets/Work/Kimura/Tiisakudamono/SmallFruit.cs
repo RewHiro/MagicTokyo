@@ -62,7 +62,10 @@ public class SmallFruit : NetworkBehaviour
     void Start()
     {
 
-        if (!isLocalPlayer) return;
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (!isLocalPlayer) return;
+        }
 
         fruit_manager_ = FindObjectOfType<FruitCreater>().gameObject;
 
@@ -80,7 +83,10 @@ public class SmallFruit : NetworkBehaviour
 
     void Update()
     {
-        if (!isLocalPlayer) return;
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (!isLocalPlayer) return;
+        }
         SmallChangeMagic();
      
     }

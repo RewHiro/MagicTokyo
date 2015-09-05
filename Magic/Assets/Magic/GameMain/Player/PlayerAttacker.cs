@@ -45,14 +45,20 @@ public class PlayerAttacker : NetworkBehaviour
 
     void Start()
     {
-        if (!isLocalPlayer) return;
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (!isLocalPlayer) return;
+        }
         hand_controller_ = FindObjectOfType<HandController>();
         tubo_in_destory_ = FindObjectOfType<TuboInDestroy>();
     }
 
     void Update()
     {
-        if (!isLocalPlayer) return;
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (!isLocalPlayer) return;
+        }
         if (GetComponent<GameEndDirector>().IsStart) return;
         GestureUpdate();
         AttackEffect();

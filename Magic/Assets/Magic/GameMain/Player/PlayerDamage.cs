@@ -25,13 +25,19 @@ public class PlayerDamage : NetworkBehaviour
 
     void Start()
     {
-        if (!isLocalPlayer) return;
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (!isLocalPlayer) return;
+        }
         particle_ = FindObjectOfType<Particle>();
     }
 
     void Update()
     {
-        if (!isLocalPlayer) return;
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (!isLocalPlayer) return;
+        }
         if (is_damage_)
         {
             if (is_guard_) return;

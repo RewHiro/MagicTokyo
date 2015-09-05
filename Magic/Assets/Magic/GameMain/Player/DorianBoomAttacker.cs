@@ -13,13 +13,19 @@ public class DorianBoomAttacker : NetworkBehaviour {
 
     void Start()
     {
-        if (!isLocalPlayer) return;
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (!isLocalPlayer) return;
+        }
         tubo_in_destory_ = FindObjectOfType<TuboInDestroy>();
     }
 
     void Update()
     {
-        if (!isLocalPlayer) return;
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (!isLocalPlayer) return;
+        }
         if (tubo_in_destory_.IsInDorain)
         {
             CmdTellServerAttack(true);
