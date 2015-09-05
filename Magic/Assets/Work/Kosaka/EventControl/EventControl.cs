@@ -55,25 +55,17 @@ public class EventControl : NetworkBehaviour
 
     void Start()
     {
-        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
-        {
-            if (!isLocalPlayer) return;
-        }
+        if (!isLocalPlayer) return;
         FindComponent();
-        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
-        {
-            if (!isServer) return;
-        }
+        if (!isServer) return;
         select_event_ = (EventName)Random.Range(0, (int)EventName.EVENT_MAX);
         is_create_durian_boom_ = MyRandom.RandomBool();
     }
 
     void Update()
     {
-        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
-        {
-            if (!isLocalPlayer) return;
-        }
+        if (!isLocalPlayer) return;
+
         RandEvent();
     }
 
@@ -123,10 +115,8 @@ public class EventControl : NetworkBehaviour
         if (time_limitter_ != null) return;
         foreach (var player in FindObjectsOfType<PlayerSetting>())
         {
-            if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
-            {
-                if (!isLocalPlayer) continue;
-            }
+            if (!isLocalPlayer) continue;
+
             time_limitter_ = player.GetComponent<TimeLimitter>();
             game_start_director_ = player.GetComponent<GameStartDirector>();
         }

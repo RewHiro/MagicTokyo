@@ -48,6 +48,11 @@ public class FruitCounter : NetworkBehaviour
         
         CmdTellToServerCount(count);
         fruit_count_ = count;
+
+        if (MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            remote_fruit_count_ = 260 - count;
+        }
     }
 
 
