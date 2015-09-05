@@ -41,7 +41,10 @@ public class GameEndDirector : NetworkBehaviour
 
     void Update()
     {
-        if (!isLocalPlayer) return;
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (!isLocalPlayer) return;
+        }
         if (!is_start_) return;
         if (count_ == 0.0f)
         {

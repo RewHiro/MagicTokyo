@@ -19,8 +19,11 @@ public class FruitsGaugeController : MonoBehaviour {
     r_bar_ = GameObject.Find("Right");
 
     foreach (var player in FindObjectsOfType<PlayerSetting>()) {
-      if (!player.isLocalPlayer) continue;
-      player_ = player;
+            if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+            {
+                if (!player.isLocalPlayer) return;
+            }
+            player_ = player;
     }
 
     var l_render = l_bar_.GetComponent<SpriteRenderer>();

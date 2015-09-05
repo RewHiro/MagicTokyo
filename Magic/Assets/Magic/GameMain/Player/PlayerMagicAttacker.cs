@@ -24,7 +24,10 @@ public class PlayerMagicAttacker : NetworkBehaviour
 
     void Start()
     {
-        if (!isLocalPlayer) return;
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (!isLocalPlayer) return;
+        }
 
         hand_manager_ = GameObject.Find("HandManager");
         hand_controller_ = FindObjectOfType<HandController>();
@@ -55,7 +58,10 @@ public class PlayerMagicAttacker : NetworkBehaviour
 
     void Update()
     {
-        if (!isLocalPlayer) return;
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (!isLocalPlayer) return;
+        }
         if (GetComponent<GameEndDirector>().IsStart) return;
         var magic_type = player_magic_manager_.MagicType;
 

@@ -10,10 +10,13 @@ public class MyNetworkLobbyManager : NetworkLobbyManager
     string titel = null;
 
     int bgm_count_ = 0;
-    public int BGMCount{get{ return bgm_count_; }set { bgm_count_ = value; } }
+    public int BGMCount { get { return bgm_count_; } set { bgm_count_ = value; } }
 
     bool is_1p_ = true;
-    public bool Is1P { get { return is_1p_; }}
+    public bool Is1P { get { return is_1p_; } }
+
+    bool is_tutorial_ = false;
+    public bool IsTutorial { get { return is_tutorial_; } set { is_tutorial_ = value; } }
 
     void Start()
     {

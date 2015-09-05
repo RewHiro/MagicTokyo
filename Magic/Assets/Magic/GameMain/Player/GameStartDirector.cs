@@ -38,7 +38,10 @@ public class GameStartDirector : NetworkBehaviour
 
     void Start()
     {
-        if (!isLocalPlayer) return;
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (!isLocalPlayer) return;
+        }
         text_ = GameObject.Find("StartText").GetComponent<Text>();
     }
 
@@ -62,7 +65,10 @@ public class GameStartDirector : NetworkBehaviour
 
     void Update()
     {
-        if (!isLocalPlayer) return;
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (!isLocalPlayer) return;
+        }
         if (state_ != State.READY) return;
 
         if (STANBY_LIMIT > standby_count_)

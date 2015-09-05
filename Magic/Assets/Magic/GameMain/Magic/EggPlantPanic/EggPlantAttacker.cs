@@ -24,7 +24,10 @@ public class EggPlantAttacker : NetworkBehaviour
 
     void Update()
     {
-        if (!isLocalPlayer) return;
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (!isLocalPlayer) return;
+        }
         if (!is_remote_damage_) return;
         CmdTellServerAttack(false, 0);
         is_attack_ = false;
@@ -32,7 +35,10 @@ public class EggPlantAttacker : NetworkBehaviour
 
     public void StartEggPlantPanic()
     {
-        if (!isLocalPlayer) return;
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (!isLocalPlayer) return;
+        }
         CmdTellServerAttack(true, 5);
         is_attack_ = true;
         egg_plant_num_ = 5;
