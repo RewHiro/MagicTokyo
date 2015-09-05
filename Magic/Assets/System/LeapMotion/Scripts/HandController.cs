@@ -130,6 +130,8 @@ public class HandController : MonoBehaviour
             leap_controller_.Config.SetFloat("Gesture.Circle.MinRadius", gesture_config.MinRadius);
 
             leap_controller_.EnableGesture(Gesture.GestureType.TYPE_SWIPE);
+            leap_controller_.Config.SetFloat("Gesture.Swipe.MinLength", gesture_config.MinLength);
+            leap_controller_.Config.SetFloat("Gesture.Swipe.MinVelocity", gesture_config.MinVelocity);
 
             leap_controller_.Config.Save();
         }

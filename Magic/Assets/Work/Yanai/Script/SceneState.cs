@@ -46,6 +46,7 @@ public class SceneState : MonoBehaviour
     void Update()
     {
         TitleUpdate();
+        TutorialUpdate();
     }
 
     bool canShiftStart()
@@ -93,11 +94,33 @@ public class SceneState : MonoBehaviour
         {
             foreach (var gesture in hand.Frame.Gestures())
             {
+                if (!hand.IsRight) continue;
                 var swipe_gesture = new SwipeGesture(gesture);
                 if (swipe_gesture.IsValid)
                 {
                     is_tutroial_ = true;
                     FindObjectOfType<SlideDirector>().StartSlide();
+                }
+            }
+        }
+    }
+
+    void TutorialUpdate()
+    {
+        if (!is_tutroial_) return;
+        foreach (var hand in hand_controller_.GetFrame().Hands)
+        {
+            foreach (var gesture in hand.Frame.Gestures())
+            {
+                if (!hand.IsLeft) continue;
+                var swipe_gesture = new SwipeGesture(gesture);
+                if (swipe_gesture.IsValid)
+                {
+                    is_tutroial_ = false;
+
+                    FindObjectOfType<SlideDirector>().FinishSlide();
+                    GameObject.Destroy(GameObject.Find("TutorialRoot(Clone)"));
+                    GameObject.Destroy(GameObject.Find("UI_Prefab(Clone)"));
                 }
             }
         }
