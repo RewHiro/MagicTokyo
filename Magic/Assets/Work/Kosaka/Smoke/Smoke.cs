@@ -32,6 +32,7 @@ public class Smoke : MonoBehaviour
         if (smoke_time_ > 60)
         {
             Destroy(gameObject);
+            smoke_time_ = 0;
         }
     }
 
