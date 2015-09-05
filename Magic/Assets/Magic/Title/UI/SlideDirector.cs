@@ -33,4 +33,10 @@ public class SlideDirector : MonoBehaviour
         iTween.MoveTo(gameObject, iTween.Hash("islocal", true, "x", -2200));
         MyNetworkLobbyManager.s_singleton.IsTutorial = true;
     }
+
+    public void FinishSlide()
+    {
+        iTween.MoveTo(gameObject, iTween.Hash("islocal", true, "x", 0));
+        MyNetworkLobbyManager.s_singleton.IsTutorial = false;
+    }
 }

@@ -21,7 +21,7 @@ public class FruitsGaugeController : MonoBehaviour {
     foreach (var player in FindObjectsOfType<PlayerSetting>()) {
             if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
             {
-                if (!player.isLocalPlayer) return;
+                if (!player.isLocalPlayer) continue;
             }
             player_ = player;
     }
