@@ -64,20 +64,19 @@ public class PlayerMagicAttacker : NetworkBehaviour
             if (GetComponent<GameEndDirector>().IsStart) return;
         }
 
-        var magic_type = player_magic_manager_.MagicType;
 
 
 
         foreach (var hand in hand_controller_.GetFrame().Hands)
         {
             if (!hand.IsLeft) continue;
-            if (magic_type == -1) continue;
 
             var gesture_list = hand.Frame.Gestures();
 
             foreach (Gesture gesture in gesture_list)
             {
-
+                var magic_type = player_magic_manager_.MagicType;
+                if (magic_type == -1) continue;
                 var circle_gesture = new CircleGesture(gesture);
 
                 if (circle_gesture.IsValid)
