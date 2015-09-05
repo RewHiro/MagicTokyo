@@ -76,7 +76,7 @@ public class PlayerMagicAttacker : NetworkBehaviour
             foreach (Gesture gesture in gesture_list)
             {
                 var magic_type = player_magic_manager_.MagicType;
-                if (magic_type == -1) continue;
+                if (magic_type == -1) break;
                 var circle_gesture = new CircleGesture(gesture);
 
                 if (circle_gesture.IsValid)

@@ -16,7 +16,7 @@ public class IconManager : MonoBehaviour {
     foreach (var obj in FindObjectsOfType<PlayerSetting>()) {
             if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
             {
-                if (!obj.isLocalPlayer) return;
+                if (!obj.isLocalPlayer) continue;
             }
             player = obj;
     }

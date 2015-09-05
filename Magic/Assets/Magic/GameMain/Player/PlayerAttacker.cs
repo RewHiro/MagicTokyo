@@ -59,9 +59,14 @@ public class PlayerAttacker : NetworkBehaviour
         {
             if (!isLocalPlayer) return;
             if (GetComponent<GameEndDirector>().IsStart) return;
+            GestureUpdate();
+            AttackEffect();
         }
-        GestureUpdate();
-        AttackEffect();
+        else
+        {
+            TutorialGestureUpdate();
+        }
+
     }
 
     void GestureUpdate()
@@ -159,6 +164,74 @@ public class PlayerAttacker : NetworkBehaviour
         else
         {
             is_guard_ = false;
+        }
+    }
+
+    void TutorialGestureUpdate()
+    {
+        foreach (var hand in hand_controller_.GetFrame().Hands)
+        {
+            if (!hand.IsRight) continue;
+            var gesture_list = hand.Frame.Gestures();
+
+            foreach (Gesture gesture in gesture_list)
+            {
+                var circle_gesture = new CircleGesture(gesture);
+
+                if (circle_gesture.IsValid)
+                {
+
+                    if (circle_gesture.DurationSeconds < TURN_SECOND) return;
+                    var apple_num = tubo_in_destory_.GetApumonCount();
+                    var lemon_num = tubo_in_destory_.GetLemonCount();
+
+                    if (MyNetworkLobbyManager.s_singleton.Is1P)
+                    {
+                        AudioManager.Instance.PlaySe(20);
+                    }
+                    else
+                    {
+                        AudioManager.Instance.PlaySe(16);
+                    }
+
+                    bool flag_ap = apple_attack_obj_ != null;
+                    bool flag_le = lemon_attack_obj_ != null;
+                    bool flag_po = pot_obj_ != null;
+
+                    bool flag = flag_ap && flag_le && flag_po;
+                    if (flag)
+                    {
+                        for (int num = 0; num < apple_num; num++)
+                        {
+                            GameObject game_object = Instantiate(apple_attack_obj_);
+                            GameObject pot_obj = GameObject.Find(pot_obj_.name);
+                            game_object.transform.position = pot_obj.transform.position;
+                            game_object.name = apple_attack_obj_.name;
+                        }
+                        for (int num = 0; num < lemon_num; num++)
+                        {
+                            GameObject game_object = Instantiate(lemon_attack_obj_);
+                            GameObject pot_obj = GameObject.Find(pot_obj_.name);
+                            game_object.transform.position = pot_obj.transform.position;
+                            game_object.name = lemon_attack_obj_.name;
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("AttackApple(lemon) または Pot が入っていません");
+                    }
+
+                    // 攻撃エフェクト
+                    if (POT_LIMIT_NUM <= tubo_in_destory_.GetKudamonCount())
+                    {
+                        FindObjectOfType<FruitCreater>().PeachCreate(1);
+                    }
+                    tubo_in_destory_.ResetCount();
+                    FindObjectOfType<PotGaugeController>().GaugeReset();
+
+                    break;
+                }
+            }
         }
     }
 
