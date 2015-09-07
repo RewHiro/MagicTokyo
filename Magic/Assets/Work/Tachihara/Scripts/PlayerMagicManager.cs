@@ -17,8 +17,11 @@ public class PlayerMagicManager : NetworkBehaviour {
 
 
   void Start() {
-    if (!isLocalPlayer) return;
-    MagicType = -1;
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (!isLocalPlayer) return;
+        }
+        MagicType = -1;
     tubo_ = FindObjectOfType<TuboInDestroy>();
 
     MAGIC_COOL_TIME = new float[5];
@@ -32,8 +35,11 @@ public class PlayerMagicManager : NetworkBehaviour {
   }
 
   void Update() {
-    if (!isLocalPlayer) return;
-    if (sprite_ == null) sprite_ = FindObjectOfType<ItemSpriteManager>();
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (!isLocalPlayer) return;
+        }
+        if (sprite_ == null) sprite_ = FindObjectOfType<ItemSpriteManager>();
 
     if (IsCoolDown()) { cool_time_ -= Time.deltaTime; return; }
 

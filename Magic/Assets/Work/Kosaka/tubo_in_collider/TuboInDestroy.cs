@@ -74,9 +74,15 @@ public class TuboInDestroy : MonoBehaviour
         //----------------------------------------------
 
         //ゲームが始まったら蓋をはずす
-        if (game_start_director_.IsStart)
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (game_start_director_.IsStart)
+                lid_control_.can_rendering_lid_ = false;
+        }
+        else
+        {
             lid_control_.can_rendering_lid_ = false;
-
+        }
         //くだモンがMAXなら蓋をつける
         if (GetKudamonCount() >= KUDAMON_MAX_COUNT)
             lid_control_.can_rendering_lid_ = true;
@@ -86,12 +92,12 @@ public class TuboInDestroy : MonoBehaviour
         if (player_attacker_.IsAttack)
             lid_control_.can_rendering_lid_ = false;
 
-
-        if (game_end_director_.IsStart)
-            lid_control_.can_rendering_lid_ = true;
-
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (game_end_director_.IsStart)
+                lid_control_.can_rendering_lid_ = true;
+        }
         //----------------------------------------------
-
         RushEvent();
     }
 
@@ -208,7 +214,10 @@ public class TuboInDestroy : MonoBehaviour
         if (game_start_director_ != null) return;
         foreach (var player in FindObjectsOfType<PlayerAttacker>())
         {
-            if (!player.isLocalPlayer) continue;
+            if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+            {
+                if (!player.isLocalPlayer) continue;
+            }
             player_attacker_ = player;
             game_start_director_ = player.gameObject.GetComponent<GameStartDirector>();
             game_end_director_ = player.gameObject.GetComponent<GameEndDirector>();

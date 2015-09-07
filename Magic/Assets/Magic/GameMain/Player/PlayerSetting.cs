@@ -19,5 +19,11 @@ public class PlayerSetting : NetworkBehaviour
         {
             name = "Player2";
         }
+
+
+        if (MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            Instantiate(ui_);
+        }
     }
 }

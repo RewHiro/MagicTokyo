@@ -65,6 +65,7 @@ public class EventControl : NetworkBehaviour
     void Update()
     {
         if (!isLocalPlayer) return;
+
         RandEvent();
     }
 
@@ -114,7 +115,8 @@ public class EventControl : NetworkBehaviour
         if (time_limitter_ != null) return;
         foreach (var player in FindObjectsOfType<PlayerSetting>())
         {
-            if (!player.isLocalPlayer) continue;
+            if (!isLocalPlayer) continue;
+
             time_limitter_ = player.GetComponent<TimeLimitter>();
             game_start_director_ = player.GetComponent<GameStartDirector>();
         }

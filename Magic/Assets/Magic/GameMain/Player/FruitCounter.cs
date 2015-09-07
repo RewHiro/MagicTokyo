@@ -10,35 +10,49 @@ public class FruitCounter : NetworkBehaviour
     GameObject lemon_manager_ = null;
     GameObject peach_manager_ = null;
     GameObject egg_plant_manager_ = null;
+    TuboInDestroy tubo_in_destroy_ = null;
 
-    int fruit_count_ = 0;
+    int fruit_count_ = 130;
     public int FruitNum { get { return fruit_count_; } }
 
-    int remote_fruit_count_ = 0;
+    int remote_fruit_count_ = 130;
     public int RemoteFruitNum { get { return remote_fruit_count_; } }
 
     void Start()
     {
-        if (!isLocalPlayer) return;
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (!isLocalPlayer) return;
+        }
         apple_manager_ = GameObject.Find("AppleManager");
         lemon_manager_ = GameObject.Find("LemonManager");
         peach_manager_ = GameObject.Find("PeachManager");
         egg_plant_manager_ = GameObject.Find("EggPlantManager");
+        tubo_in_destroy_ = FindObjectOfType<TuboInDestroy>();
     }
 
     void Update()
     {
-        if (!isLocalPlayer) return;
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (!isLocalPlayer) return;
+        }
 
         var count = apple_manager_.transform.childCount;
         count += lemon_manager_.transform.childCount;
         count += peach_manager_.transform.childCount;
         count += egg_plant_manager_.transform.childCount;
+        count += tubo_in_destroy_.GetKudamonCount();
 
         if (count == fruit_count_) return;
         
         CmdTellToServerCount(count);
         fruit_count_ = count;
+
+        if (MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            remote_fruit_count_ = 260 - count;
+        }
     }
 
 

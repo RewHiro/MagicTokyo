@@ -14,8 +14,11 @@ public class IconManager : MonoBehaviour {
   void Start() {
     PlayerSetting player = null;
     foreach (var obj in FindObjectsOfType<PlayerSetting>()) {
-      if (!obj.isLocalPlayer) continue;
-      player = obj;
+            if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+            {
+                if (!obj.isLocalPlayer) continue;
+            }
+            player = obj;
     }
 
     var is_server = player.isServer;

@@ -9,6 +9,15 @@ public class LeapGestureConfig : MonoBehaviour {
     [SerializeField, TooltipAttribute("認識できる範囲(半径)")]
     float MIN_RADIUS = 5.0f;
 
+    [SerializeField, TooltipAttribute("スワイプする長さ")]
+    float MIN_LENGTH = 150.0f;
+
+    [SerializeField, TooltipAttribute("")]
+    float MIN_VELOCITY = 1000.0f;
+
     public float MinArc { get { return MIN_ARC; } }
     public float MinRadius { get { return MIN_RADIUS; } }
+
+    public float MinLength { get { return MIN_LENGTH; } }
+    public float MinVelocity { get { return MIN_VELOCITY; } }
 }
