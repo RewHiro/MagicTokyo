@@ -47,7 +47,6 @@ public class SceneState : MonoBehaviour
     {
         TitleUpdate();
         TutorialUpdate();
-        Debug.Log(valid_count_);
     }
 
     bool canShiftStart()
@@ -109,6 +108,12 @@ public class SceneState : MonoBehaviour
                 }
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            is_tutroial_ = true;
+            FindObjectOfType<SlideDirector>().StartSlide();
+        }
     }
 
     void TutorialUpdate()
@@ -129,6 +134,14 @@ public class SceneState : MonoBehaviour
                     GameObject.Destroy(GameObject.Find("UI_Prefab(Clone)"));
                 }
             }
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            is_tutroial_ = false;
+
+            FindObjectOfType<SlideDirector>().FinishSlide();
+            GameObject.Destroy(GameObject.Find("TutorialRoot(Clone)"));
+            GameObject.Destroy(GameObject.Find("UI_Prefab(Clone)"));
         }
     }
 }
