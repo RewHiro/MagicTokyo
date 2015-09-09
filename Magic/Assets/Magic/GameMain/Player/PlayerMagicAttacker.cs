@@ -89,6 +89,7 @@ public class PlayerMagicAttacker : NetworkBehaviour
                     break;
                 }
             }
+            break;
         }
     }
 }
