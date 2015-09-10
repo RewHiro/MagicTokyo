@@ -10,6 +10,6 @@ public class HandDirector : MonoBehaviour
     void Start()
     {
 
-        iTween.PunchPosition(gameObject, iTween.Hash("amount", Vector3.forward * 15, "time", 2.0f, "looptype", iTween.LoopType.loop));
+        iTween.PunchPosition(gameObject, iTween.Hash("amount", Vector3.forward * 105, "time", 2.0f, "looptype", iTween.LoopType.loop));
     }
 }

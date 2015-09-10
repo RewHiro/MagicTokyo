@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using System.IO;
 
 public class MyNetworkLobbyManager : NetworkLobbyManager
 {
@@ -23,8 +24,9 @@ public class MyNetworkLobbyManager : NetworkLobbyManager
         titel = Application.loadedLevelName;
         s_singleton = this;
 
+        var text = File.ReadAllText(Application.dataPath + "/connect.json");
         var textAsset = Resources.Load("connect") as TextAsset;
-        JsonNode json = JsonNode.Parse(textAsset.text);
+        JsonNode json = JsonNode.Parse(text);
 
         var is_host = json["Host"].Get<bool>();
         if (is_host)
