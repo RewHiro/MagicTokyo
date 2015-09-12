@@ -61,7 +61,7 @@ public class PlayerMagicManager : NetworkBehaviour {
   public void MagicExecute() {
     // クールダウン中、またはスロット点滅中は発動できない
     if (IsCoolDown() || sprite_.IsSlotBlink()) return;
-
+        Debug.Log("kime");
     cool_time_ = MAGIC_COOL_TIME[MagicType];
     MagicType = -1;
     sprite_.MagicAction();
