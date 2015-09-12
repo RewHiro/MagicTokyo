@@ -26,9 +26,13 @@ public class LobbyPlayer : NetworkLobbyPlayer
             if (Application.loadedLevelName == "title" ||
                 Application.loadedLevelName == "yanai_title")
             {
-                if (Input.anyKeyDown)
+                if (Input.GetMouseButtonDown(0))
                 {
-                    ChangeReady();
+                    if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+                    {
+                        ChangeReady();
+                        FindObjectOfType<SceneState>().Ready();
+                    }
                 }
             }
 

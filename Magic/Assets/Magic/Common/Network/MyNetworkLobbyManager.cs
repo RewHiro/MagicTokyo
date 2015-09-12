@@ -59,4 +59,15 @@ public class MyNetworkLobbyManager : NetworkLobbyManager
         MyNetworkLobbyManager.s_singleton.StartClient();
     }
 
+    //public override void OnClientSceneChanged(NetworkConnection conn)
+    //{
+    //    base.OnClientSceneChanged(conn);
+    //}
+    //public override void OnLobbyClientSceneChanged(NetworkConnection conn)
+    //{
+    //    GameObject.Destroy(GameObject.Find("TutorialRoot(Clone)"));
+    //    GameObject.Destroy(GameObject.Find("UI_Prefab(Clone)"));
+    //    MyNetworkLobbyManager.s_singleton.is_tutorial_ = false;
+    //    base.OnLobbyClientSceneChanged(conn);
+    //}
 }
