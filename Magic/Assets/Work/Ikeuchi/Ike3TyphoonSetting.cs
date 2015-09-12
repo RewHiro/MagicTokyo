@@ -53,8 +53,18 @@ public class Ike3TyphoonSetting : MonoBehaviour {
 
     [SerializeField
     ,TooltipAttribute("「Ike3TyphoonEffectCube」prefabを入れてください")]
-    private GameObject typhoon_effect_cube_;
-    public GameObject TyphoonEffectCube { get { return typhoon_effect_cube_; } }
+    private GameObject typhoon_effect_leaf_1_;
+    public GameObject TyphoonEffectLeaf1 { get { return typhoon_effect_leaf_1_; } }
+
+    [SerializeField
+    , TooltipAttribute("「Ike3TyphoonEffectCube」prefabを入れてください")]
+    private GameObject typhoon_effect_leaf_2_;
+    public GameObject TyphoonEffectLeaf2 { get { return typhoon_effect_leaf_2_; } }
+
+    [SerializeField
+    , TooltipAttribute("「Ike3TyphoonEffectCube」prefabを入れてください")]
+    private GameObject typhoon_effect_leaf_3_;
+    public GameObject TyphoonEffectLeaf3 { get { return typhoon_effect_leaf_3_; } }
 
 
     void Start()
@@ -68,8 +78,17 @@ public class Ike3TyphoonSetting : MonoBehaviour {
         game_object.transform.SetParent(typhoon_manager_obj_.transform);
         game_object.transform.eulerAngles = tubo_obj_.transform.eulerAngles;
         game_object.transform.position = tubo_obj_.transform.position;
-        game_object.transform.Translate(0.0f, 3.0f, 0.0f);
+        game_object.transform.Translate(0.0f, 2.2f, 0.0f);
+        game_object.transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
         game_object.name = typhoon_obj_.name;
         AudioManager.Instance.PlaySe(13);
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown("e"))
+        {
+            TyphoonOn();
+        }
     }
 }

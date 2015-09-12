@@ -17,18 +17,24 @@ public class Ike3Typhoon : MonoBehaviour
 
     private GameObject typhoon_manager_obj_;
     private GameObject typhoon_effect_halo_;
-    private GameObject typhoon_effect_cube_;
+    private GameObject typhoon_effect_leaf_1_;
+    private GameObject typhoon_effect_leaf_2_;
+    private GameObject typhoon_effect_leaf_3_;
 
-	// Use this for initialization
-	void Start () {
+    private Vector3 LeafOffset_ { get { return new Vector3(0.0f, -0.1f, 0.0f); } }
+
+    // Use this for initialization
+    void Start () {
         Init();
 	}
 	
 	// Update is called once per frame
 	void Update () {
         LimitTimeUpdate();
-        CreateEffectHalo();
-        CreateEffectCube();
+        TyphoonRotate();
+        TyphoonScaleBig();
+
+        CreateEffects();
     }
 
     void OnTriggerEnter(Collider other)
@@ -51,7 +57,9 @@ public class Ike3Typhoon : MonoBehaviour
 
         typhoon_manager_obj_ = setting.TyhoonManagerObj;
         typhoon_effect_halo_ = setting.TyphoonEffectHalo;
-        typhoon_effect_cube_ = setting.TyphoonEffectCube;
+        typhoon_effect_leaf_1_ = setting.TyphoonEffectLeaf1;
+        typhoon_effect_leaf_2_ = setting.TyphoonEffectLeaf2;
+        typhoon_effect_leaf_3_ = setting.TyphoonEffectLeaf3;
 
         float y = GetComponent<SphereCollider>().radius / -2;
         Vector3 offset = new Vector3(0.0f, y, 0.0f);
@@ -65,7 +73,51 @@ public class Ike3Typhoon : MonoBehaviour
         timer_++;
         if (timer_ > limit_time_)
         {
-            Destroy(gameObject);
+            if (transform.localScale.x < 0)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                transform.localScale -= new Vector3(0.05f, 0.05f, 0.05f);
+            }
+        }
+    }
+
+    void TyphoonRotate()
+    {
+        transform.Rotate(0.0f, 20.0f, 0.0f);
+    }
+
+    void TyphoonScaleBig()
+    {
+        if (timer_ < limit_time_)
+        {
+            if (transform.localScale.x < 2)
+            {
+                transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
+            }
+        }
+    }
+
+    void CreateEffects()
+    {
+        if (timer_ < limit_time_)
+        {
+            CreateEffectHalo();
+            int rand_num = Random.Range(0, 3);
+            if (0 == rand_num)
+            {
+                CreateEffectleaf1();
+            }
+            else if (1 == rand_num)
+            {
+                CreateEffectleaf2();
+            }
+            else if (2 == rand_num)
+            {
+                CreateEffectleaf3();
+            }
         }
     }
 
@@ -78,27 +130,53 @@ public class Ike3Typhoon : MonoBehaviour
             float radius_size =GetComponent<SphereCollider>().radius * 3;
             Vector3 rand_pos = new Vector3(
                 Random.Range(-radius_size, radius_size),
-                Random.Range(0.0f, transform.position.y),
+                Random.Range(0.0f, transform.position.y) + radius_size,
                 Random.Range(-radius_size, radius_size)
                 );
             game_object.transform.position = transform.position + rand_pos;
             game_object.name = typhoon_effect_halo_.name;
 
-            Vector3 offset = new Vector3(0.0f, -1.0f, 0.0f);
+            Vector3 offset = new Vector3(0.0f, 0.0f, 0.0f);
             game_object.GetComponent<Ike3TyhoonEffectHalo>().DrainPos = drain_pos_ + offset;
         }
     }
 
-    void CreateEffectCube()
+    void CreateEffectleaf1()
     {
         if (0 == (timer_) % 2)
         {
-            GameObject game_object = Instantiate(typhoon_effect_cube_);
+            GameObject game_object = Instantiate(typhoon_effect_leaf_1_);
             game_object.transform.SetParent(typhoon_manager_obj_.transform);
             float radius_size = GetComponent<SphereCollider>().radius * 3;
-            Vector3 offset = new Vector3(0.0f, -1.0f, 0.0f);
+            Vector3 offset = LeafOffset_;
             game_object.transform.position = drain_pos_ + offset;
-            game_object.name = typhoon_effect_cube_.name;
+            game_object.name = typhoon_effect_leaf_1_.name;
+        }
+    }
+
+    void CreateEffectleaf2()
+    {
+        if (0 == (timer_) % 2)
+        {
+            GameObject game_object = Instantiate(typhoon_effect_leaf_2_);
+            game_object.transform.SetParent(typhoon_manager_obj_.transform);
+            float radius_size = GetComponent<SphereCollider>().radius * 3;
+            Vector3 offset = LeafOffset_;
+            game_object.transform.position = drain_pos_ + offset;
+            game_object.name = typhoon_effect_leaf_2_.name;
+        }
+    }
+
+    void CreateEffectleaf3()
+    {
+        if (0 == (timer_) % 2)
+        {
+            GameObject game_object = Instantiate(typhoon_effect_leaf_3_);
+            game_object.transform.SetParent(typhoon_manager_obj_.transform);
+            float radius_size = GetComponent<SphereCollider>().radius * 3;
+            Vector3 offset = LeafOffset_;
+            game_object.transform.position = drain_pos_ + offset;
+            game_object.name = typhoon_effect_leaf_3_.name;
         }
     }
 
@@ -116,7 +194,7 @@ public class Ike3Typhoon : MonoBehaviour
 
             if (hit_flag)
             {
-                Debug.Log(0);
+                //Debug.Log(0);
                 Vector3 from_kudamon_pot =
                     drain_pos_ - other.transform.position;
 
