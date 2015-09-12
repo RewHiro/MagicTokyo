@@ -31,7 +31,13 @@ public class SceneState : MonoBehaviour
         private set { valid_count_ = value; }
     }
 
+    bool is_ready_ = false;
     bool is_tutroial_ = false;
+
+    public void Ready()
+    {
+        is_ready_ = true;
+    }
 
     void Awake()
     {
@@ -47,7 +53,6 @@ public class SceneState : MonoBehaviour
     {
         TitleUpdate();
         TutorialUpdate();
-        Debug.Log(valid_count_);
     }
 
     bool canShiftStart()
@@ -72,7 +77,7 @@ public class SceneState : MonoBehaviour
     bool isRecognizedHand()
     {
         var hand = FindObjectOfType<MyRigidHand>();
-        
+
         if (hand == null) return false;
 
         return true;
@@ -86,6 +91,7 @@ public class SceneState : MonoBehaviour
     void TitleUpdate()
     {
         if (is_tutroial_) return;
+        if (is_ready_) return;
         // ゲーム本編に移行
         if (canShiftStart())
         {
@@ -93,6 +99,7 @@ public class SceneState : MonoBehaviour
             {
                 if (!player.isLocalPlayer) continue;
                 player.ChangeReady();
+                is_ready_ = true;
             }
         }
 
@@ -108,6 +115,12 @@ public class SceneState : MonoBehaviour
                     FindObjectOfType<SlideDirector>().StartSlide();
                 }
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            is_tutroial_ = true;
+            FindObjectOfType<SlideDirector>().StartSlide();
         }
     }
 
@@ -129,6 +142,14 @@ public class SceneState : MonoBehaviour
                     GameObject.Destroy(GameObject.Find("UI_Prefab(Clone)"));
                 }
             }
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            is_tutroial_ = false;
+
+            FindObjectOfType<SlideDirector>().FinishSlide();
+            GameObject.Destroy(GameObject.Find("TutorialRoot(Clone)"));
+            GameObject.Destroy(GameObject.Find("UI_Prefab(Clone)"));
         }
     }
 }

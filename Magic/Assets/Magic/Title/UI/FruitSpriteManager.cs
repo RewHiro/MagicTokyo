@@ -26,5 +26,6 @@ public class FruitSpriteManager : MonoBehaviour
         var gameobject = Instantiate(fruit_sprites_[Random.Range(0, fruit_sprites_.Length)]);
         gameobject.transform.SetParent(gameObject.transform);
         gameobject.transform.localScale = Vector3.one;
+        gameobject.transform.localRotation = Quaternion.Euler(17.86487f, 0, 0);
     }
 }
