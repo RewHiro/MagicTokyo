@@ -36,8 +36,6 @@ public class PlayerMagicManager : NetworkBehaviour {
     if (sprite_ == null) sprite_ = FindObjectOfType<ItemSpriteManager>();
 
     if (IsCoolDown()) { cool_time_ -= Time.deltaTime; return; }
-
-
     if (!OnGetMomon() || EnableMagic()) { return; }
 
     MagicType = Random.Range(0, sprite_.IconSize);
@@ -53,8 +51,10 @@ public class PlayerMagicManager : NetworkBehaviour {
   }
 
   public void MagicExecute() {
-    // クールダウン中、またはスロット点滅中は発動できない
-    if (IsCoolDown() || sprite_.IsSlotBlink()) return;
+    // クールダウン中、またはスロット回転、点滅中は発動できない
+    var slot_blinking = sprite_.IsSlotBlink();
+    var reel_playing = sprite_.SlotTrigger;
+    if (IsCoolDown() || slot_blinking || reel_playing) return;
 
     cool_time_ = MAGIC_COOL_TIME[MagicType];
     MagicType = -1;

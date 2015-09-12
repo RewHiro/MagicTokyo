@@ -74,6 +74,7 @@ public class ItemSpriteManager : MonoBehaviour {
     sprite_.sprite = null;
   }
 
+  // スロットの回転、点滅中か
   public bool IsSlotBlink() {
     return blink_timer_ > 0;
   }
