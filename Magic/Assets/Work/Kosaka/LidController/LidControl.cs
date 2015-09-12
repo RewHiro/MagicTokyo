@@ -18,12 +18,14 @@ public class LidControl : MonoBehaviour
     float SCALE_CHANGE_SPEED_SAVER_ = 30.0f;
 
     Collider lid_collider;
-    
+
+    RushEventer kudamon_rush_;
+
     //------------------------------------------------
 
     public void Awake()
     {
-        lid_collider = gameObject.GetComponent<Collider>();      
+        lid_collider = gameObject.GetComponent<Collider>();
         lid_scale_xy_ = LID_SCALE_MAX_;
     }
 
@@ -41,6 +43,16 @@ public class LidControl : MonoBehaviour
         //蓋のサイズが変わる速度
         var scale_change_speed =
             LID_SCALE_MAX_ / SCALE_CHANGE_SPEED_SAVER_;
+
+        //----------------------------------------------------------------------------
+        //ここのTODOができていないので修正おねがい or やり方(ラッシュの開始と終了の取得方法)提示おねがい
+
+        // TODO : ラッシュが始まったら蓋が消え
+        //if (kudamon_rush_.IsStart) { can_rendering_lid_ = false; }
+        // TODO : ラッシュが終わったら蓋が出る
+        //else { can_rendering_lid_ = true; }
+
+        //----------------------------------------------------------------------------
 
         //蓋の有無が切り替わった時の動き
         //サイズの変更・Triggerの切り替え・回転
