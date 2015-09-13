@@ -42,6 +42,8 @@ public class TuboInDestroy : MonoBehaviour
 
     LidControl lid_control_ = null;
 
+    RushEventer kudamon_rush_;
+
     [SerializeField]
     GameObject smoke_prehub_ = null;
 
@@ -74,23 +76,30 @@ public class TuboInDestroy : MonoBehaviour
         //----------------------------------------------
 
         //ゲームが始まったら蓋をはずす
-        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
-        {
-            if (game_start_director_.IsStart)
-                lid_control_.can_rendering_lid_ = false;
-        }
-        else
-        {
-            lid_control_.can_rendering_lid_ = false;
-        }
+
+        lid_control_.can_rendering_lid_ = false;
+
+        //if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        //{
+        //    if (game_start_director_.IsStart)
+        //        lid_control_.can_rendering_lid_ = false;
+        //}
+        //else
+        //{
+        //    lid_control_.can_rendering_lid_ = false;
+        //}
+
+        if(game_start_director_.IsReady || game_start_director_.IsConnect)
+            lid_control_.can_rendering_lid_ = true;
+
         //くだモンがMAXなら蓋をつける
         if (GetKudamonCount() >= KUDAMON_MAX_COUNT)
             lid_control_.can_rendering_lid_ = true;
 
 
-        //ジェスチャーで蓋をはずす
-        if (player_attacker_.IsAttack)
-            lid_control_.can_rendering_lid_ = false;
+        ////ジェスチャーで蓋をはずす
+        //if (player_attacker_.IsAttack)
+        //    lid_control_.can_rendering_lid_ = false;
 
         if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
         {

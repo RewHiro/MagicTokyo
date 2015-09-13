@@ -59,6 +59,13 @@ public class MyNetworkLobbyManager : NetworkLobbyManager
         MyNetworkLobbyManager.s_singleton.StartClient();
     }
 
+    public override void OnServerDisconnect(NetworkConnection conn)
+    {
+        Debug.Log("相手なし");
+        MyNetworkLobbyManager.s_singleton.ServerReturnToLobby();
+        base.OnServerDisconnect(conn);
+    }
+
     //public override void OnClientSceneChanged(NetworkConnection conn)
     //{
     //    base.OnClientSceneChanged(conn);

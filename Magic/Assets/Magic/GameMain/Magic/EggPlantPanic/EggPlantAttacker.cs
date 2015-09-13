@@ -63,6 +63,36 @@ public class EggPlantAttacker : NetworkBehaviour
         }
     }
 
+    public void AttackEggPlant()
+    {
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (!isLocalPlayer) return;
+        }
+        CmdTellServerAttack(true, 1);
+        is_attack_ = true;
+        egg_plant_num_ = 1;
+
+        bool flag_jat = jamamon_attack_obj_ != null;
+        bool flag_po = pot_obj_ != null;
+
+        bool flag = flag_jat && flag_po;
+        if (flag)
+        {
+            for (int num = 0; num < 1; num++)
+            {
+                GameObject game_object = Instantiate(jamamon_attack_obj_);
+                GameObject pot_obj = GameObject.Find(pot_obj_.name);
+                game_object.transform.position = pot_obj.transform.position;
+                game_object.name = jamamon_attack_obj_.name;
+            }
+        }
+        else
+        {
+            Debug.Log("AttackJamamon または Pot が入っていません");
+        }
+    }
+
     [Command]
     void CmdTellServerAttack(bool is_attack, int egg_plant_num)
     {

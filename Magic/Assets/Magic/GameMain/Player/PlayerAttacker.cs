@@ -157,6 +157,7 @@ public class PlayerAttacker : NetworkBehaviour
             if (POT_LIMIT_NUM <= tubo_in_destory_.GetKudamonCount())
             {
                 FindObjectOfType<FruitCreater>().PeachCreate(1);
+                GetComponent<EggPlantAttacker>().AttackEggPlant();
             }
             tubo_in_destory_.ResetCount();
             FindObjectOfType<PotGaugeController>().GaugeReset();
