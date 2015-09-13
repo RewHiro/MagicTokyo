@@ -27,6 +27,7 @@ public class LidControl : MonoBehaviour
     {
         lid_collider = gameObject.GetComponent<Collider>();
         lid_scale_xy_ = LID_SCALE_MAX_;
+        kudamon_rush_ = FindObjectOfType<RushEventer>();
     }
 
     void Start()
@@ -47,9 +48,9 @@ public class LidControl : MonoBehaviour
         //----------------------------------------------------------------------------
         //ここのTODOができていないので修正おねがい or やり方(ラッシュの開始と終了の取得方法)提示おねがい
 
-        // TODO : ラッシュが始まったら蓋が消え
+        //// TODO : ラッシュが始まったら蓋が消え
         //if (kudamon_rush_.IsStart) { can_rendering_lid_ = false; }
-        // TODO : ラッシュが終わったら蓋が出る
+        //// TODO : ラッシュが終わったら蓋が出る
         //else { can_rendering_lid_ = true; }
 
         //----------------------------------------------------------------------------

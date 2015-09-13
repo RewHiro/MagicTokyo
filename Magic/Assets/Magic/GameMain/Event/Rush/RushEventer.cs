@@ -28,6 +28,9 @@ public class RushEventer : MonoBehaviour
         GameObject particle_manager_ = GameObject.Find("Ike3ParticleManager");
         game_object_ = Instantiate(particleSystem_);
         game_object_.transform.SetParent(particle_manager_.transform);
+        var lid_object = FindObjectOfType<LidControl>().gameObject;
+        game_object_.transform.position = lid_object.transform.position;
+        game_object_.transform.rotation = lid_object.transform.rotation;
         //game_object_.transform.position = nabe_.transform.position;
         game_object_.name = particleSystem_.name;
     }
