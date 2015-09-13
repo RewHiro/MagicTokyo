@@ -69,9 +69,9 @@ public class EggPlantAttacker : NetworkBehaviour
         {
             if (!isLocalPlayer) return;
         }
-        CmdTellServerAttack(true, 1);
+        CmdTellServerAttack(true, 2);
         is_attack_ = true;
-        egg_plant_num_ = 1;
+        egg_plant_num_ = 2;
 
         bool flag_jat = jamamon_attack_obj_ != null;
         bool flag_po = pot_obj_ != null;
@@ -79,7 +79,7 @@ public class EggPlantAttacker : NetworkBehaviour
         bool flag = flag_jat && flag_po;
         if (flag)
         {
-            for (int num = 0; num < 1; num++)
+            for (int num = 0; num < 2; num++)
             {
                 GameObject game_object = Instantiate(jamamon_attack_obj_);
                 GameObject pot_obj = GameObject.Find(pot_obj_.name);
