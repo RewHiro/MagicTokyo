@@ -43,7 +43,7 @@ public class PlayerMagicManager : NetworkBehaviour {
 
     if (IsCoolDown()) { cool_time_ -= Time.deltaTime; return; }
     if (!OnGetMomon() || EnableMagic()) { return; }
-
+        AudioManager.Instance.PlaySe(14);
     MagicType = Random.Range(0, sprite_.IconSize);
     sprite_.SlotTriggerEnter();
   }

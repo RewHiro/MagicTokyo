@@ -34,7 +34,6 @@ public class ItemSpriteManager : MonoBehaviour {
             if (!player.isLocalPlayer) continue;
             player_magic_manager_ = player;
         }
-
   }
 
   void Update() {
@@ -63,9 +62,11 @@ public class ItemSpriteManager : MonoBehaviour {
 
       blink_timer_ = 60;
       SlotTrigger = false;
-    }
+            AudioManager.Instance.PlaySe(24);
 
-    sprite_.sprite = ICON[roulette_reel_];
+        }
+
+        sprite_.sprite = ICON[roulette_reel_];
   }
 
   void SlotBlink() {
