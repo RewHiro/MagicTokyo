@@ -83,6 +83,11 @@ public class SceneState : MonoBehaviour
         return true;
     }
 
+    public bool isReady() 
+    {
+      return is_ready_;
+    }
+
     public bool isStart()
     {
         return state_ == TitleState.Start;
