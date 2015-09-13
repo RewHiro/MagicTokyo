@@ -72,10 +72,11 @@ public class EventControl : NetworkBehaviour
     void RandEvent()
     {
         if (time_limitter_ == null) return;
+        Debug.Log(game_start_director_.IsStart);
+        Debug.Log(game_start_director_.isLocalPlayer);
 
         if (!game_start_director_.IsStart) return;
         var time = time_limitter_.LimitCount;
-
         if (time_ == time) return;
         if (time == 60) return;
         if (time <= 0) return;
@@ -100,8 +101,13 @@ public class EventControl : NetworkBehaviour
                     break;
             }
             time_ = time;
+        }
+
+        if(time == 50 || time == 30)
+        {
 
             if (!isServer) return;
+
             var select_event = (EventName)Random.Range(0, (int)EventName.EVENT_MAX);
             var is_durian_boom = MyRandom.RandomBool();
             select_event_ = select_event;
@@ -115,7 +121,7 @@ public class EventControl : NetworkBehaviour
         if (time_limitter_ != null) return;
         foreach (var player in FindObjectsOfType<PlayerSetting>())
         {
-            if (!isLocalPlayer) continue;
+            if (!player.isLocalPlayer) continue;
 
             time_limitter_ = player.GetComponent<TimeLimitter>();
             game_start_director_ = player.GetComponent<GameStartDirector>();

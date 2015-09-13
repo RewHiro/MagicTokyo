@@ -134,8 +134,8 @@ public class AudioManager : MonoBehaviour {
         //foreach (var se in se_) { if (!se.isPlaying) se.Play(); }
         var se = se_clips_[index];
         if (se.isPlaying) return;
-        Debug.Log("SEOK");
-        Debug.Log(index);
+        //Debug.Log("SEOK");
+        //Debug.Log(index);
         se_clips_[index].Play();
   }
 }

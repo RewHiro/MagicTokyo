@@ -82,9 +82,10 @@ public class PlayerMagicAttacker : NetworkBehaviour
                 if (circle_gesture.IsValid)
                 {
                     if (!hand.IsLeft) continue;
-                    if (gesture.DurationSeconds < TURN_SECOND) return;
+                    if (gesture.DurationSeconds < TURN_SECOND) continue;
+                    if (!player_magic_manager_.MagicExecute()) continue;
                     magic_action_list_[magic_type]();
-                    player_magic_manager_.MagicExecute();
+
                     AudioManager.Instance.PlaySe(11);
                     break;
                 }
