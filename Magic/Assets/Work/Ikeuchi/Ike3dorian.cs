@@ -110,7 +110,7 @@ public class Ike3dorian : MonoBehaviour {
         {
             Destroy(gameObject);
         }
-        explosion_count_ += Time.deltaTime;
+        explosion_count_++;
     }
 
     public void ExplodeForcibly()
