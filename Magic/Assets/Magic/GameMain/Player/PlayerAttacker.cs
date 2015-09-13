@@ -23,6 +23,8 @@ public class PlayerAttacker : NetworkBehaviour
 
     bool is_right_ = false;
 
+    int attack_count_ = 0;
+
     HandController hand_controller_ = null;
     //SkeletalHand hand_ = null;
 
@@ -117,14 +119,7 @@ public class PlayerAttacker : NetworkBehaviour
 
             is_guard_ = true;
 
-            if (MyNetworkLobbyManager.s_singleton.Is1P)
-            {
-                AudioManager.Instance.PlaySe(20);
-            }
-            else
-            {
-                AudioManager.Instance.PlaySe(16);
-            }
+            PlayAttackCV();
 
             bool flag_ap = apple_attack_obj_ != null;
             bool flag_le = lemon_attack_obj_ != null;
@@ -186,15 +181,6 @@ public class PlayerAttacker : NetworkBehaviour
                     var apple_num = tubo_in_destory_.GetApumonCount();
                     var lemon_num = tubo_in_destory_.GetLemonCount();
 
-                    if (MyNetworkLobbyManager.s_singleton.Is1P)
-                    {
-                        AudioManager.Instance.PlaySe(20);
-                    }
-                    else
-                    {
-                        AudioManager.Instance.PlaySe(16);
-                    }
-
                     bool flag_ap = apple_attack_obj_ != null;
                     bool flag_le = lemon_attack_obj_ != null;
                     bool flag_po = pot_obj_ != null;
@@ -234,6 +220,34 @@ public class PlayerAttacker : NetworkBehaviour
                 }
             }
         }
+    }
+
+    void PlayAttackCV()
+    {
+        if (tubo_in_destory_.GetKudamonCount() == 0) return;
+        if (MyNetworkLobbyManager.s_singleton.Is1P)
+        {
+            if (attack_count_ % 2 == 0)
+            {
+                AudioManager.Instance.PlaySe(20);
+            }
+            else
+            {
+                AudioManager.Instance.PlaySe(26);
+            }
+        }
+        else
+        {
+            if (attack_count_ % 2 == 0)
+            {
+                AudioManager.Instance.PlaySe(16);
+            }
+            else
+            {
+                AudioManager.Instance.PlaySe(25);
+            }
+        }
+        attack_count_++;
     }
 
     [Command]
