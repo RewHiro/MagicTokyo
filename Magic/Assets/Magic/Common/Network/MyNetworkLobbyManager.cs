@@ -21,8 +21,9 @@ public class MyNetworkLobbyManager : NetworkLobbyManager
 
     void Start()
     {
-        titel = Application.loadedLevelName;
         s_singleton = this;
+
+        titel = Application.loadedLevelName;
 
         var text = File.ReadAllText(Application.dataPath + "/connect.json");
         var textAsset = Resources.Load("connect") as TextAsset;
@@ -36,7 +37,7 @@ public class MyNetworkLobbyManager : NetworkLobbyManager
         else
         {
             string ip = json["IP"].Get<string>();
-            MyNetworkLobbyManager.singleton.networkAddress = ip;
+            MyNetworkLobbyManager.s_singleton.networkAddress = ip;
 
             MyNetworkLobbyManager.s_singleton.is_1p_ = false;
             MyNetworkLobbyManager.s_singleton.StartClient();
@@ -51,10 +52,11 @@ public class MyNetworkLobbyManager : NetworkLobbyManager
     public override void OnClientDisconnect(NetworkConnection conn)
     {
         base.OnClientDisconnect(conn);
+        var text = File.ReadAllText(Application.dataPath + "/connect.json");
         var textAsset = Resources.Load("connect") as TextAsset;
-        JsonNode json = JsonNode.Parse(textAsset.text);
+        JsonNode json = JsonNode.Parse(text);
         string ip = json["IP"].Get<string>();
-        MyNetworkLobbyManager.singleton.networkAddress = ip;
+        MyNetworkLobbyManager.s_singleton.networkAddress = ip;
         MyNetworkLobbyManager.s_singleton.is_1p_ = false;
         MyNetworkLobbyManager.s_singleton.StartClient();
     }
