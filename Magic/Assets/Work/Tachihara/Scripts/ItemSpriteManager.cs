@@ -22,10 +22,19 @@ public class ItemSpriteManager : MonoBehaviour {
 
   SpriteRenderer sprite_ = null;
 
+    PlayerMagicManager player_magic_manager_ = null;
+
 
   void Start() {
     SlotTrigger = false;
     sprite_ = gameObject.GetComponent<SpriteRenderer>();
+
+        foreach (var player in FindObjectsOfType<PlayerMagicManager>())
+        {
+            if (!player.isLocalPlayer) continue;
+            player_magic_manager_ = player;
+        }
+
   }
 
   void Update() {
@@ -46,11 +55,10 @@ public class ItemSpriteManager : MonoBehaviour {
     if (roulette_counter_ > ROULETTE_TIME * 60.0f) {
       roulette_counter_ = 0;
 
-      var magic = FindObjectOfType<PlayerMagicManager>();
-      roulette_reel_ = magic.MagicType;
+      roulette_reel_ = player_magic_manager_.MagicType;
 
       // Debug Output
-      Debug.Log("magic type = " + magic.MagicType);
+      Debug.Log("magic type = " + player_magic_manager_.MagicType);
       //roulette_reel_ = Random.Range(0, ICON.Length - 1);
 
       blink_timer_ = 60;
