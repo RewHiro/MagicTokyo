@@ -79,6 +79,11 @@ public class TuboInDestroy : MonoBehaviour
 
         lid_control_.can_rendering_lid_ = false;
 
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (game_start_director_.IsReady || game_start_director_.IsConnect)
+                lid_control_.can_rendering_lid_ = true;
+        }
         //if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
         //{
         //    if (game_start_director_.IsStart)
@@ -89,8 +94,7 @@ public class TuboInDestroy : MonoBehaviour
         //    lid_control_.can_rendering_lid_ = false;
         //}
 
-        if(game_start_director_.IsReady || game_start_director_.IsConnect)
-            lid_control_.can_rendering_lid_ = true;
+
 
         //くだモンがMAXなら蓋をつける
         if (GetKudamonCount() >= KUDAMON_MAX_COUNT)

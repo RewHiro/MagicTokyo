@@ -34,6 +34,12 @@ public class ItemSpriteManager : MonoBehaviour {
             if (!player.isLocalPlayer) continue;
             player_magic_manager_ = player;
         }
+
+        if (!MyNetworkLobbyManager.s_singleton.Is1P)
+        {
+            player_magic_manager_ = FindObjectOfType<PlayerMagicManager>();
+        }
+
   }
 
   void Update() {
@@ -50,6 +56,8 @@ public class ItemSpriteManager : MonoBehaviour {
 
     ++roulette_counter_;
     roulette_reel_ = (roulette_counter_ / ROULETTE_SPEED) % ICON.Length;
+
+        Debug.Log("oK");
 
     if (roulette_counter_ > ROULETTE_TIME * 60.0f) {
       roulette_counter_ = 0;
