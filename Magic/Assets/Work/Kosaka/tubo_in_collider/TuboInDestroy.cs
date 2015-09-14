@@ -24,7 +24,7 @@ public class TuboInDestroy : MonoBehaviour
     int apumon_count_ = 0;
     bool is_in_momon_ = false;
 
-    bool is_in_dorian_ = false;
+    public bool is_in_dorian_ = false;
 
     //くだモンの名前
     const string LEMON_NAME = "le-mon";
@@ -45,6 +45,11 @@ public class TuboInDestroy : MonoBehaviour
     [SerializeField]
     GameObject smoke_prehub_ = null;
 
+    public bool IsInLemon_ { get; set; }
+    public bool IsInApple_ { get; set; }
+    public bool IsInPeach_ { get; set; }
+    public bool IsInJamamon_ { get; set; }
+
     //-----------------------------------------------------------------
 
     //それぞれのくだモンの鍋に入った(消した)数のゲッター
@@ -64,6 +69,11 @@ public class TuboInDestroy : MonoBehaviour
     {
         rush_eventer_ = FindObjectOfType<RushEventer>();
         lid_control_ = FindObjectOfType<LidControl>();
+
+        IsInLemon_ = false;
+        IsInApple_ = false;
+        IsInPeach_ = false;
+        IsInJamamon_ = false;
     }
 
     void Update()
@@ -84,31 +94,12 @@ public class TuboInDestroy : MonoBehaviour
             if (game_start_director_.IsReady || game_start_director_.IsConnect)
                 lid_control_.can_rendering_lid_ = true;
         }
-        //if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
-        //{
-        //    if (game_start_director_.IsStart)
-        //        lid_control_.can_rendering_lid_ = false;
-        //}
-        //else
-        //{
-        //    lid_control_.can_rendering_lid_ = false;
-        //}
 
 
 
         //くだモンがMAXなら蓋をつける
         if (GetKudamonCount() >= KUDAMON_MAX_COUNT)
             lid_control_.can_rendering_lid_ = true;
-
-        //// TODO : ラッシュが始まったら蓋が消え
-        //if (kudamon_rush_.IsStart) { can_rendering_lid_ = false; }
-        //// TODO : ラッシュが終わったら蓋が出る
-        //else { can_rendering_lid_ = true; }
-
-
-            ////ジェスチャーで蓋をはずす
-            //if (player_attacker_.IsAttack)
-            //    lid_control_.can_rendering_lid_ = false;
 
         if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
         {
@@ -131,6 +122,8 @@ public class TuboInDestroy : MonoBehaviour
 
             var smoke_ = Instantiate(smoke_prehub_).GetComponent<Transform>();
             smoke_.parent = GameObject.Find("Pot").transform;
+
+            IsInLemon_ = true;
         }
         else if (other.name == APUMON_NAME)
         {
@@ -140,6 +133,8 @@ public class TuboInDestroy : MonoBehaviour
 
             var smoke_ = Instantiate(smoke_prehub_).GetComponent<Transform>();
             smoke_.parent = GameObject.Find("Pot").transform;
+
+            IsInApple_ = true;
         }
         else if (other.name == MOMON_NAME)
         {
@@ -148,6 +143,8 @@ public class TuboInDestroy : MonoBehaviour
 
             var smoke_ = Instantiate(smoke_prehub_).GetComponent<Transform>();
             smoke_.parent = GameObject.Find("Pot").transform;
+
+            IsInPeach_ = true;
         }
         else if (other.name == JAMAMON_NAME)
         {
@@ -156,6 +153,8 @@ public class TuboInDestroy : MonoBehaviour
 
             var smoke_ = Instantiate(smoke_prehub_).GetComponent<Transform>();
             smoke_.parent = GameObject.Find("Pot").transform;
+
+            IsInJamamon_ = true;
         }
         else if (other.name == DORIANBOM_NAME)
         {

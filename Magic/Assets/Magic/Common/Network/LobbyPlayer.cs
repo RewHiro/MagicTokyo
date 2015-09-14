@@ -50,6 +50,7 @@ public class LobbyPlayer : NetworkLobbyPlayer
         if (null == MyNetworkLobbyManager.s_singleton.lobbySlots[1]) return;
         SendReadyToBeginMessage();
         GameObject.Find("WaitText").GetComponent<Text>().enabled = true;
+        GameObject.Find("WaitComment").GetComponent<RawImage>().enabled = true;
         is_ready = true;
     }
 }
