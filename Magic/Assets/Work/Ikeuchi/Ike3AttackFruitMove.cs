@@ -38,6 +38,7 @@ public class Ike3AttackFruitMove : MonoBehaviour
     void Update()
     {
         transform.position += move_value_;
+        move_value_ *= 1.05f;
 
         if (move_value_.x > 0) { move_value_.x -= 0.01f; }
         if (move_value_.x < 0) { move_value_.x += 0.01f; }

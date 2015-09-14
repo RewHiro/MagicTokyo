@@ -89,7 +89,11 @@ public class Ike3dorian : MonoBehaviour {
 
     void DorianExplosion()
     {
-        if (explosion_count_ == explosion_limit_time_)
+        if (is_explosion_)
+        {
+            Destroy(gameObject);
+        }
+        else if (explosion_count_ >= explosion_limit_time_)
         {
             is_explosion_ = true;
             transform.localScale = Vector3.one * explosion_size_;
@@ -106,11 +110,7 @@ public class Ike3dorian : MonoBehaviour {
             game_object.name = particle_.name;
             AudioManager.Instance.PlaySe(9);
         }
-        else if (explosion_count_ == explosion_limit_time_ + NEXT_FRAME)
-        {
-            Destroy(gameObject);
-        }
-        explosion_count_++;
+        explosion_count_ += Time.deltaTime * 60;
     }
 
     public void ExplodeForcibly()
