@@ -145,6 +145,7 @@ public class SceneState : MonoBehaviour
                     FindObjectOfType<SlideDirector>().FinishSlide();
                     GameObject.Destroy(GameObject.Find("TutorialRoot(Clone)"));
                     GameObject.Destroy(GameObject.Find("UI_Prefab(Clone)"));
+                    valid_count_ = 0;
                 }
             }
         }
