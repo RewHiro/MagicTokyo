@@ -24,7 +24,7 @@ public class TuboInDestroy : MonoBehaviour
     int apumon_count_ = 0;
     bool is_in_momon_ = false;
 
-    bool is_in_dorian_ = false;
+    public bool is_in_dorian_ = false;
 
     //くだモンの名前
     const string LEMON_NAME = "le-mon";
@@ -42,10 +42,15 @@ public class TuboInDestroy : MonoBehaviour
 
     LidControl lid_control_ = null;
 
-    RushEventer kudamon_rush_;
+    RushEventer kudamon_rush_ = null;
 
     [SerializeField]
     GameObject smoke_prehub_ = null;
+
+    public bool IsInLemon_ { get; set; }
+    public bool IsInApple_ { get; set; }
+    public bool IsInPeach_ { get; set; }
+    public bool IsInJamamon_ { get; set; }
 
     //-----------------------------------------------------------------
 
@@ -66,6 +71,11 @@ public class TuboInDestroy : MonoBehaviour
     {
         rush_eventer_ = FindObjectOfType<RushEventer>();
         lid_control_ = FindObjectOfType<LidControl>();
+
+        IsInLemon_ = false;
+        IsInApple_ = false;
+        IsInPeach_ = false;
+        IsInJamamon_ = false;
     }
 
     void Update()
@@ -89,7 +99,7 @@ public class TuboInDestroy : MonoBehaviour
         //    lid_control_.can_rendering_lid_ = false;
         //}
 
-        if(game_start_director_.IsReady || game_start_director_.IsConnect)
+        if (game_start_director_.IsReady || game_start_director_.IsConnect)
             lid_control_.can_rendering_lid_ = true;
 
         //くだモンがMAXなら蓋をつける
@@ -106,7 +116,9 @@ public class TuboInDestroy : MonoBehaviour
             if (game_end_director_.IsStart)
                 lid_control_.can_rendering_lid_ = true;
         }
+
         //----------------------------------------------
+
         RushEvent();
     }
 
@@ -120,8 +132,10 @@ public class TuboInDestroy : MonoBehaviour
             if (GetKudamonCount() >= KUDAMON_MAX_COUNT) return;
             lemon_count_++;
 
-            var smoke_ = Instantiate(smoke_prehub_).GetComponent<Transform>();
-            smoke_.parent = GameObject.Find("Pot").transform;
+            var smoke = Instantiate(smoke_prehub_).GetComponent<Transform>();
+            smoke.parent = GameObject.Find("Pot").transform;
+
+            IsInLemon_ = true;
         }
         else if (other.name == APUMON_NAME)
         {
@@ -129,24 +143,30 @@ public class TuboInDestroy : MonoBehaviour
             if (GetKudamonCount() >= KUDAMON_MAX_COUNT) return;
             apumon_count_++;
 
-            var smoke_ = Instantiate(smoke_prehub_).GetComponent<Transform>();
-            smoke_.parent = GameObject.Find("Pot").transform;
+            var smoke = Instantiate(smoke_prehub_).GetComponent<Transform>();
+            smoke.parent = GameObject.Find("Pot").transform;
+
+            IsInApple_ = true;
         }
         else if (other.name == MOMON_NAME)
         {
             Destroy(other.gameObject);
             is_in_momon_ = true;
 
-            var smoke_ = Instantiate(smoke_prehub_).GetComponent<Transform>();
-            smoke_.parent = GameObject.Find("Pot").transform;
+            var smoke = Instantiate(smoke_prehub_).GetComponent<Transform>();
+            smoke.parent = GameObject.Find("Pot").transform;
+
+            IsInPeach_ = true;
         }
         else if (other.name == JAMAMON_NAME)
         {
             Destroy(other.gameObject);
             JamamonFlyOut();
 
-            var smoke_ = Instantiate(smoke_prehub_).GetComponent<Transform>();
-            smoke_.parent = GameObject.Find("Pot").transform;
+            var smoke = Instantiate(smoke_prehub_).GetComponent<Transform>();
+            smoke.parent = GameObject.Find("Pot").transform;
+
+            IsInJamamon_ = true;
         }
         else if (other.name == DORIANBOM_NAME)
         {
@@ -165,8 +185,8 @@ public class TuboInDestroy : MonoBehaviour
                 Debug.Log("drian_attack_obj_ にプレハブが入っていません");
             }
 
-            var smoke_ = Instantiate(smoke_prehub_).GetComponent<Transform>();
-            smoke_.parent = GameObject.Find("Pot").transform;
+            var smoke = Instantiate(smoke_prehub_).GetComponent<Transform>();
+            smoke.parent = GameObject.Find("Pot").transform;
         }
 
     }
