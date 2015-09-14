@@ -21,7 +21,7 @@ Loading C:\Users\vantan\Desktop\MagicTokyo\Magic\game\game_Data\Managed\UnityEng
 Platform assembly: C:\Users\vantan\Desktop\MagicTokyo\Magic\game\game_Data\Managed\LeapCSharp.NET3.5.dll (this message is harmless)
 Loading C:\Users\vantan\Desktop\MagicTokyo\Magic\game\game_Data\Managed\LeapCSharp.NET3.5.dll into Unity Child Domain
 Platform assembly: C:\Users\vantan\Desktop\MagicTokyo\Magic\game\game_Data\Managed\System.Core.dll (this message is harmless)
-- Completed reload, in  0.072 seconds
+- Completed reload, in  0.075 seconds
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.

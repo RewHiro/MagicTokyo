@@ -69,8 +69,10 @@ public class TuboInDestroy : MonoBehaviour
     void Update()
     {
         FindPlayer();
-        if (game_start_director_ == null) return;
-
+        if (!MyNetworkLobbyManager.s_singleton.IsTutorial)
+        {
+            if (game_start_director_ == null) return;
+        }
         //----------------------------------------------
 
         //ゲームが始まったら蓋をはずす
