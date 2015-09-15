@@ -76,9 +76,17 @@ public class ScoreBarAnimator : MonoBehaviour {
         if (finshed_animation_){
 
             do_animation_ = false;
-            if(particle_index_ == null)
-            particle_index_ = Instantiate(finished_particle_) as GameObject;
-            //スコアバーを表示.
+            if (particle_index_ == null)
+            {
+            
+                //パーティクル生成
+                particle_index_ = Instantiate(finished_particle_) as GameObject;
+                //位置を固定
+                particle_index_.transform.position = new Vector3(-0.047F,4.631F,-5.357F);
+
+            }
+                
+             //スコアバーを表示.
             slider_reference_.value += (percentage_score_ - slider_reference_.value) * end_animation_speed_;
             particle_.SetActive(false);
 
