@@ -35,7 +35,7 @@ public class ItemSpriteManager : MonoBehaviour {
             player_magic_manager_ = player;
         }
 
-        if (!MyNetworkLobbyManager.s_singleton.Is1P)
+        if (MyNetworkLobbyManager.s_singleton.IsTutorial)
         {
             player_magic_manager_ = FindObjectOfType<PlayerMagicManager>();
         }
