@@ -127,7 +127,6 @@ public class BounceKudamon : MonoBehaviour
                     {
                         bounce_telop_.enabled = false;
                         bounce_telop_.rectTransform.localPosition = bounce_telop_position_;
-                        Debug.Log(bounce_telop_.rectTransform.localPosition);
                     }
 
                     if(start_time_ <= 0)

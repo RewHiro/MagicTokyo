@@ -21,6 +21,7 @@ public class MyNetworkLobbyManager : NetworkLobbyManager
 
     void Start()
     {
+
         s_singleton = this;
 
         titel = Application.loadedLevelName;
@@ -61,11 +62,61 @@ public class MyNetworkLobbyManager : NetworkLobbyManager
         MyNetworkLobbyManager.s_singleton.StartClient();
     }
 
+    public override void OnLobbyStopHost()
+    {
+        MyNetworkLobbyManager.s_singleton.StartHost();
+        base.OnLobbyStopHost();
+    }
+
     public override void OnServerDisconnect(NetworkConnection conn)
     {
         Debug.Log("相手なし");
+        if (Application.loadedLevelName == "yanai_title")
+        {
+            foreach (var player in FindObjectsOfType<LobbyPlayer>())
+            {
+                player.Reset();
+            }
+        }
+        else if (Application.loadedLevelName == "gamemain")
+        {
+            foreach (var player in FindObjectsOfType<LobbyPlayer>())
+            {
+                if (!player.isLocalPlayer) continue;
+                player.Reset();
+            }
+            MyNetworkLobbyManager.s_singleton.ServerReturnToLobby();
+        }
         base.OnServerDisconnect(conn);
-        MyNetworkLobbyManager.s_singleton.ServerReturnToLobby();
+    }
+
+    public override void OnClientError(NetworkConnection conn, int errorCode)
+    {
+        Debug.Log("Error");
+        foreach (var player in FindObjectsOfType<LobbyPlayer>())
+        {
+            if (!player.isLocalPlayer) continue;
+            player.Reset();
+        }
+        base.OnClientError(conn, errorCode);
+    }
+
+    public override void OnClientNotReady(NetworkConnection conn)
+    {
+        Debug.Log("Error");
+        base.OnClientNotReady(conn);
+    }
+
+    public override void OnServerError(NetworkConnection conn, int errorCode)
+    {
+        Debug.Log("Error");
+        base.OnServerError(conn, errorCode);
+    }
+
+    public override void OnClientConnect(NetworkConnection conn)
+    {
+        Debug.Log("Connect");
+        base.OnClientConnect(conn);
     }
 
     //public override void OnClientSceneChanged(NetworkConnection conn)

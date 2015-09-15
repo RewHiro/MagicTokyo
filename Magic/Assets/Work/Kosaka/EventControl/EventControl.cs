@@ -72,8 +72,6 @@ public class EventControl : NetworkBehaviour
     void RandEvent()
     {
         if (time_limitter_ == null) return;
-        Debug.Log(game_start_director_.IsStart);
-        Debug.Log(game_start_director_.isLocalPlayer);
 
         if (!game_start_director_.IsStart) return;
         var time = time_limitter_.LimitCount;

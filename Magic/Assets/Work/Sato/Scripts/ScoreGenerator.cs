@@ -87,6 +87,7 @@ public class ScoreGenerator : MonoBehaviour
                     //サイズ（スケール）を指定、
                     //桁ごとに位置をアジャスト
                     Score.transform.parent = first_position_reference[i].transform;
+                    Score.transform.localRotation = Quaternion.identity;
                     Score.transform.localScale = Vector3.one;
                     Score.transform.localPosition = new Vector3(transform.position.x - (digit_counter_ * Ajust_Spite_Position_ * 2.5F),
                                                                 transform.position.y,

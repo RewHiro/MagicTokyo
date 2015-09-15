@@ -23,6 +23,7 @@ public class ScoreBarAnimator : MonoBehaviour {
     public bool DoAnimation { set { do_animation_ = value; }  }
     public bool finshed_animation_ = false;
     public bool FinishedAnimation { set { finshed_animation_ = value; } }
+    bool is_save_ = false;
 
     public float end_animation_speed_ = 0.075F;
     public float animation_counter_ = 0.0F;
@@ -41,14 +42,6 @@ public class ScoreBarAnimator : MonoBehaviour {
         slider_reference_ = GetComponent<Slider>();
 
         target_value_ = Random.Range(0.15F, 0.4F);
-
-        //自分のスコア.    
-        my_score_ = GameObject.FindObjectOfType<ScoreSaver>().FruitNum;
-        //総合スコア.
-        synthesis_kudamon_value_ = my_score_ + GameObject.FindObjectOfType<ScoreSaver>().RemoteFruitNum;
-
-        //最初にスコアから、自己得点数の割合を保存.
-        percentage_score_ = ScorePercentage();
     }
 	
 	// Update is called once per frame
@@ -56,6 +49,19 @@ public class ScoreBarAnimator : MonoBehaviour {
 
         //スライダーのアニメーションを開始.
         if (do_animation_){
+
+            if (!is_save_)
+            {
+                //自分のスコア.    
+                my_score_ = GameObject.FindObjectOfType<ScoreSaver>().RemoteFruitNum;
+                //総合スコア.
+                synthesis_kudamon_value_ = my_score_ + GameObject.FindObjectOfType<ScoreSaver>().FruitNum;
+
+                //最初にスコアから、自己得点数の割合を保存.
+                percentage_score_ = ScorePercentage();
+
+                is_save_ = true;
+            }
 
             //アニメーションカウンターを更新.
             animation_counter_ += 1.0F * Time.deltaTime;
