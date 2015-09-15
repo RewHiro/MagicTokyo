@@ -42,61 +42,61 @@ public class ResultAnimationManager : MonoBehaviour {
     void JadageWin() {
 
         var score_saver = GameObject.FindObjectOfType<ScoreSaver>();
-/*
-           //勝ち,負け,引き分け、判定.
-           if (score_saver.FruitNum < score_saver.RemoteFruitNum)
-           {
 
-               //勝ち
-               is_win_= true;
-               is_draw_= false;
+        //勝ち,負け,引き分け、判定.
+        if (score_saver.FruitNum < score_saver.RemoteFruitNum)
+        {
 
-
-           }
-           else if (score_saver.FruitNum > score_saver.RemoteFruitNum)
-           {
-
-               //負け
-               is_win_= false;
-               is_draw_= false;
-
-           }
-           else
-           {
-               //引き分け
-               is_draw_= true;
-           }
+            //勝ち
+            is_win_ = true;
+            is_draw_ = false;
 
 
-           */
+        }
+        else if (score_saver.FruitNum > score_saver.RemoteFruitNum)
+        {
 
-         ///TEST TEST　 TEST TEST TEST TEST ////　
-                const int test_1p = 100;
-                const int test_2p = 200;
-                //勝ち,負け,引き分け、判定.
-                if (test_1p > test_2p)
-                {
+            //負け
+            is_win_ = false;
+            is_draw_ = false;
 
-                    //勝ち
-                    is_win_ = true;
-                    is_draw_ = false;
+        }
+        else
+        {
+            //引き分け
+            is_draw_ = true;
+        }
 
 
-                }
-                else if (test_1p < test_2p)
-                {
 
-                    //負け
-                    is_win_ = false;
-                    is_draw_ = false;
 
-                }
-                else
-                {
-                    //引き分け
-                    is_draw_ = true;
-                }
-         // TEST TEST TEST TEST TEST TEST TEST //
+        ///TEST TEST　 TEST TEST TEST TEST ////　
+        //const int test_1p = 100;
+        //const int test_2p = 200;
+        ////勝ち,負け,引き分け、判定.
+        //if (test_1p > test_2p)
+        //{
+
+        //    //勝ち
+        //    is_win_ = true;
+        //    is_draw_ = false;
+
+
+        //}
+        //else if (test_1p < test_2p)
+        //{
+
+        //    //負け
+        //    is_win_ = false;
+        //    is_draw_ = false;
+
+        //}
+        //else
+        //{
+        //    //引き分け
+        //    is_draw_ = true;
+        //}
+        // TEST TEST TEST TEST TEST TEST TEST //
 
     }
 
