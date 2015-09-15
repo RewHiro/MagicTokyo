@@ -24,7 +24,7 @@ public class TuboInDestroy : MonoBehaviour
     int apumon_count_ = 0;
     bool is_in_momon_ = false;
 
-    public bool is_in_dorian_ = false;
+    bool is_in_dorian_ = false;
 
     //くだモンの名前
     const string LEMON_NAME = "le-mon";
@@ -182,9 +182,6 @@ public class TuboInDestroy : MonoBehaviour
             {
                 Debug.Log("drian_attack_obj_ にプレハブが入っていません");
             }
-
-            var smoke_ = Instantiate(smoke_prehub_).GetComponent<Transform>();
-            smoke_.parent = GameObject.Find("Pot").transform;
         }
 
     }
