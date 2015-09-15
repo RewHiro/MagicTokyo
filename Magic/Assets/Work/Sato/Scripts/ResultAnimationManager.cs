@@ -35,10 +35,14 @@ public class ResultAnimationManager : MonoBehaviour {
     private float sarching_timer;
     private const float ScenechageTime = 2.0F;
 
+
+    //スコアバー参照用.
+    ScoreBarAnimator score_bar_reference_;
+
     void JadageWin() {
 
         var score_saver = GameObject.FindObjectOfType<ScoreSaver>();
-
+/*
            //勝ち,負け,引き分け、判定.
            if (score_saver.FruitNum < score_saver.RemoteFruitNum)
            {
@@ -62,7 +66,11 @@ public class ResultAnimationManager : MonoBehaviour {
                //引き分け
                is_draw_= true;
            }
-        /* ///TEST TEST　 TEST TEST TEST TEST ////　
+
+
+           */
+
+         ///TEST TEST　 TEST TEST TEST TEST ////　
                 const int test_1p = 100;
                 const int test_2p = 200;
                 //勝ち,負け,引き分け、判定.
@@ -88,7 +96,7 @@ public class ResultAnimationManager : MonoBehaviour {
                     //引き分け
                     is_draw_ = true;
                 }
-        */ // TEST TEST TEST TEST TEST TEST TEST //
+         // TEST TEST TEST TEST TEST TEST TEST //
 
     }
 
@@ -98,6 +106,7 @@ public class ResultAnimationManager : MonoBehaviour {
 
         canvas_refernce_ = GameObject.Find("Canvas") as GameObject;
         canvas_refernce_.GetComponent<Canvas>().enabled = false;
+        score_bar_reference_ = GameObject.FindObjectOfType<ScoreBarAnimator>();
         do_open_ = false;
         do_result_ = false;
         do_goto_title_ = false;
@@ -112,10 +121,12 @@ public class ResultAnimationManager : MonoBehaviour {
         //りざると開始
         if (do_result_)
         {
+            //canvas を表示
             canvas_refernce_.GetComponent<Canvas>().enabled = true;
             //勝ち負けをジャッジ！
             JadageWin();
-
+            //scoreBarのアニメーションを開始.
+            score_bar_reference_.DoAnimation = true;
             //最初にスコアのみ表示.どぅるるるが始まります.
             var obj = Instantiate(ScorePanel);
             obj.transform.parent = canvas_refernce_.transform;
@@ -146,6 +157,8 @@ public class ResultAnimationManager : MonoBehaviour {
             character.transform.localPosition = defalt_chara_pos;
             character.transform.localScale = defalt_chara_scale;
 
+        
+           
 
 
             //一度だけ作成.
