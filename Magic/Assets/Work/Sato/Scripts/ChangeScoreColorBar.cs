@@ -18,7 +18,7 @@ public class ChangeScoreColorBar : MonoBehaviour {
         //自分自身のゲージの色設定
         if (is_own_)
         {
-            if (GameObject.FindObjectOfType<ScoreSaver>().Is1P)
+            if (MyNetworkLobbyManager.s_singleton.Is1P)
             {
 
                 //1P赤?
@@ -35,7 +35,7 @@ public class ChangeScoreColorBar : MonoBehaviour {
         else//自分と逆の色になるように設定.
         {
 
-            if (GameObject.FindObjectOfType<ScoreSaver>().Is1P)
+            if (MyNetworkLobbyManager.s_singleton.Is1P)
             {
 
                 //1P赤?
