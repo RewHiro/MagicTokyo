@@ -39,23 +39,16 @@ public class ScoreBarAnimator : MonoBehaviour {
                
         //アタッチしてあるsliderを呼び出す.
         slider_reference_ = GetComponent<Slider>();
-        //最初にスコアから、自己得点数の割合を保存.
-        percentage_score_ = ScorePercentage();
 
         target_value_ = Random.Range(0.15F, 0.4F);
 
-        if (MyNetworkLobbyManager.s_singleton.Is1P)
-        {
-            my_score_ = GameObject.FindObjectOfType<ScoreSaver>().FruitNum;
-            synthesis_kudamon_value_ = my_score_ + GameObject.FindObjectOfType<ScoreSaver>().RemoteFruitNum;
-        }
-        else
-        {
-         
-            my_score_ = GameObject.FindObjectOfType<ScoreSaver>().RemoteFruitNum;
-            synthesis_kudamon_value_ = my_score_ + GameObject.FindObjectOfType<ScoreSaver>().FruitNum;
+        //自分のスコア.    
+        my_score_ = GameObject.FindObjectOfType<ScoreSaver>().FruitNum;
+        //総合スコア.
+        synthesis_kudamon_value_ = my_score_ + GameObject.FindObjectOfType<ScoreSaver>().RemoteFruitNum;
 
-        }
+        //最初にスコアから、自己得点数の割合を保存.
+        percentage_score_ = ScorePercentage();
     }
 	
 	// Update is called once per frame
@@ -82,7 +75,7 @@ public class ScoreBarAnimator : MonoBehaviour {
                 //パーティクル生成
                 particle_index_ = Instantiate(finished_particle_) as GameObject;
                 //位置を固定
-                particle_index_.transform.position = new Vector3(-0.047F,4.631F,-5.357F);
+                particle_index_.transform.position = new Vector3(-0.05F,4.64F,-5.32F);
 
             }
                 
