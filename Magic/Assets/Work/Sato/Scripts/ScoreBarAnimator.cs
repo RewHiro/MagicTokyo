@@ -44,8 +44,18 @@ public class ScoreBarAnimator : MonoBehaviour {
 
         target_value_ = Random.Range(0.15F, 0.4F);
 
-       my_score_ = GameObject.FindObjectOfType<ScoreSaver>().FruitNum;
-       synthesis_kudamon_value_ = my_score_ + GameObject.FindObjectOfType<ScoreSaver>().RemoteFruitNum;
+        if (MyNetworkLobbyManager.s_singleton.Is1P)
+        {
+            my_score_ = GameObject.FindObjectOfType<ScoreSaver>().FruitNum;
+            synthesis_kudamon_value_ = my_score_ + GameObject.FindObjectOfType<ScoreSaver>().RemoteFruitNum;
+        }
+        else
+        {
+         
+            my_score_ = GameObject.FindObjectOfType<ScoreSaver>().RemoteFruitNum;
+            synthesis_kudamon_value_ = my_score_ + GameObject.FindObjectOfType<ScoreSaver>().FruitNum;
+
+        }
     }
 	
 	// Update is called once per frame
