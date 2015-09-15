@@ -11,6 +11,10 @@ public class PopComment : MonoBehaviour {
       alpha_ = value;
       raw_image_.color = new Color(1, 1, 1, alpha_);
     }
+        get
+        {
+            return alpha_;
+        }
   }
 
   RawImage raw_image_ = null;
@@ -26,7 +30,7 @@ public class PopComment : MonoBehaviour {
 	void Update () {
     if (scene_state_.GetComponent<SceneState>().isReady()) {
       if (alpha_ < 1.0f) {
-        alpha_ += Time.deltaTime;
+                Alpha += Time.deltaTime;
       }
     }
   }
