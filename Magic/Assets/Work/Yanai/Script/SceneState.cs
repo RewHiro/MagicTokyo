@@ -51,8 +51,8 @@ public class SceneState : MonoBehaviour
 
     void Update()
     {
-        TitleUpdate();
         TutorialUpdate();
+        TitleUpdate();
     }
 
     bool canShiftStart()
