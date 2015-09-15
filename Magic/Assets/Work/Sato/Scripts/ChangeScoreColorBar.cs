@@ -22,13 +22,13 @@ public class ChangeScoreColorBar : MonoBehaviour {
             {
 
                 //1P赤?
-                _image.color = Color.red;
+                _image.color = Color.yellow;
 
             }
             else
             {
                 //2P黄色?
-                _image.color = Color.yellow;
+                _image.color = Color.red;
 
             }
         }
@@ -39,13 +39,13 @@ public class ChangeScoreColorBar : MonoBehaviour {
             {
 
                 //1P赤?
-                _image.color = Color.yellow;
+                _image.color = Color.red;
 
             }
             else
             {
                 //2P黄色?
-                _image.color = Color.red;
+                _image.color = Color.yellow;
 
 
 

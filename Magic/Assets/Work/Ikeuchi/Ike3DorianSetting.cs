@@ -52,7 +52,7 @@ public class Ike3DorianSetting : MonoBehaviour {
         // fruit_manager_
         //    .GetComponent<FruitCreater>().DorianCreate(dorian_num_);
 
-        GameObject.Find(fruit_manager_.name)
-            .GetComponent<FruitCreater>().DorianCreate(dorian_num_);
+        //GameObject.Find(fruit_manager_.name)
+        //    .GetComponent<FruitCreater>().DorianCreate(dorian_num_);
     }
 }
