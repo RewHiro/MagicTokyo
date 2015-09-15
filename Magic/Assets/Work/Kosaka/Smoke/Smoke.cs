@@ -47,8 +47,6 @@ public class Smoke : MonoBehaviour
             smoke_sprite_renderer_.color = new Color(1.0f, 0.6f, 1.0f, alpha);
         else if (pot_in_get_.IsInJamamon_)
             smoke_sprite_renderer_.color = new Color(1.0f, 0.0f, 1.0f, alpha);
-        else if (pot_in_get_.IsInDorain)
-            smoke_sprite_renderer_.color = new Color(1.0f, 0.6f, 0.0f, alpha);
 
         alpha -= alpha_speed_;
 
@@ -65,7 +63,6 @@ public class Smoke : MonoBehaviour
             pot_in_get_.IsInApple_ = false;
             pot_in_get_.IsInPeach_ = false;
             pot_in_get_.IsInJamamon_ = false;
-            pot_in_get_.is_in_dorian_ = false;
         }
     }
 
