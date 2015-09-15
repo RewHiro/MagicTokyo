@@ -124,6 +124,8 @@ public class TuboInDestroy : MonoBehaviour
             smoke_.parent = GameObject.Find("Pot").transform;
 
             IsInLemon_ = true;
+
+            AudioManager.Instance.PlaySe(2);
         }
         else if (other.name == APUMON_NAME)
         {
@@ -135,6 +137,8 @@ public class TuboInDestroy : MonoBehaviour
             smoke_.parent = GameObject.Find("Pot").transform;
 
             IsInApple_ = true;
+
+            AudioManager.Instance.PlaySe(2);
         }
         else if (other.name == MOMON_NAME)
         {
@@ -145,6 +149,8 @@ public class TuboInDestroy : MonoBehaviour
             smoke_.parent = GameObject.Find("Pot").transform;
 
             IsInPeach_ = true;
+
+            AudioManager.Instance.PlaySe(3);
         }
         else if (other.name == JAMAMON_NAME)
         {
@@ -155,12 +161,16 @@ public class TuboInDestroy : MonoBehaviour
             smoke_.parent = GameObject.Find("Pot").transform;
 
             IsInJamamon_ = true;
+
+            AudioManager.Instance.PlaySe(3);
         }
         else if (other.name == DORIANBOM_NAME)
         {
             if (other.gameObject.GetComponent<Ike3dorian>().IsExplosion) return;
             Destroy(other.gameObject);
             is_in_dorian_ = true;
+
+            AudioManager.Instance.PlaySe(8);
 
             if (drian_attack_obj_ != null)
             {
