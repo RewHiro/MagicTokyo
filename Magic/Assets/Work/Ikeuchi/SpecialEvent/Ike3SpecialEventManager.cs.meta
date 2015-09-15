@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 9db6ac89da3c51c4daaf2238434dde5a
+timeCreated: 1442296796
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - gold_apple_: {fileID: 167156, guid: 24193792acfb4f84fa465332ee1d1f1b, type: 2}
+  - silver_lemon_: {fileID: 103532, guid: 2f6aadddf27f4b0429577f72a298df7f, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

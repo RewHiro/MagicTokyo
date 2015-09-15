@@ -40,6 +40,7 @@ public class Ike3DorianSetting : MonoBehaviour {
     [SerializeField
     ,TooltipAttribute("ここに「FruitManager」prefabを入れてください\n(プログラマー用)")]
     private GameObject fruit_manager_;
+    public GameObject FruitManager { get { return fruit_manager_; } }
 
     [SerializeField
     , TooltipAttribute("ここに「Main　Camera」prefabを「Hierarchy」から入れてください\n(爆発カウントを向けたいオブジェクト)\n(プログラマー用)")]
