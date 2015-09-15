@@ -150,6 +150,8 @@ public class FruitCreater : MonoBehaviour {
         GameObject game_object = Instantiate(dorian);
         game_object.transform.SetParent(dorian_manager.transform);
         game_object.name = dorian.name;
+
+        AudioManager.Instance.PlaySe(7);
         return game_object;
     }
 
