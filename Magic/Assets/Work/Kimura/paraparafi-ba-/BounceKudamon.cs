@@ -15,6 +15,8 @@ public class BounceKudamon : MonoBehaviour
 
     Text start_text_;
 
+    Image bounce_telop_;
+
     [SerializeField, Range(1, 60), TooltipAttribute("イベント時間")]
     float EVENT_TIME = 10.0f;
 
@@ -36,7 +38,7 @@ public class BounceKudamon : MonoBehaviour
 
     Quaternion origin_camera_rotation_;
 
-    Vector3 start_text_position_;
+    Vector3 bounce_telop_position_;
 
     ChangeBounce[] changebounce;
     void Awake()
@@ -45,10 +47,12 @@ public class BounceKudamon : MonoBehaviour
         changebounce = GetComponentsInChildren<ChangeBounce>();
         is_magic_ = IsMagic.UNUSED_MAGIC;
         origin_camera_rotation_ = Camera.main.transform.rotation;
-        start_text_ = GameObject.Find("BounceText").GetComponent<Text>();
-        start_text_.enabled = false;
+       
+        bounce_telop_ = GameObject.Find("BundoTelopImage").GetComponent<Image>();
+        bounce_telop_.enabled = false;
+        Debug.Log(bounce_telop_.enabled);
         start_time_ = START_EVENT_TIME;
-        start_text_position_ = start_text_.rectTransform.localPosition;
+        bounce_telop_position_ = bounce_telop_.rectTransform.localPosition;
     }
 
 
@@ -65,7 +69,7 @@ public class BounceKudamon : MonoBehaviour
 
             case IsMagic.UNUSED_MAGIC:
                 {
-                    if (Input.GetKeyDown(KeyCode.E))
+                    if (Input.GetKeyDown(KeyCode.C))
                     {
                         is_magic_ = IsMagic.MAGIC_START;
                     }
@@ -74,7 +78,7 @@ public class BounceKudamon : MonoBehaviour
 
                     if (is_magic_ == IsMagic.MAGIC_START)
                     {
-                        start_text_.enabled = true;
+                        bounce_telop_.enabled = true;
 
                         changebounce = GetComponentsInChildren<ChangeBounce>();
 
@@ -92,7 +96,7 @@ public class BounceKudamon : MonoBehaviour
                     if (start_time_ >= 3.0f)
                     {
                         AudioManager.Instance.PlaySe(12);
-                        start_text_.enabled = true;
+                        bounce_telop_.enabled = true;
 
                         changebounce = GetComponentsInChildren<ChangeBounce>();
 
@@ -104,9 +108,9 @@ public class BounceKudamon : MonoBehaviour
 
                     if (start_time_ >= 0 )
                     {
-                        Vector3 flow_telop_ = start_text_.rectTransform.localPosition;
+                        Vector3 flow_telop_ = bounce_telop_.rectTransform.localPosition;
                         flow_telop_.x -= FLOW_TELOP_SPEED;
-                        start_text_.rectTransform.localPosition = flow_telop_;
+                        bounce_telop_.rectTransform.localPosition = flow_telop_;
                         start_time_ -= Time.deltaTime;
                         Quaternion main_camera_rotation = Camera.main.transform.rotation;
                         float vibration_x = Random.Range(-SWAY_POWER, SWAY_POWER);
@@ -121,8 +125,9 @@ public class BounceKudamon : MonoBehaviour
 
                     if(elapsed_time_ <= 9.0f)
                     {
-                        start_text_.enabled = false;
-                        start_text_.rectTransform.localPosition = start_text_position_;
+                        bounce_telop_.enabled = false;
+                        bounce_telop_.rectTransform.localPosition = bounce_telop_position_;
+                        Debug.Log(bounce_telop_.rectTransform.localPosition);
                     }
 
                     if(start_time_ <= 0)

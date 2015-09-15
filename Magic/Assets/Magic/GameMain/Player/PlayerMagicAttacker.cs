@@ -64,9 +64,6 @@ public class PlayerMagicAttacker : NetworkBehaviour
             if (GetComponent<GameEndDirector>().IsStart) return;
         }
 
-
-
-
         foreach (var hand in hand_controller_.GetFrame().Hands)
         {
             if (!hand.IsLeft) continue;
