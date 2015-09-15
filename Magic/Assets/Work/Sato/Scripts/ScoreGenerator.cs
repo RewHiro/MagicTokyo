@@ -42,7 +42,7 @@ public class ScoreGenerator : MonoBehaviour
         score_index_[0] = score_reference_.GetComponent<ScoreSaver>().FruitNum;
         score_index_[1] = score_reference_.GetComponent<ScoreSaver>().RemoteFruitNum;
         // Debug用
-        if (score_index_ == null)
+  /*      if (score_index_ == null)
         {
 
             score_index_[0] = Random.Range(0, 10000);
@@ -50,6 +50,7 @@ public class ScoreGenerator : MonoBehaviour
             Debug.Log("Debug用スコア処理.\n又はScoreSaverからFruitNumを取得できていません.");
 
         }
+        */
     }
 
 
@@ -64,6 +65,7 @@ public class ScoreGenerator : MonoBehaviour
             //表示位置参照用のゲームオブジェクトを参照.
             GameObject[] first_position_reference = { GameObject.Find("1PScorePosition") as GameObject,
                                                       GameObject.Find("2PScorePosition") as GameObject};
+
 
             for (int i = 0; i < score_index_.Length; i++)
             {
@@ -98,6 +100,7 @@ public class ScoreGenerator : MonoBehaviour
             }
 
             DoOpenScore = false;
+
         }
 
     }

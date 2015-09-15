@@ -72,12 +72,14 @@ public class Score : MonoBehaviour {
                 //表示アニメーション終了後、キャラクターを表示.
                 number_object_.sprite = Instantiate(Score_Number_[number_]) as Sprite;
                 image_animator_.do_stop_animation_ = true;
-
+                //scoreBarのアニメーションを終了を宣言.
+                  GameObject.FindObjectOfType<ScoreBarAnimator>().FinishedAnimation = true;
                 //最大桁のアニメーションが終わったら、キャラクター、ロゴを表示.
                 if (time_counter_ > animation_end_target_time + show_delay_time_)
                 {
                         GameObject.FindObjectOfType<ResultAnimationManager>().DoOpen = true;
                         is_end_send_ = true;
+
                     
                 }
 
