@@ -24,7 +24,7 @@ public class TuboInDestroy : MonoBehaviour
     int apumon_count_ = 0;
     bool is_in_momon_ = false;
 
-    bool is_in_dorian_ = false;
+    public bool is_in_dorian_ = false;
 
     //くだモンの名前
     const string LEMON_NAME = "le-mon";
@@ -33,6 +33,9 @@ public class TuboInDestroy : MonoBehaviour
 
     const string JAMAMON_NAME = "jamamon";
     const string DORIANBOM_NAME = "dorianbomb_red";
+
+    const string GOLD_APPLE_NAME = "apumon_gold";
+    const string SILVER_LEMON_NAME = "re-mon_silver";
 
     RushEventer rush_eventer_ = null;
 
@@ -182,6 +185,21 @@ public class TuboInDestroy : MonoBehaviour
             {
                 Debug.Log("drian_attack_obj_ にプレハブが入っていません");
             }
+
+            var smoke_ = Instantiate(smoke_prehub_).GetComponent<Transform>();
+            smoke_.parent = GameObject.Find("Pot").transform;
+        }
+        else if (other.name == GOLD_APPLE_NAME)
+        {
+            var obj = other.GetComponent<SpecialEvent>();
+            obj.ChangeFruits();
+            Destroy(other.gameObject);
+        }
+        else if (other.name == SILVER_LEMON_NAME)
+        {
+            var obj = other.GetComponent<SpecialEvent>();
+            obj.ChangeFruits();
+            Destroy(other.gameObject);
         }
 
     }
